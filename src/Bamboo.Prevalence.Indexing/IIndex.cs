@@ -54,6 +54,11 @@ namespace Bamboo.Prevalence.Indexing
 		/// reference comparison should always be preferred
 		/// over object.Equals</remarks>
 		void Remove(IRecord record);
+		
+		/// <summary>
+		/// Removes all records from the index.
+		/// </summary>
+		void Clear();
 
 		/// <summary>
 		/// Reindexes a existing record. Reindexing

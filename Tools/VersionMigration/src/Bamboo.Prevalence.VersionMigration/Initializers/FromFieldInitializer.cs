@@ -63,7 +63,7 @@ namespace Bamboo.Prevalence.VersionMigration.Initializers
 			SerializationInfo info = context.CurrentSerializationInfo;
 
 			object value = info.GetValue(_fieldName, field.FieldType);
-			field.SetValue(context.CurrentObject, value);
+			field.SetValue(context.CurrentObject, context.ChangeType(value, field.FieldType));
 			context.Trace("Field {0} set to \"{1}\" loaded from field {2}.", field.Name, value, _fieldName);
 		}
 	}

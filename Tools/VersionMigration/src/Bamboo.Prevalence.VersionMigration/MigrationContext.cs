@@ -32,6 +32,7 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -209,14 +210,23 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		public object ChangeType(object value, Type conversionType)
 		{
-			if (conversionType.IsEnum)
+			if (null != value)
 			{
-				if (value is string)
+				if (conversionType.IsEnum)
 				{
-					return Enum.Parse(conversionType, (string)value);
+					if (value is string)
+					{
+						return Enum.Parse(conversionType, (string)value);
+					}
 				}
+				TypeConverter converter = TypeDescriptor.GetConverter(conversionType);
+				if (null != converter && converter.CanConvertFrom(value.GetType()))
+				{
+					return converter.ConvertFrom(null, _plan.Culture, value);
+				}
+				return Convert.ChangeType(value, conversionType, _plan.Culture);
 			}
-			return Convert.ChangeType(value, conversionType, _plan.Culture);
+			return null;
 		}
 
 		internal void EnterObject(object obj, SerializationInfo info)

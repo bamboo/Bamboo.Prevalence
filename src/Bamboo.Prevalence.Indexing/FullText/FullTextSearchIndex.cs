@@ -210,6 +210,11 @@ namespace Bamboo.Prevalence.Indexing.FullText
 				IndexByField(record, field);
 			}
 		}
+		
+		public void Clear()
+		{
+			_postings.Clear();
+		}
 
 		/// <summary>
 		/// See <see cref="Bamboo.Prevalence.Indexing.IIndex.Remove"/> for details.

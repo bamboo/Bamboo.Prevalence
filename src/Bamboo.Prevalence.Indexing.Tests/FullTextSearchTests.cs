@@ -91,6 +91,17 @@ namespace Bamboo.Prevalence.Indexing.Tests
 			_multipleFieldIndex.Add(_record3);
 			DumpPostings(index.Postings);
 		}
+		
+		[Test]
+		public void TestClear()
+		{			
+			_index.Clear();
+			
+			AssertEquals(0, ((FullTextSearchIndex)_index).Records.Length);
+			AssertEquals(0, ((FullTextSearchIndex)_index).Postings.Length);
+			
+			AssertSearchContains(_index.Search(new FullTextSearchExpression("chocolate")));
+		}
 
 		[Test]
 		public void TestSimpleSearch()

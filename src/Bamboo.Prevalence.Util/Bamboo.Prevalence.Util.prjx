@@ -9,7 +9,9 @@
     <File name=".\PrevalenceBaseUtil.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\SnapshotTaker.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
-  <References />
+  <References>
+    <Reference type="Project" refto="Bamboo.Prevalence" localcopy="True" />
+  </References>
   <DeploymentInformation target="" script="" strategy="File" />
   <Configuration runwithwarnings="False" name="Debug">
     <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />

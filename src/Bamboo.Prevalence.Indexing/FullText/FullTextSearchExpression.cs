@@ -108,7 +108,7 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			FullTextSearchIndex ftindex = index as FullTextSearchIndex;
 			if (null == ftindex)
 			{
-				throw new ArgumentException("FullTextSearchExpression objects can evaluated against FullTextSearchIndex objects only!");
+				throw new ArgumentException("FullTextSearchExpression objects can be evaluated against FullTextSearchIndex objects only!");
 			}
 			return ftindex.Search(this);
 		}
