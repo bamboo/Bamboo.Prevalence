@@ -183,6 +183,28 @@ namespace Bamboo.Prevalence
 			return new TransparentPrevalenceEngine(systemType, prevalenceBase, formatter);
 		}
 
+		/// <summary>
+		/// <see cref="CreateTransparentEngine(System.Type, string)"/>
+		/// </summary>
+		/// <param name="systemType"></param>
+		/// <param name="prevalenceBase"></param>
+		/// <param name="autoVersionMigration"></param>
+		/// <returns></returns>
+		public static PrevalenceEngine CreateTransparentEngine(System.Type systemType, string prevalenceBase, bool autoVersionMigration)
+		{
+			BinaryFormatter formatter;
+
+			if (autoVersionMigration)
+			{
+				formatter = CreateAutoVersionMigrationFormatter(systemType);
+			}
+			else
+			{
+				formatter = CreateBinaryFormatter();
+			}
+			return CreateTransparentEngine(systemType, prevalenceBase, formatter);
+		}
+
 		private static PrevalenceEngine CreateRequestedEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter, PrevalenceEngine.ExceptionDuringRecoveryHandler handler)
 		{
 			if (Attribute.IsDefined(systemType, typeof(Bamboo.Prevalence.Attributes.TransparentPrevalenceAttribute), false))
