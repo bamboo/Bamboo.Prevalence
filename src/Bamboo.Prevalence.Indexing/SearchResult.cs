@@ -390,14 +390,19 @@ namespace Bamboo.Prevalence.Indexing
 		/// </summary>
 		/// <param name="recordType">array element type</param>
 		/// <returns>the resulting array.</returns>
-		public object[] ToRecordArray(Type recordType)
+		public Array ToRecordArray(Type recordType)
 		{			
 			object[] records = (object[])Array.CreateInstance(recordType, _hits.Count);
 			for (int i=0; i<records.Length; ++i)
 			{				
-				records[i] = _hits[i];
+				records[i] = ((SearchHit)_hits[i]).Record;
 			}
 			return records;
+		}
+
+		public Array ToRecordArray()
+		{
+			return ToRecordArray(typeof(object));
 		}
 
 

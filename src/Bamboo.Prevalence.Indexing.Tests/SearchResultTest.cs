@@ -94,6 +94,16 @@ namespace Bamboo.Prevalence.Indexing.Tests
 		}
 
 		[Test]
+		public void TestToRecordArray()
+		{
+			HashtableRecord[] records = (HashtableRecord[])_result.ToRecordArray(typeof(HashtableRecord));
+			AssertEquals(3, records.Length);
+			AssertSame(_record1, records[0]);
+			AssertSame(_record2, records[1]);
+			AssertSame(_record3, records[2]);			
+		}
+
+		[Test]
 		public void TestSortByField()
 		{
 			_result.SortByField("Name");
