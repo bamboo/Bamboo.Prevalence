@@ -49,6 +49,11 @@ namespace Bamboo.Prevalence.Collections
 	public delegate void Action(object value);
 
 	/// <summary>
+	/// An object test predicate.
+	/// </summary>
+	public delegate bool Predicate(object value);
+
+	/// <summary>
 	/// Collection implementation synchronized by a <see cref="ReaderWriterLock"/>
 	/// object.
 	/// All the methods in the collection can be safely used by multiple threads.
@@ -56,6 +61,33 @@ namespace Bamboo.Prevalence.Collections
 	[Serializable]
 	public class ReaderWriterList : IList, IDeserializationCallback
 	{
+		#region public helper classes
+		public class WriterLockDisposer : IDisposable
+		{
+			protected ReaderWriterList _list;
+
+			public WriterLockDisposer(ReaderWriterList list)
+			{
+				if (null == list)
+				{
+					throw new ArgumentNullException("list");
+				}				
+
+				list.AcquireWriterLock();
+				_list = list;
+			}
+
+			public void Dispose()
+			{
+				if (null != _list)
+				{
+					_list.ReleaseWriterLock();
+					_list = null;
+				}
+			}
+		}
+		#endregion
+
 		#region public static fields
 		public static TimeSpan LockTimeout = TimeSpan.FromSeconds(3);
 		#endregion
@@ -101,6 +133,25 @@ namespace Bamboo.Prevalence.Collections
 		{
 			_lock.ReleaseWriterLock();
 		}		
+
+		/// <summary>
+		/// Returns a write lock object.
+		/// 
+		/// This property allows the use of this idiom:
+		/// <code>
+		/// using (list.WriterLock)
+		/// {
+		///		// do something...
+		/// }
+		/// </code>
+		/// </summary>
+		public IDisposable WriterLock
+		{
+			get
+			{
+				return new WriterLockDisposer(this);
+			}
+		}
 
 		#endregion
 		
@@ -258,6 +309,31 @@ namespace Bamboo.Prevalence.Collections
 			{
 				ReleaseWriterLock();
 			}
+		}
+
+		public bool Any(Predicate predicate)
+		{
+			if (null == predicate)
+			{
+				throw new ArgumentNullException("predicate");
+			}
+
+			AcquireReaderLock();
+			try
+			{
+				foreach (object item in _list)
+				{
+					if (predicate(item))
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				ReleaseReaderLock();
+			}			
 		}
 
 		#endregion
