@@ -37,105 +37,29 @@ using Bamboo.Prevalence;
 namespace Bamboo.Prevalence.Tests
 {
 	/// <summary>
-	/// Test case for Bamboo.Prevalence.PrevalenceEngine
+	/// Test case for testing Bamboo.Prevalence.PrevalenceEngine
 	/// </summary>
 	[TestFixture]
-	public class PrevalenceEngineTest : AbstractAddingSystemTest
+	public class PrevalenceEngineTest : AbstractPrevalenceEngineTest
 	{			
-		protected void Add(int amount, int expectedTotal)
+		protected override void Add(int amount, int expectedTotal)
 		{
 			int actualTotal = (int)ExecuteCommand(new AddCommand(amount));
 			AssertEquals("Add", expectedTotal, actualTotal);
 		}		
-		
-		[SetUp]
-		public override void SetUp()
-		{	
-			base.SetUp();
-			ClearPrevalenceBase();
-			_engine = CreateEngine();			
+
+		protected override void AssertTotal(int amount)
+		{
+			int total = (int)ExecuteQuery(new QueryTotal());
+			AssertEquals("Total", amount, total);
+		}
+
+		protected override System.Type PrevalentSystemType
+		{
+			get
+			{
+				return typeof(AddingSystem);
+			}
 		}		
-
-		[Test]
-		public void TestPrevalenceEngine()
-		{
-			Add(10, 10);
-			Add(30, 40);
-			CrashRecover();
-			AssertTotal(40);
-
-			Add(60, 100);
-			CrashRecover();
-			AssertTotal(100);
-
-			Add(50, 150);
-			Snapshot();
-			CrashRecover();
-			CrashRecover();
-			AssertTotal(150);			
-
-			CrashRecover();
-			ClearPrevalenceBase();
-			Snapshot();
-			CrashRecover();
-			AssertTotal(150);
-			Add(50, 200);
-
-			CrashRecover();
-			AssertTotal(200);
-		}
-
-		/// <summary>
-		/// This test makes sure that is possible
-		/// to use the same command twice without
-		/// any side effects.
-		/// </summary>
-		[Test]
-		public void TestExecutingTheSameCommandTwice()
-		{
-			AddCommand command = new AddCommand(10);
-			AssertEquals("AddCommand 10", 10, ExecuteCommand(command));
-
-			command.Amount = 20;
-			AssertEquals("AddCommand 20", 30, ExecuteCommand(command));
-
-			CrashRecover();
-			AssertTotal(30);
-		}
-
-		[Test]
-		public void TestExceptionThrowingCommand()
-		{
-			Add(20, 20);
-
-			try
-			{
-				Add(-10, 0);
-				Assert("Add(-10) should throw an exception!", false);
-			}
-			catch (ArgumentOutOfRangeException)
-			{
-			}
-
-			CrashRecover();
-			AssertTotal(20);
-		}
-
-		[Test]
-		public void TestRecoverFromEmptySnapshot()
-		{
-			Snapshot();
-			CrashRecover();
-			AssertTotal(0);
-		}
-
-		[Test]
-		public void TestPrevalenceEngineCurrent()
-		{
-			CrashRecover();
-
-			ExecuteCommand(new TestCurrentCommandAndQuery(Engine));
-			ExecuteQuery(new TestCurrentCommandAndQuery(Engine));
-		}
 	}
 }

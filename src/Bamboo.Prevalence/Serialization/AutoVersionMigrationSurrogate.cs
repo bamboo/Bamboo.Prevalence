@@ -117,7 +117,7 @@ namespace Bamboo.Prevalence.Serialization
 
 		void ISurrogateSelector.ChainSelector(System.Runtime.Serialization.ISurrogateSelector selector)
 		{
-			throw new InvalidOperationException("ChainSelector not supported!");
+			throw new NotImplementedException("ChainSelector not supported!");
 		}
 		#endregion
 	}	

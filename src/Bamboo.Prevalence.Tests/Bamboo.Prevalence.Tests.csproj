@@ -92,6 +92,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AbstractPrevalenceEngineTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "AddCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -103,6 +108,11 @@
                 />
                 <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IAddingSystem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -128,6 +138,16 @@
                 />
                 <File
                     RelPath = "TestCurrentCommandAndQuery.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TransparentAddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TransparentPrevalenceEngineTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -40,7 +40,7 @@ namespace Bamboo.Prevalence.Tests
 	{
 		object Bamboo.Prevalence.IQuery.Execute(object system)
 		{
-			return ((AddingSystem)system).Total;
+			return ((IAddingSystem)system).Total;
 		}
 	}
 }

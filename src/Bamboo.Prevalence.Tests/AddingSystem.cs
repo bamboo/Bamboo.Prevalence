@@ -39,7 +39,7 @@ namespace Bamboo.Prevalence.Tests
 	/// access to the system.
 	/// </summary>
 	[Serializable]
-	public class AddingSystem
+	public class AddingSystem : IAddingSystem
 	{
 		private int _total;		
 
@@ -47,7 +47,7 @@ namespace Bamboo.Prevalence.Tests
 		{			
 		}
 
-		internal int Total
+		int IAddingSystem.Total
 		{
 			get
 			{
@@ -55,7 +55,7 @@ namespace Bamboo.Prevalence.Tests
 			}
 		}
 
-		internal int Add(int amount)
+		int IAddingSystem.Add(int amount)
 		{
 			if (amount < 0)
 			{
