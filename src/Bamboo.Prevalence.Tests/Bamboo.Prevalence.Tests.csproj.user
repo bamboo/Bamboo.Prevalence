@@ -1,5 +1,5 @@
 <VisualStudioProject>
-    <CSHARP>
+    <CSHARP LastOpenVersion = "7.10.3077" >
         <Build>
             <Settings ReferencePath = "C:\Program Files\NUnit Addin\;D:\dev\Bamboo.Prevalence\lib\;C:\dev\Bamboo.Prevalence\lib\;D:\dev\dotnet\Bamboo.Prevalence\lib\" >
                 <Config

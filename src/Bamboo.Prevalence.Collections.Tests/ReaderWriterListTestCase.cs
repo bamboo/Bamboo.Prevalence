@@ -99,6 +99,27 @@ namespace Bamboo.Prevalence.Collections.Tests
 		}
 
 		[Test]
+		public void TestPopAny()
+		{
+			AssertEquals(2, _list.Count);
+
+			object o1 = _list.PopAny();
+			AssertEquals(1, _list.Count);
+
+			object o2 = _list.PopAny();
+			if (o1 == _customer1)
+			{
+				AssertSame(o2, _customer2);
+			}
+			else
+			{
+				AssertSame(o1, _customer2);
+				AssertSame(o2, _customer1);
+			}
+			AssertEquals(0, _list.Count);
+		}
+
+		[Test]
 		public void TestAdd()
 		{			
 			AssertEquals(2, _list.Count);

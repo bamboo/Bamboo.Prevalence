@@ -211,6 +211,36 @@ namespace Bamboo.Prevalence.Collections
 			}
 		}
 
+		/// <summary>
+		/// Selects a random item from the list and
+		/// removes it.
+		/// </summary>
+		/// <returns>null if the list is empty or the item removed otherwise</returns>
+		public object PopAny()
+		{
+			AcquireWriterLock();
+			try
+			{
+				object item = null;
+
+				if (_list.Count > 0)
+				{		
+					int index = -1;
+					lock (_random)
+					{
+						index = _random.Next(_list.Count);
+					}
+					item = _list[index];
+					_list.RemoveAt(index);
+				}
+				return item;
+			}
+			finally
+			{
+				ReleaseWriterLock();
+			}
+		}
+
 		public Array ToSortedArray(IComparer comparer, Type returnItemType)
 		{
 			Array array = ToArray(returnItemType);
