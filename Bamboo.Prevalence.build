@@ -34,28 +34,13 @@
 		</if>
 	</target>
 
-	<target name='set-mono-1.0-linux-runtime-configuration'>
+	<target name='set-mono-1.0-runtime-configuration'>
 		<property name='build.defines' value='MONO' />
 	</target>
 	
 	<target name="build" depends="Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests, Bamboo.Prevalence.Collections.Tests, Bamboo.Prevalence.Util.Tests" />
 
 	<target name='test' if="${nant.tasks.nunit2}">
-
-		<!--	
-		<script language="C#">
-        	<code><![CDATA[
-	            public static void ScriptMain(Project project) {
-        	        project.Log(Level.Info, "Properties:");
-
-	                foreach (DictionaryEntry entry in project.Properties) {
-        	                project.Log(Level.Info, "{0}={1}", entry.Key, entry.Value);
-                	}
-	            }
-	        ]]></code>
-		</script>
-		-->
-
 
 		<nunit2>
 			<formatter type="Plain" />

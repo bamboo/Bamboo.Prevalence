@@ -35,11 +35,9 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
 using Bamboo.Prevalence.VersionMigration;
 
 namespace VersionMigratorGUI

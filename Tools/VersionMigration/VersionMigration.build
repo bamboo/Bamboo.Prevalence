@@ -63,6 +63,8 @@
 
 			<references>
 				<includes name="bin/Bamboo.Prevalence.VersionMigration.dll" />
+				<includes name="System.Windows.Forms.dll" />
+				<includes name="System.Drawing.dll" />
 			</references>
 		</csc>
 
