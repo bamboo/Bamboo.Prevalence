@@ -1,3 +1,4 @@
+#region License
 // Bamboo.Prevalence - a .NET object prevalence engine
 // Copyright (C) 2002 Rodrigo B. de Oliveira
 //
@@ -28,47 +29,65 @@
 //
 // http://bbooprevalence.sourceforge.net
 // mailto:rodrigobamboo@users.sourceforge.net
+#endregion
 
 using System;
-using System.Runtime.Serialization;
-using System.Reflection;
-using Bamboo.Prevalence.VersionMigration;
+using System.Collections;
 
-namespace Bamboo.Prevalence.VersionMigration.Initializers
+namespace Bamboo.Prevalence.Collections
 {
 	/// <summary>
-	/// Default algoritm for object initialization.
+	/// Wraps another enumerator filtering out
+	/// any items selected by a predicate.
 	/// </summary>
-	public class DefaultObjectInitializer : IObjectInitializer
+	public class FilteredEnumerator : IEnumerable, IEnumerator
 	{
-		public static readonly IObjectInitializer Default = new DefaultObjectInitializer();
-		
-		public DefaultObjectInitializer()
-		{
-		}
-		
-		public DefaultObjectInitializer(System.Xml.XmlElement element)
-		{
-		}
+		protected IEnumerator _enumerator;
 
-		public virtual void InitializeObject(MigrationContext context)
+		protected Predicate _predicate;		
+		
+		public FilteredEnumerator(IEnumerable enumerable, Predicate predicate)
 		{
-			Type type = context.CurrentObject.GetType();
-			TypeMapping mapping = context.GetTypeMapping(type);
-			if (null == mapping)
+			if (null == enumerable)
 			{
-				mapping = TypeMapping.Default;
+				throw new ArgumentNullException("enumerable");
+			}
+			if (null == predicate)
+			{
+				throw new ArgumentNullException("predicate");
 			}
 
-			FieldInfo[] fields = context.GetSerializableFields(type);
-			foreach (FieldInfo field in fields)
-			{								
-				context.EnterField(field);
+			_enumerator = enumerable.GetEnumerator();
+			_predicate = predicate;
+		}
 
-				IFieldInitializer initializer = mapping.GetFieldInitializer(field.Name);
-				initializer.InitializeField(context);
+		public IEnumerator GetEnumerator()
+		{
+			return this;
+		}
 
-				context.LeaveField();
+		public void Reset()
+		{
+			_enumerator.Reset();
+		}
+
+		public bool MoveNext()
+		{			
+			while (_enumerator.MoveNext())
+			{
+				if (_predicate(_enumerator.Current))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public object Current
+		{
+			get
+			{
+				return _enumerator.Current;
 			}
 		}
 	}

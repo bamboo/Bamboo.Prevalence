@@ -92,6 +92,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "FilteredEnumerator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ObjectPropertyComparer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -1,3 +1,4 @@
+#region License
 // Bamboo.Prevalence - a .NET object prevalence engine
 // Copyright (C) 2002 Rodrigo B. de Oliveira
 //
@@ -28,48 +29,38 @@
 //
 // http://bbooprevalence.sourceforge.net
 // mailto:rodrigobamboo@users.sourceforge.net
+#endregion
 
 using System;
-using System.Runtime.Serialization;
-using System.Reflection;
-using Bamboo.Prevalence.VersionMigration;
+using System.Collections;
+using NUnit.Framework;
+using Bamboo.Prevalence.Collections;
 
-namespace Bamboo.Prevalence.VersionMigration.Initializers
+namespace Bamboo.Prevalence.Collections.Tests
 {
 	/// <summary>
-	/// Default algoritm for object initialization.
+	/// Test cases for FilteredEnumerator.
 	/// </summary>
-	public class DefaultObjectInitializer : IObjectInitializer
+	[TestFixture]
+	public class FilteredEnumeratorTests : Assertion
 	{
-		public static readonly IObjectInitializer Default = new DefaultObjectInitializer();
-		
-		public DefaultObjectInitializer()
+		[Test]
+		public void TestEnumerator()
 		{
-		}
-		
-		public DefaultObjectInitializer(System.Xml.XmlElement element)
-		{
-		}
-
-		public virtual void InitializeObject(MigrationContext context)
-		{
-			Type type = context.CurrentObject.GetType();
-			TypeMapping mapping = context.GetTypeMapping(type);
-			if (null == mapping)
+			int[] items = new int[] { 1, 2, 3, 4, 5, 6 };
+			int[] expected = new int[] { 2, 4, 6 };
+			IEnumerator actual = new FilteredEnumerator(items, new Predicate(Even));
+			for (int i=0; i<expected.Length; ++i)
 			{
-				mapping = TypeMapping.Default;
+				Assert(actual.MoveNext());
+				AssertEquals(expected[i], actual.Current);
 			}
+			Assert(!actual.MoveNext());
+		}
 
-			FieldInfo[] fields = context.GetSerializableFields(type);
-			foreach (FieldInfo field in fields)
-			{								
-				context.EnterField(field);
-
-				IFieldInitializer initializer = mapping.GetFieldInitializer(field.Name);
-				initializer.InitializeField(context);
-
-				context.LeaveField();
-			}
+		public static bool Even(object item)
+		{
+			return 0 == (((int)item) % 2);
 		}
 	}
 }

@@ -97,6 +97,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "FilteredEnumeratorTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ObjectComparersTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
