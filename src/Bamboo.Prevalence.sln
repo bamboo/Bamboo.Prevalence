@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Indexing"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.VersionMigration", "..\Tools\VersionMigration\src\Bamboo.Prevalence.VersionMigration\Bamboo.Prevalence.VersionMigration.csproj", "{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.XPath", "Bamboo.Prevalence.XPath\Bamboo.Prevalence.XPath.csproj", "{979A7FE5-8B75-462D-834A-E7F893D950A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.XPath.Tests", "Bamboo.Prevalence.XPath.Tests\Bamboo.Prevalence.XPath.Tests.csproj", "{341A1F4D-289C-415F-BDCA-3B2AA38A7BBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -25,6 +29,14 @@ Global
 		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Debug.Build.0 = Debug|.NET
 		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Release.ActiveCfg = Release|.NET
 		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Release.Build.0 = Release|.NET
+		{979A7FE5-8B75-462D-834A-E7F893D950A8}.Debug.ActiveCfg = Debug|.NET
+		{979A7FE5-8B75-462D-834A-E7F893D950A8}.Debug.Build.0 = Debug|.NET
+		{979A7FE5-8B75-462D-834A-E7F893D950A8}.Release.ActiveCfg = Release|.NET
+		{979A7FE5-8B75-462D-834A-E7F893D950A8}.Release.Build.0 = Release|.NET
+		{341A1F4D-289C-415F-BDCA-3B2AA38A7BBB}.Debug.ActiveCfg = Debug|.NET
+		{341A1F4D-289C-415F-BDCA-3B2AA38A7BBB}.Debug.Build.0 = Debug|.NET
+		{341A1F4D-289C-415F-BDCA-3B2AA38A7BBB}.Release.ActiveCfg = Release|.NET
+		{341A1F4D-289C-415F-BDCA-3B2AA38A7BBB}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

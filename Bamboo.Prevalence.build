@@ -1,7 +1,8 @@
 <project name='Bamboo.Prevalence' default='debug'>
 
-	<property name='nunit-console' value='d:\dotnet\nunit\bin\nunit-console' />
-	<property name='nunit.framework.dll' value='d:\dotnet\nunit\bin\nunit.framework.dll' />
+	<property name='nunit-console' value='\dotnet\nunit\bin\nunit-console' />
+	<property name='nunit.framework.dll' value='\dotnet\nunit\bin\nunit.framework.dll' />
+	<property name='version' value='1.3.1.0' />
 
 	<target name='debug' depends='setDebugProperties,test' />
 
@@ -17,15 +18,17 @@
 		<property name='optimize' value='true' />
 	</target>
 
-	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests'>
+	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests'>
 		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
 
 		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Indexing.Tests.dll' />
+
+		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.XPath.Tests.dll' />
 	</target>
 
 	<target name="distribution" depends="release">
 
-		<zip zipfile="Bamboo.Prevalence.1.3.0.0.zip">
+		<zip zipfile="Bamboo.Prevalence.${version}.zip">
 			<fileset>
 				<includes name="Bamboo.Prevalence.build" />
 				<includes name="Bamboo.Prevalence.ndoc" />
@@ -36,6 +39,14 @@
 				<includes name="src/Bamboo.Prevalence/**/*.csproj" />
 				<includes name="src/Bamboo.Prevalence.Tests/**/*.cs" />
 				<includes name="src/Bamboo.Prevalence.Tests/**/*.csproj" />
+				<includes name="src/Bamboo.Prevalence.Indexing/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence.Indexing/**/*.csproj" />
+				<includes name="src/Bamboo.Prevalence.Indexing.Tests/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence.Indexing.Tests/**/*.csproj" />
+				<includes name="src/Bamboo.Prevalence.XPath/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence.XPath/**/*.csproj" />
+				<includes name="src/Bamboo.Prevalence.XPath.Tests/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence.XPath.Tests/**/*.csproj" />
 				<includes name="examples/MyFirstPrevalentSystem/*.cs*" />
 				<includes name="examples/RemotingPrevalence/*.cs" />
 				<includes name="examples/RemotingPrevalence/*.build" />
@@ -87,10 +98,6 @@
 				<includes name='src/Bamboo.Prevalence/**.cs' />
 			</sources>
 
-			<references>
-				<includes name='lib\*.dll' />
-			</references>
-
 		</csc>
 
 	</target>
@@ -124,14 +131,43 @@
 			<sources>
 				<includes name='src/Bamboo.Prevalence.Indexing/**.cs' />
 			</sources>
+		</csc>
+
+	</target>
+
+	<target name='Bamboo.Prevalence.XPath.Tests' depends='Bamboo.Prevalence.XPath'>
+
+		<csc target='library' output='bin\Bamboo.Prevalence.XPath.Tests.dll' debug='true'>
+
+			<sources>
+				<includes name='src\Bamboo.Prevalence.XPath.Tests\*.cs' />
+			</sources>
 
 			<references>
-				<includes name='lib\*.dll' />
+				<includes name='${nunit.framework.dll}' />
+				<includes name='bin\Bamboo.Prevalence.XPath.dll' />
 			</references>
 
 		</csc>
 
 	</target>
+
+	<target name='Bamboo.Prevalence.XPath' depends='init'>
+
+		<csc
+			doc='bin\Bamboo.Prevalence.XPath.xml'
+			target='library'
+			output='bin\Bamboo.Prevalence.XPath.dll'
+			debug='${debug}'
+			optimize='${optimize}'>
+
+			<sources>
+				<includes name='src/Bamboo.Prevalence.XPath/**.cs' />
+			</sources>
+		</csc>
+
+	</target>
+
 
 	<target name='init'>
 		<mkdir dir='bin' />
