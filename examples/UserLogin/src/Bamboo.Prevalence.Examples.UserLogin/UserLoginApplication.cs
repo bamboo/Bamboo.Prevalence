@@ -63,6 +63,7 @@ namespace Bamboo.Prevalence.Examples.UserLogin.Web
 		
 		protected void Application_AuthenticateRequest(object sender, EventArgs args)
 		{
+
 			//
 			// Here's the magic:
 			// 	we translate an asp.net provided IPrincipal to
@@ -70,8 +71,12 @@ namespace Bamboo.Prevalence.Examples.UserLogin.Web
 			//
 			HttpContext context = HttpContext.Current;
 			System.Security.Principal.IPrincipal user = context.User;
+			
+			//Console.WriteLine("Application_AuthenticateRequest: User={0}", user);
 			if (null != user && user.Identity.IsAuthenticated)
 			{
+				//Console.WriteLine("User.Identity.Name={0}", user.Identity.Name);
+				
 				try
 				{
 					context.User = UserLoginSystem.GetUser(user.Identity.Name);
