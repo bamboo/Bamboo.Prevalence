@@ -32,13 +32,42 @@
 #endregion
 
 using System;
+using NUnit.Framework;
+using Bamboo.Prevalence.Indexing.FullText;
+using Bamboo.Prevalence.Indexing.FullText.Filters;
 
-namespace Bamboo.Prevalence.Indexing.FullText
+namespace Bamboo.Prevalence.Indexing.Tests
 {
 	/// <summary>
-	/// Marker interface for token filters.
+	/// Summary description for WordFilterTest.
 	/// </summary>
-	public interface ITokenFilter : ITokenizer
+	[TestFixture]
+	public class WordFilterTest : Assertion
 	{
+		[Test]
+		public void TestFilter()
+		{
+			string[] filteredWords = { "de", "com" };
+			string text = "Bolo de chocolate com calda de morango";			
+			TokenAssertions.AssertTokens(text, new WordFilter(filteredWords),
+				new Token("Bolo", 0),
+				new Token("chocolate", 8),
+				new Token("calda", 22),
+				new Token("morango", 31),
+				null);
+		}
+
+		[Test]
+		public void TestWordFilterChaining()
+		{
+			string[] filteredWords = { "de", "com" };
+			string text = "Bolo dé Açafrão com Rúcula";
+			TokenAssertions.AssertTokens(text, new WordFilter(new SpecialCharactersFilter(), filteredWords),
+				new Token("bolo", 0),
+				new Token("acafrao", 8),
+				new Token("rucula", 20),
+				null
+				);
+		}
 	}
 }

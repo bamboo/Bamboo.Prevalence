@@ -32,13 +32,29 @@
 #endregion
 
 using System;
+using NUnit.Framework;
+using Bamboo.Prevalence.Indexing.FullText;
+using Bamboo.Prevalence.Indexing.FullText.Tokenizers;
 
-namespace Bamboo.Prevalence.Indexing.FullText
+namespace Bamboo.Prevalence.Indexing.Tests
 {
 	/// <summary>
-	/// Marker interface for token filters.
+	/// Summary description for TokenAssertions.
 	/// </summary>
-	public interface ITokenFilter : ITokenizer
+	public class TokenAssertions
 	{
+		public static void AssertTokens(string text, ITokenFilter filter, params Token[] tokens)
+		{
+			AssertTokens(new StringTokenizer(text), filter, tokens);
+		}
+
+		public static void AssertTokens(ITokenizer tokenizer, ITokenFilter filter, params Token[] tokens)
+		{
+			ITokenizer actual = filter.Clone(tokenizer);
+			foreach (Token expected in tokens)
+			{
+				Assertion.AssertEquals(expected, actual.NextToken());
+			}
+		}
 	}
 }

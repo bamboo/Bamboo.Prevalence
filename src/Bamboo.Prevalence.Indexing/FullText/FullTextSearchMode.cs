@@ -36,9 +36,22 @@ using System;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// Marker interface for token filters.
+	/// Search mode.
 	/// </summary>
-	public interface ITokenFilter : ITokenizer
+	public enum FullTextSearchMode
 	{
+		/// <summary>
+		/// Include a record in the result if 
+		/// any of the words in the search expression
+		/// matches the record
+		/// </summary>
+		IncludeAny,
+
+		/// <summary>
+		/// Include a record in the result only
+		/// if all of the words in the search expression
+		/// match the record
+		/// </summary>
+		IncludeAll
 	}
 }

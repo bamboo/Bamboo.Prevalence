@@ -32,13 +32,58 @@
 #endregion
 
 using System;
+using Bamboo.Prevalence.Indexing.FullText;
 
-namespace Bamboo.Prevalence.Indexing.FullText
+namespace Bamboo.Prevalence.Indexing.FullText.Filters
 {
 	/// <summary>
-	/// Marker interface for token filters.
+	/// Filter tokens with specified words.
 	/// </summary>
-	public interface ITokenFilter : ITokenizer
+	[Serializable]
+	public class WordFilter : AbstractFilter
 	{
+		string[] _words;
+
+		public WordFilter(ITokenizer previous, params string[] words) : base(previous)
+		{
+			if (null == words)
+			{
+				throw new ArgumentNullException("words");
+			}
+
+			_words = words;
+		}
+
+		public WordFilter(params string[] words) : this(null, words)
+		{
+		}
+
+		#region Implementation of ITokenFilter
+		public override Bamboo.Prevalence.Indexing.FullText.Token NextToken()
+		{
+			Token token = _previous.NextToken();
+			while (null != token)
+			{
+				if (!IsFilteredWord(token.Value))
+				{
+					break;
+				}
+				token = _previous.NextToken();
+			}
+			return token;
+		}
+		#endregion
+
+		bool IsFilteredWord(string token)
+		{
+			foreach (string word in _words)
+			{
+				if (word == token)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 }

@@ -32,13 +32,55 @@
 #endregion
 
 using System;
+using Bamboo.Prevalence.Indexing.FullText;
 
-namespace Bamboo.Prevalence.Indexing.FullText
+namespace Bamboo.Prevalence.Indexing.FullText.Filters
 {
 	/// <summary>
-	/// Marker interface for token filters.
+	/// Basic implementation for ITokenFilter.
 	/// </summary>
-	public interface ITokenFilter : ITokenizer
+	[Serializable]
+	public abstract class AbstractFilter : ITokenFilter
 	{
+		protected ITokenizer _previous;
+
+		protected AbstractFilter()
+		{
+			_previous = null;
+		}
+
+		protected AbstractFilter(ITokenizer previous)
+		{
+			_previous = previous;
+		}
+
+		public ITokenizer Previous
+		{
+			get
+			{
+				return _previous;
+			}
+
+			set
+			{
+				_previous = value;
+			}
+		}
+
+		public ITokenizer Clone(ITokenizer tail)
+		{
+			AbstractFilter clone = MemberwiseClone() as AbstractFilter;
+			if (null == _previous)
+			{
+				clone._previous = tail;
+			}
+			else
+			{
+				clone._previous = _previous.Clone(tail);
+			}
+			return clone;
+		}
+
+		public abstract Token NextToken();
 	}
 }

@@ -1,3 +1,36 @@
+#region License
+// Bamboo.Prevalence - a .NET object prevalence engine
+// Copyright (C) 2002 Rodrigo B. de Oliveira
+//
+// Based on the original concept and implementation of Prevayler (TM)
+// by Klaus Wuestefeld. Visit http://www.prevayler.org for details.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+// As a special exception, if you link this library with other files to
+// produce an executable, this library does not by itself cause the
+// resulting executable to be covered by the GNU General Public License.
+// This exception does not however invalidate any other reasons why the
+// executable file might be covered by the GNU General Public License.
+//
+// Contact Information
+//
+// http://bbooprevalence.sourceforge.net
+// mailto:rodrigobamboo@users.sourceforge.net
+#endregion
+
 using System;
 using System.Collections;
 using Bamboo.Prevalence.Indexing;
@@ -26,6 +59,11 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			_postings = new Hashtable();
 		}
 
+		public FullTextSearchIndex(ITokenFilter filter) : this()
+		{
+			Filter = filter;
+		}
+
 		public ITokenFilter Filter
 		{
 			get
@@ -37,7 +75,7 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			{
 				if (null == value)
 				{
-					throw new ArgumentNullException("value");
+					throw new ArgumentNullException("value", "Filter cannot be null!");
 				}
 				_filter = value;
 			}
@@ -119,8 +157,8 @@ namespace Bamboo.Prevalence.Indexing.FullText
 
 		public Bamboo.Prevalence.Indexing.SearchResult Search(FullTextSearchExpression expression)
 		{
-			ITokenizer tokenizer = new StringTokenizer(expression.Expression);
-			Token token = _filter.Filter(tokenizer);
+			ITokenizer tokenizer = CreateTokenizer(expression.Expression);
+			Token token = tokenizer.NextToken();
 			if (null == token)
 			{
 				throw new ArgumentException("Invalid search expression. The expression must contain at least one valid token!", "expression");
@@ -128,32 +166,61 @@ namespace Bamboo.Prevalence.Indexing.FullText
 
 			long begin = System.Environment.TickCount;
 
-			SearchResult result = new SearchResult();
-			while (null != token)
+			SearchResult result = null;
+			if (expression.SearchMode == FullTextSearchMode.IncludeAny)
 			{
-				Postings postings = _postings[token.Value] as Postings;
-				if (null != postings)
-				{
-					AddToResult(result, postings);
-				}
-
-				token = _filter.Filter(tokenizer);
+				result = IncludeAny(tokenizer, token);
 			}
-
+			else
+			{
+				result = IncludeAll(tokenizer, token);
+			}
+			
 			result.ElapsedTime = System.Environment.TickCount - begin;
 
 			return result;
 		}
 
+		SearchResult IncludeAny(ITokenizer tokenizer, Token token)
+		{
+			SearchResult result = new SearchResult();
+			while (null != token)
+			{
+				SearchToken(result, token);
+				token = tokenizer.NextToken();
+			}
+			return result;
+		}
+
+		SearchResult IncludeAll(ITokenizer tokenizer, Token token)
+		{
+			ArrayList results = new ArrayList();
+			while (null != token)
+			{
+				SearchResult tokenResult = new SearchResult();
+				SearchToken(tokenResult, token);
+				results.Add(tokenResult);
+
+				token = tokenizer.NextToken();
+			}
+
+			SearchResult result = (SearchResult)results[0];
+			for (int i=1; i<results.Count && result.Count > 0; ++i)
+			{
+				result = result.Intersect((SearchResult)results[i]);
+			}
+			return result;
+		}
+
 		void IndexByField(IRecord record, IndexedField field)
 		{
-			string value = (string)record[field.Name];			
-			ITokenizer tokenizer = new StringTokenizer(value);
-			Token token = _filter.Filter(tokenizer);
+			string value = (string)record[field.Name];
+			ITokenizer tokenizer = CreateTokenizer(value);
+			Token token = tokenizer.NextToken();
 			while (null != token)
 			{
 				IndexByToken(token, record, field);
-				token = _filter.Filter(tokenizer);
+				token = tokenizer.NextToken();
 			}
 		}
 
@@ -168,12 +235,27 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			postings.Add(record, field, token.Position);
 		}
 
+		void SearchToken(SearchResult result, Token token)
+		{
+			Postings postings = (Postings)_postings[token.Value];
+			if (null != postings)
+			{
+				AddToResult(result, postings);
+			}
+
+		}
+
 		void AddToResult(SearchResult result, Postings found)
 		{
 			foreach (Posting posting in found)
 			{
 				result.Add(new SearchHit(posting.Record));
 			}
+		}		
+
+		ITokenizer CreateTokenizer(string value)
+		{
+			return _filter.Clone(new StringTokenizer(value));
 		}
 	}
 }
