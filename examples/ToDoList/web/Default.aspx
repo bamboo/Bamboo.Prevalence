@@ -10,7 +10,7 @@
     //
     
     void Page_Load(Object sender, EventArgs e) {
-        PrevalenceEngine engine = PrevalenceSettings.Current.GetEngine("todo");
+        PrevalenceEngine engine = PrevalenceSettings.GetEngine("todo");
         gridTasks.DataSource = engine.ExecuteQuery(new AllTasksQuery());
         gridTasks.DataBind();
     }

@@ -36,9 +36,16 @@ namespace Bamboo.Prevalence.Configuration
 	///			through PrevalenceSettings.GetEngine.
 	///			-->
 	///			<engines>
+	///			
 	///				<add id="tasks"
 	///					type="Bamboo.Prevalence.Demo.TaskSystem"
 	///					base="c:\tasks" />
+	///					
+	///				<add id="documents"
+	///					type="Bamboo.Prevalence.Demo.DocumentSystem"
+	///					base="c:\documents"
+	///					autoVersionMigration="true" />
+	///					
 	///			</engines>
 	///		</bamboo.prevalence>
 	///	</configuration>
@@ -53,7 +60,7 @@ namespace Bamboo.Prevalence.Configuration
 	///	{
 	///		public static void Main(string[] args)
 	///		{
-	///			PrevalenceEngine engine = PrevalenceSettings.Current.GetEngine("demo");
+	///			PrevalenceEngine engine = PrevalenceSettings.GetEngine("demo");
 	///			// use the engine...
 	///		}
 	///	}
@@ -68,15 +75,12 @@ namespace Bamboo.Prevalence.Configuration
 		public const string SectionName = "bamboo.prevalence";		
 
 		/// <summary>
-		/// Empty configuration set.
-		/// </summary>
-		public static readonly PrevalenceSettings Empty = new PrevalenceSettings();
-
-		/// <summary>
 		/// Returns the current ConfigurationSettings instance or
 		/// null if Bamboo.Prevalence was not configured for the
 		/// running application.
 		/// </summary>
+		/// <exception cref="System.Configuration.ConfigurationException">in the case Bamboo.Prevalence
+		/// was not correctly configured</exception>		
 		public static PrevalenceSettings Current
 		{
 			get
@@ -84,13 +88,28 @@ namespace Bamboo.Prevalence.Configuration
 				PrevalenceSettings current = (PrevalenceSettings)System.Configuration.ConfigurationSettings.GetConfig(SectionName);
 				if (null == current)
 				{
-					return PrevalenceSettings.Empty;
+					throw new System.Configuration.ConfigurationException("Bamboo.Prevalence is not configured for the current application!");
 				}
-				else
-				{
-					return current;
-				}
+				return current;
 			}
+		}
+
+		/// <summary>
+		/// Returns a configured engine.
+		/// </summary>
+		/// <param name="id">engine id</param>
+		/// <returns>the engine with the id id or null</returns>
+		/// <exception cref="System.Configuration.ConfigurationException">in the case Bamboo.Prevalence
+		/// was not correctly configured</exception>
+		/// <exception cref="ArgumentException">if the engine was not found</exception>
+		public static PrevalenceEngine GetEngine(string id)
+		{
+			PrevalenceEngine engine = (PrevalenceEngine)Current._engines[id];
+			if (null == engine)
+			{
+				throw new ArgumentException(string.Format("Engine {0} not found!", id), "id");
+			}
+			return engine;
 		}
 
 		private System.Collections.IDictionary _engines;
@@ -111,16 +130,6 @@ namespace Bamboo.Prevalence.Configuration
 		/// </summary>
 		public PrevalenceSettings()
 		{
-		}
-
-		/// <summary>
-		/// Returns a configured engine.
-		/// </summary>
-		/// <param name="id">engine id</param>
-		/// <returns>the engine with the id id or null</returns>
-		public Bamboo.Prevalence.PrevalenceEngine GetEngine(string id)
-		{
-			return (Bamboo.Prevalence.PrevalenceEngine)_engines[id];
 		}
 
 		#region Implementation of IConfigurationSectionHandler

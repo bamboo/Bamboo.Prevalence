@@ -20,7 +20,7 @@
         task.Description = Request["description"];
 		task.Summary = Request["summary"];
         
-        PrevalenceEngine engine = PrevalenceSettings.Current.GetEngine("todo");
+        PrevalenceEngine engine = PrevalenceSettings.GetEngine("todo");
         engine.ExecuteCommand(new AddTaskCommand(task));
         
         Server.Transfer("Default.aspx");

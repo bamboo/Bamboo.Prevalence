@@ -36,9 +36,10 @@ namespace Bamboo.Prevalence
 	/// <summary>
 	/// A prevalent system. Implementing classes
 	/// can be transparently persisted by PrevalenceEngine.
-	/// <b>As of version 1.2 there's no need for the
+	/// <b>
+	/// <b>Deprecated.</b> As of version 1.2 there's no need for the
 	/// prevalent system classes to implement this
-	/// interface
+	/// interface.
 	/// </b>
 	/// </summary>
 	/// <remarks>

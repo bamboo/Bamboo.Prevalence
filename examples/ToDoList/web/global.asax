@@ -3,7 +3,7 @@
 <script language="C#" runat="server">
 void Application_OnEnd()
 {
-	PrevalenceEngine engine = PrevalenceSettings.Current.GetEngine("todo");
+	PrevalenceEngine engine = PrevalenceSettings.GetEngine("todo");
 	engine.TakeSnapshot();
 }
 </script>

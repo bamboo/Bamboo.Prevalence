@@ -127,6 +127,9 @@ namespace Bamboo.Prevalence
 			}
 		}
 
+		/// <summary>
+		/// The current system time.
+		/// </summary>
 		public static System.DateTime Now
 		{
 			get
