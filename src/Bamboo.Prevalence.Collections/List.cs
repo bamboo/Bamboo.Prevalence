@@ -226,6 +226,27 @@ namespace Bamboo.Prevalence.Collections
 				ReleaseReaderLock();
 			}
 		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		public Array Choose(int count)
+		{
+			if (_list.Count > count)
+			{
+				List copy = new List(_list);
+				object[] items = new object[count];
+				for (int i=0; i<count; ++i)
+				{
+					items[i] = copy.PopAny();
+				}
+				return items;
+			}
+			else
+			{
+				return ToShuffledArray();
+			}
+		}
 
 		/// <summary>
 		/// Selects a random item from the list and
