@@ -86,7 +86,7 @@ namespace Bamboo.Prevalence.Serialization
 					object value = entry.Value;
 					if (null != value)
 					{
-						if (field.FieldType != value.GetType())
+						if (!field.FieldType.IsInstanceOfType(value))
 						{
 							value = Convert.ChangeType(value, field.FieldType);
 						}
