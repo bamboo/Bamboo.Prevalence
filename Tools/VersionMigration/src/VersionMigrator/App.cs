@@ -40,22 +40,16 @@ namespace VersionMigrator
 	/// </summary>
 	class App
 	{
-		private CommandLine _cmdLine;
+		private MigrationProject _project;
 
-		private Assembly _targetAssembly;
-
-		private MigrationPlan _plan;
-
-		public App(string[] args)
+		public App(string migrationProject)
 		{
-			_cmdLine = CommandLine.Parse(args);
+			_project = MigrationProject.Load(migrationProject);
 		}
 
 		public void Run()
 		{
-			Info();
-			LoadMigrationPlan();
-			LoadTargetAssembly();
+			Info();					
 			Migrate();
 		}
 
@@ -64,34 +58,11 @@ namespace VersionMigrator
 			WriteLine("Bamboo.Prevalence Version Migrator 1.0");
 		}
 
-		private void LoadMigrationPlan()
-		{
-			Write("Loading migration plan... ");
-
-			_plan = MigrationPlan.Load(_cmdLine.Plan);
-
-			WriteLine("done!");
-		}
-
-		private void LoadTargetAssembly()
-		{
-			Write("Loading target assembly... ");
-
-			_targetAssembly = Assembly.LoadFrom(_cmdLine.Assembly);
-
-			WriteLine("done!");
-		}
-
 		private void Migrate()
 		{			
 			Write("Migrating... ");
 
-			MigrationContext context = new MigrationContext(_plan);
-			context.TargetAssembly = _targetAssembly;
-			context.From = _cmdLine.From;
-			context.To = _cmdLine.To;
-			context.OverwriteFiles = _cmdLine.Overwrite;
-
+			MigrationContext context = new MigrationContext(_project);			
 			context.Migrate();
 
 			WriteLine("done!");
@@ -108,23 +79,20 @@ namespace VersionMigrator
 		}
 
 		[STAThread]
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{				
-			try
-			{
-				new App(args).Run();			
-			}
-			catch (Bamboo.Util.CommandLineException x)
+			if (1 != args.Length)
 			{
 				ShowUsage();
-				Console.WriteLine();
-				Console.WriteLine(x.Message);
+				return -1;
 			}
+			new App(args[0]).Run();
+			return 0;
 		}
 
 		static void ShowUsage()
 		{
-			Console.WriteLine("VersionMigrator /plan:<FILE NAME> /from:<FILE NAME> /to:<FILE NAME> /assembly:<ASSEMBLY PATH> [/overwrite]");
+			Console.WriteLine("VersionMigrator <MigrationProject.xml>");
 		}
 	}
 }

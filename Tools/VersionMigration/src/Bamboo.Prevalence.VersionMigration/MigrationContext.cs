@@ -46,12 +46,6 @@ namespace Bamboo.Prevalence.VersionMigration
 	{
 		private Assembly _targetAssembly;
 
-		private string _from;
-
-		private string _to;
-
-		private bool _overwriteFiles;
-
 		private MigrationPlan _plan;
 
 		private Stack _objects;
@@ -60,18 +54,20 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private Stack _fields;
 
-		private Hashtable _serializableFieldsCache;		
+		private Hashtable _serializableFieldsCache;
+
+		private MigrationProject _project;
 
 		public event ResolveEventHandler ResolveAssembly;
 
-		public MigrationContext(MigrationPlan plan)
+		public MigrationContext(MigrationProject project)
 		{
-			if (null == plan)
+			if (null == project)
 			{
-				throw new ArgumentNullException("plan");
+				throw new ArgumentNullException("project");
 			}
 
-			_plan = plan;
+			_project = project;			
 			_objects = new Stack();
 			_serializationInfo = new Stack();
 			_fields = new Stack();
@@ -84,49 +80,21 @@ namespace Bamboo.Prevalence.VersionMigration
 			{
 				return _targetAssembly;
 			}
-
-			set
-			{
-				_targetAssembly = value;
-			}
 		}
 
-		public string From
+		public bool OverwriteTargetFile
 		{
 			get
 			{
-				return _from;
-			}
-
-			set
-			{
-				_from = value;
+				return _project.OverwriteTargetFile;
 			}
 		}
 
-		public string To
+		public string SourceFile
 		{
 			get
 			{
-				return _to;
-			}
-
-			set
-			{
-				_to = value;
-			}
-		}
-
-		public bool OverwriteFiles
-		{
-			get
-			{
-				return _overwriteFiles;
-			}
-
-			set
-			{
-				_overwriteFiles = value;
+				return _project.SourceFile;
 			}
 		}
 		
@@ -185,11 +153,14 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		public void Migrate()
 		{
-			CheckProperties();
-
+			_project.Validate();
+			
 			InstallAssemblyResolver();
 			try
 			{
+				LoadMigrationPlan();
+				LoadMainAssembly();
+
 				object graph = ReadObject();
 				WriteObject(graph);
 			}
@@ -239,13 +210,13 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private FileStream CreateTargetFile()
 		{
-			CreateDirectoryIfNeeded(Path.GetDirectoryName(_to));
-			return new FileStream(_to, GetCreationFileMode(), FileAccess.Write, FileShare.None);
+			CreateDirectoryIfNeeded(Path.GetDirectoryName(_project.TargetFile));
+			return new FileStream(_project.TargetFile, GetCreationFileMode(), FileAccess.Write, FileShare.None);
 		}
 
 		private FileMode GetCreationFileMode()
 		{
-			return _overwriteFiles ? FileMode.Create : FileMode.CreateNew;
+			return _project.OverwriteTargetFile ? FileMode.Create : FileMode.CreateNew;
 		}
 
 		private void CreateDirectoryIfNeeded(string directory)
@@ -255,14 +226,7 @@ namespace Bamboo.Prevalence.VersionMigration
 				Directory.CreateDirectory(directory);
 			}
 		}
-
-		private void CheckProperties()
-		{			
-			AssertFieldIsSet("From", _from);
-			AssertFieldIsSet("To", _to);			
-			AssertFieldIsSet("TargetAssembly", _targetAssembly);
-		}
-
+		
 		private FieldInfo[] BuildSerializableFieldsArray(Type type)
 		{
 			MemberInfo[] members = type.FindMembers(MemberTypes.Field,
@@ -279,28 +243,7 @@ namespace Bamboo.Prevalence.VersionMigration
 				fields.Add(field);
 			}
 			return (FieldInfo[])fields.ToArray(typeof(FieldInfo));
-		}
-
-		private void AssertFieldIsSet(string name, object value)
-		{
-			if (null == value)
-			{
-				FieldNotSetError(name);
-			}
-		}
-
-		private void AssertFieldIsSet(string name, string value)
-		{
-			if (null == value || 0 == value.Length)
-			{
-				FieldNotSetError(name);
-			}
-		}
-
-		private void FieldNotSetError(string name)
-		{
-			throw new ApplicationException("The field " + name + " must be set!");
-		}
+		}	
 
 		private void InstallAssemblyResolver()
 		{
@@ -320,9 +263,19 @@ namespace Bamboo.Prevalence.VersionMigration
 			return null;
 		}
 
+		private void LoadMigrationPlan()
+		{
+			_plan = MigrationPlan.Load(_project.MigrationPlan);
+		}
+
+		private void LoadMainAssembly()
+		{
+			_targetAssembly = Assembly.LoadFrom(_project.MainAssembly);
+		}
+
 		private void UninstallAssemblyResolver()
 		{
-			AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
+			AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(HandleResolveAssembly);
 		}
 	}
 }

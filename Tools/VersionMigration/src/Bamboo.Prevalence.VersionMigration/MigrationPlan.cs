@@ -1,3 +1,4 @@
+#region License
 // Bamboo.Prevalence - a .NET object prevalence engine
 // Copyright (C) 2002 Rodrigo B. de Oliveira
 //
@@ -28,6 +29,7 @@
 //
 // http://bbooprevalence.sourceforge.net
 // mailto:rodrigobamboo@users.sourceforge.net
+#endregion
 
 using System;
 using System.Globalization;
@@ -94,7 +96,7 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		internal object Deserialize(MigrationContext context)
 		{
-			FileStream stream = File.OpenRead(context.From);
+			FileStream stream = File.OpenRead(context.SourceFile);
 
 			BinaryFormatter formatter = new BinaryFormatter();			
 			formatter.SurrogateSelector = new MigrationSurrogateSelector(context);
