@@ -46,7 +46,16 @@ namespace Bamboo.Prevalence.VersionMigration.Initializers
 			FieldInfo field = context.CurrentField;
 			SerializationInfo info = context.CurrentSerializationInfo;
 
-			field.SetValue(context.CurrentObject, info.GetValue(field.Name, field.FieldType));
+			try
+			{
+				field.SetValue(context.CurrentObject, info.GetValue(field.Name, field.FieldType));
+			}
+			catch (InvalidCastException)
+			{
+				object value = info.GetValue(field.Name, typeof(object));
+				context.Trace("Failed to deserialize field {0} of type {1} from value {2} of type {3}!", field.Name, field.FieldType, value, null != value ? value.GetType().ToString() : "null");
+				throw;
+			}
 		}
 	}
 }

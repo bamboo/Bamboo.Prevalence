@@ -30,40 +30,38 @@
 // mailto:rodrigobamboo@users.sourceforge.net
 
 using System;
-using System.Reflection;
 using System.Runtime.Serialization;
-using System.Xml;
+using System.Reflection;
 using Bamboo.Prevalence.VersionMigration;
 
 namespace Bamboo.Prevalence.VersionMigration.Initializers
 {
 	/// <summary>
-	/// Initializes a field with the value of another
-	/// field (that must be present in the serialized
-	/// state). Use it when you have renamed
-	/// a persistent field.
+	/// Default algoritm for object initialization.
 	/// </summary>
-	public class FromFieldInitializer : IFieldInitializer
+	public class DefaultObjectInitializer : IObjectInitializer
 	{
-		private string _fieldName;
+		public static readonly IObjectInitializer Default = new DefaultObjectInitializer();
 
-		public FromFieldInitializer(XmlElement element)
+		public virtual void InitializeObject(MigrationContext context)
 		{
-			_fieldName = element.InnerText;
-			if (0 == _fieldName.Length)
+			Type type = context.CurrentObject.GetType();
+			TypeMapping mapping = context.GetTypeMapping(type);
+			if (null == mapping)
 			{
-				throw new ApplicationException(string.Format("fromField tag is empty at field {0}!", element.ParentNode.Attributes["name"].Value));
+				mapping = TypeMapping.Default;
 			}
-		}
 
-		public void InitializeField(MigrationContext context)
-		{			
-			FieldInfo field = context.CurrentField;
-			SerializationInfo info = context.CurrentSerializationInfo;
+			FieldInfo[] fields = context.GetSerializableFields(type);
+			foreach (FieldInfo field in fields)
+			{								
+				context.EnterField(field);
 
-			object value = info.GetValue(_fieldName, field.FieldType);
-			field.SetValue(context.CurrentObject, value);
-			context.Trace("Field {0} set to \"{1}\" loaded from field {2}.", field.Name, value, _fieldName);
+				IFieldInitializer initializer = mapping.GetFieldInitializer(field.Name);
+				initializer.InitializeField(context);
+
+				context.LeaveField();
+			}
 		}
 	}
 }
