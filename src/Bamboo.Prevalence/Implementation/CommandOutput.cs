@@ -81,11 +81,23 @@ namespace Bamboo.Prevalence.Implementation
 		{
 			CloseOutputLog();
 
-			using (System.IO.FileStream stream = CreateSnapshotStream())
+			FileInfo snapshotFile = _fileCreator.NewSnapshot();
+			FileInfo tempFile = CreateTempForSnapshotFile(snapshotFile);
+			try
 			{				
-				_formatter.Serialize(stream, system);
-				Flush(stream);
-			}		
+				using (System.IO.FileStream stream = tempFile.OpenWrite())
+				{				
+					_formatter.Serialize(stream, system);
+					Flush(stream);				
+				}
+				tempFile.MoveTo(snapshotFile.FullName);
+			}
+			catch
+			{
+				// TODO: log errors...
+				try { tempFile.Delete(); } catch { }
+				throw;
+			}
 		}	
 
 		public void CloseOutputLog()
@@ -97,17 +109,17 @@ namespace Bamboo.Prevalence.Implementation
 			}
 		}
 
-		private System.IO.FileStream CreateSnapshotStream()
-		{
-			return _fileCreator.NewSnapshot().OpenWrite();
-		}
-
 		private void CheckOutputLog()
 		{
 			if (null == _output)
 			{
 				_output = NextOutputLog();
 			}
+		}
+
+		private static FileInfo CreateTempForSnapshotFile(FileInfo info)
+		{
+			return new FileInfo(Path.ChangeExtension(info.FullName, "tmp"));
 		}
 
 		private static void Flush(System.IO.FileStream stream)
