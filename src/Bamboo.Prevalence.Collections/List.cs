@@ -57,6 +57,8 @@ namespace Bamboo.Prevalence.Collections
 	[Serializable]
 	public class List : IList
 	{
+		protected static Random _random = new Random();
+
 		#region DisposableObject implementation
 		class DisposableObject : IDisposable
 		{
@@ -177,6 +179,27 @@ namespace Bamboo.Prevalence.Collections
 			try
 			{
 				return _list.ToArray();
+			}
+			finally
+			{
+				ReleaseReaderLock();
+			}
+		}
+
+		/// <summary>
+		/// Selects an random item from the
+		/// list.
+		/// </summary>
+		/// <returns></returns>
+		public object Choose()
+		{
+			AcquireReaderLock();
+			try
+			{
+				lock (_random)
+				{
+					return _list[_random.Next(_list.Count)];
+				}
 			}
 			finally
 			{
