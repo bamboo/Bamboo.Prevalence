@@ -14,7 +14,7 @@
 
 <!-- Place Holder -->
 
-Just testing TortoiseCVS.
+Just testing CVS....
 
 </body>
 </html>
