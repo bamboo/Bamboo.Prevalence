@@ -204,9 +204,21 @@ namespace ObjectOperations
 				Console.WriteLine("It takes {0}ms to select {1} {2} from the collection of {3} products.", elapsed.TotalMilliseconds, found.Count, pt.Label, catalog.ProductCount);
 
 				start = DateTime.Now;
-				Product p = catalog[((Product)found[found.Count-1]).ID];
+				Guid productID = ((Product)found[found.Count-1]).ID;
+				Product p = catalog[productID];
 				elapsed = DateTime.Now - start;
 				Console.WriteLine("It takes {0}ms to access a product by its ID.", elapsed.TotalMilliseconds);
+
+				start = DateTime.Now;
+				foreach (Product existing in found)
+				{
+					if (productID == existing.ID)
+					{
+						break;
+					}
+				}
+				elapsed = DateTime.Now - start;
+				Console.WriteLine("It takes {0}ms to perform {1} Guid comparisons", elapsed.TotalMilliseconds, found.Count);
 
 				// Test the worst sorting case
 				start = DateTime.Now;
