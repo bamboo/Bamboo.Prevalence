@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <project name='Bamboo.Prevalence' default='debug'>
 
 	<property name='ndocconsole' value='\dotnet\ndoc\bin\.net-1.1\NDocConsole' />
@@ -54,6 +55,7 @@
 
 
 		<nunit2>
+			<formatter type="Plain" />
 			<test>
 				<assemblies basedir='bin'>
 					<includes name='*.Tests.dll' />
@@ -99,7 +101,9 @@
 				<includes name="examples/**/*.resx" />
 				<includes name="examples/**/*.txt" />
 				<includes name="examples/**/*.aspx" />
+				<includes name="examples/**/*.ascx" />
 				<includes name="examples/**/*.asax" />
+				<includes name="examples/**/*.config" />
 				<includes name="web/*.*" />
 				<includes name="docs/MSDN/*.chm" />
 
