@@ -145,7 +145,7 @@
 		</zip>
 	</target>
 
-	<target name='Bamboo.Prevalence.Tests' depends='Bamboo.Prevalence'>
+	<target name='Bamboo.Prevalence.Tests' depends='Bamboo.Prevalence' if="${nant.tasks.nunit2}">
 
 		<csc target='library' output='bin/Bamboo.Prevalence.Tests.dll' debug='true'>
 
@@ -179,7 +179,7 @@
 
 	</target>
 
-	<target name='Bamboo.Prevalence.Indexing.Tests' depends='Bamboo.Prevalence.Indexing'>
+	<target name='Bamboo.Prevalence.Indexing.Tests' depends='Bamboo.Prevalence.Indexing' if="${nant.tasks.nunit2}">
 
 		<csc target='library' output='bin/Bamboo.Prevalence.Indexing.Tests.dll' debug='true'>
 
@@ -212,7 +212,7 @@
 
 	</target>
 
-	<target name='Bamboo.Prevalence.XPath.Tests' depends='Bamboo.Prevalence.XPath'>
+	<target name='Bamboo.Prevalence.XPath.Tests' depends='Bamboo.Prevalence.XPath' if="${nant.tasks.nunit2}">
 
 		<csc target='library' output='bin/Bamboo.Prevalence.XPath.Tests.dll' debug='true'>
 
@@ -245,7 +245,7 @@
 
 	</target>
 
-	<target name='Bamboo.Prevalence.Collections.Tests' depends='Bamboo.Prevalence.Collections'>
+	<target name='Bamboo.Prevalence.Collections.Tests' depends='Bamboo.Prevalence.Collections' if="${nant.tasks.nunit2}">
 
 		<csc target='library' output='bin/Bamboo.Prevalence.Collections.Tests.dll' debug='true'>
 
@@ -278,7 +278,7 @@
 
 	</target>
 
-	<target name='Bamboo.Prevalence.Util.Tests' depends='Bamboo.Prevalence.Util, Bamboo.Prevalence'>
+	<target name='Bamboo.Prevalence.Util.Tests' depends='Bamboo.Prevalence.Util, Bamboo.Prevalence' if="${nant.tasks.nunit2}">
 
 		<csc target='library' output='bin/Bamboo.Prevalence.Util.Tests.dll' debug='true'>
 
@@ -319,7 +319,7 @@
 
 	<target name='init'>
 		<mkdir dir='bin' />
-		<copy todir='bin' file='${nunit.framework.dll}' />
+		<copy todir='bin' file='${nunit.framework.dll}' if="${nant.tasks.nunit2}" />
 	</target>
 
 	<target name='clean'>
