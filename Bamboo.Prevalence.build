@@ -181,7 +181,11 @@
 
 	<target name='Bamboo.Prevalence.Indexing.Tests' depends='Bamboo.Prevalence.Indexing' if="${nant.tasks.nunit2}">
 
-		<csc target='library' output='bin/Bamboo.Prevalence.Indexing.Tests.dll' debug='true'>
+		<csc
+			target='library'
+			output='bin/Bamboo.Prevalence.Indexing.Tests.dll'
+			debug='true'
+			codepage="utf8">
 
 			<sources>
 				<include name='src/Bamboo.Prevalence.Indexing.Tests/*.cs' />
@@ -203,7 +207,8 @@
 			target='library'
 			output='bin/Bamboo.Prevalence.Indexing.dll'
 			debug='${debug}'
-			optimize='${optimize}'>
+			optimize='${optimize}'
+			codepage="utf8">
 
 			<sources>
 				<include name='src/Bamboo.Prevalence.Indexing/**.cs' />
