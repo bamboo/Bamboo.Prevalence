@@ -6,11 +6,14 @@
 <table width="100%">
 <tr>
 <td><A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=61693&amp;type=5" width="210" height="62" border="0" alt="SourceForge Logo"></A></td>
-<td><div align="right"><span align="right">02-13-2003</span></div></td>
+<td><div align="right"><span align="right">06-30-2003</span></div></td>
 </tr> 
 </table>
 <h1>Bamboo.Prevalence - a .NET object prevalence engine</h1>
 <h2>Latest News</h2>
+<p>
+<b>06-30-2003</b> - <a href='http://sourceforge.net/project/showfiles.php?group_id=61693&release_id=168731'>Bamboo.Prevalence 1.4 is out!</a>
+</p>
 <p>
 Last week I've improved the VersionMigration tool that ships with
 Bamboo.Prevalence (now it's possible to rename types and even move them to

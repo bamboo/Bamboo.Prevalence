@@ -474,9 +474,16 @@ a interface Bamboo.Prevalence.ICommand [#]_ de um único método::
 
 O método recebe como parâmetro a instância do sistema prevalecente sobre
 a qual deve agir. É importante que o comando acesse o sistema através
-dessa referência apenas e nunca por qualquer outro mecanismo.
-Isso porque as referências podem e devem ser diferentes
-após o reinício do sistema.
+dessa referência apenas e nunca por qualquer outro mecanismo. As
+referências podem e devem ser diferentes após o reinício do sistema.
+
+Um ponto muito importante, *comandos são transações* e
+devem manifestar as propriedades ACID - atomicidade, 
+consistência, isolamento e durabilidade. As implementações
+são capazes de garantir o isolamento (apenas um comando é executado
+por vez) e durabilidade (todo comando é escrito no log antes de
+sua execução), mas a atomicidade e consistência são
+de responsabilidade do comando.
 
 Testando Comandos
 .................
