@@ -72,9 +72,9 @@ namespace Bamboo.Prevalence
 
 		private CommandLogWriter _commandLog;
 
-		private ReaderWriterLock _lock;
+		private ReaderWriterLock _lock;		
 
-		private AlarmClock _clock;
+		private static readonly System.LocalDataStoreSlot _sharedObjectSlot = Thread.AllocateDataSlot();
 
 		/// <summary>
 		/// Creates a new prevalence engine for the prevalent system
@@ -93,12 +93,23 @@ namespace Bamboo.Prevalence
 		public PrevalenceEngine(System.Type systemType, string prevalenceBase)
 		{	
 			AssertParameterNotNull("systemType", systemType);			
-			
+
 			CommandLogReader reader = new CommandLogReader(CheckPrevalenceBase(prevalenceBase));
-			_system = RecoverSystem(systemType, reader);
-			_clock = _system.Clock;
+			RecoverSystem(systemType, reader);
 			_commandLog = reader.ToWriter();
-			_lock = new ReaderWriterLock();
+			_lock = new ReaderWriterLock();			
+		}
+
+		/// <summary>
+		/// Returns the current executing PrevalenceEngine when 
+		/// called inside ICommand and IQuery objects Execute method.
+		/// </summary>
+		public static PrevalenceEngine Current
+		{
+			get
+			{
+				return Thread.GetData(_sharedObjectSlot) as PrevalenceEngine;
+			}
 		}
 
 		/// <summary>
@@ -109,6 +120,18 @@ namespace Bamboo.Prevalence
 			get
 			{
 				return _system;
+			}
+		}
+
+		/// <summary>
+		/// The clock. See <see cref="IPrevalentSystem.Clock"/>
+		/// for details.
+		/// </summary>
+		public AlarmClock Clock
+		{
+			get
+			{
+				return _system.Clock;
 			}
 		}
 
@@ -148,10 +171,12 @@ namespace Bamboo.Prevalence
 			AcquireReaderLock();
 			try
 			{
+				ShareCurrentObject();
 				return query.Execute(_system);
 			}
 			finally
 			{
+				UnshareCurrentObject();
 				ReleaseReaderLock();
 			}
 		}
@@ -214,37 +239,46 @@ namespace Bamboo.Prevalence
 			}
 		}
 
-		private IPrevalentSystem RecoverSystem(System.Type systemType, CommandLogReader reader)
+		private void RecoverSystem(System.Type systemType, CommandLogReader reader)
 		{
-			IPrevalentSystem savedSystem = reader.ReadLastSnapshot();			
-			if (null == savedSystem)
+			_system = reader.ReadLastSnapshot();			
+			if (null == _system)
 			{
-				savedSystem = (IPrevalentSystem)System.Activator.CreateInstance(systemType);
+				_system = (IPrevalentSystem)System.Activator.CreateInstance(systemType);
 			}
-			RecoverCommands(savedSystem, reader);
-			return savedSystem;
+			RecoverCommands(reader);
 		}
 		
-		private void RecoverCommands(IPrevalentSystem system, CommandLogReader reader)
+		private void RecoverCommands(CommandLogReader reader)
 		{
-			system.Clock.Pause();
+			ShareCurrentObject();
 
-			foreach (ICommand command in reader)
+			try
 			{
-				command.Execute(system);
-			}		
+				Clock.Pause();
 
-			system.Clock.Resume();
+				foreach (ICommand command in reader)
+				{
+					command.Execute(_system);
+				}		
+                
+				Clock.Resume();
+			}
+			finally
+			{
+				UnshareCurrentObject();
+			}
 		}
 
 		private object DoExecuteCommand(ICommand command)
 		{
 			object returnValue;
 			
-			_clock.Pause();
-			_commandLog.WriteCommand(new ClockRecoveryCommand(command, _clock.Now));
+			Clock.Pause();
+			_commandLog.WriteCommand(new ClockRecoveryCommand(command, Clock.Now));
 			try
-			{					
+			{		
+				ShareCurrentObject();
 				returnValue = command.Execute(_system);					
 			}
 			catch
@@ -254,7 +288,8 @@ namespace Bamboo.Prevalence
 			}
 			finally
 			{
-				_clock.Resume();
+				UnshareCurrentObject();
+				Clock.Resume();
 			}
 
 			return returnValue;
@@ -278,6 +313,16 @@ namespace Bamboo.Prevalence
 		private void ReleaseWriterLock()
 		{
 			_lock.ReleaseWriterLock();
+		}
+
+		private void ShareCurrentObject()
+		{
+			Thread.SetData(_sharedObjectSlot, this);
+		}
+
+		private void UnshareCurrentObject()
+		{
+			Thread.SetData(_sharedObjectSlot, null);
 		}
 	}
 }
