@@ -97,6 +97,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "List.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ObjectPropertyComparer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

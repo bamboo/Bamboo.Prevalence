@@ -186,6 +186,19 @@ namespace Bamboo.Prevalence.Collections.Tests
 			_list.Add(new Customer("XXX"));
 			Assert(_list.Any(new Predicate(NameStartsWithX)));
 		}
+		
+		[Test]
+		public void TestGetRange()
+		{
+			object[] range = _list.GetRange(0, 3);
+			AssertEquals(2, range.Length);
+			AssertSame(_customer1, range[0]);
+			AssertSame(_customer2, range[1]);
+			
+			range = _list.GetRange(1, 1);
+			AssertEquals(1, range.Length);
+			AssertSame(_customer2, range[0]);
+		}
 
 		bool NameStartsWithP(object customer)
 		{
