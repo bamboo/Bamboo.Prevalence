@@ -26,6 +26,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -62,13 +63,13 @@ namespace Bamboo.Prevalence.Implementation
 
 			_savedOutputLength = _output.Length;
 			_formatter.Serialize(_output, command);
-			_output.Flush();			
+			Flush(_output);
 		}
 
 		public void UndoWriteCommand()
 		{
 			_output.SetLength(_savedOutputLength);
-			_output.Flush();
+			Flush(_output);
 		}
 
 		public void TakeSnapshot(Bamboo.Prevalence.IPrevalentSystem system)
@@ -78,7 +79,7 @@ namespace Bamboo.Prevalence.Implementation
 			using (System.IO.FileStream stream = CreateSnapshotStream())
 			{				
 				_formatter.Serialize(stream, system);
-				stream.Flush();				
+				Flush(stream);
 			}		
 		}	
 
@@ -103,6 +104,24 @@ namespace Bamboo.Prevalence.Implementation
 				_output = NextOutputLog();
 			}
 		}
+
+		private static void Flush(System.IO.FileStream stream)
+		{
+			stream.Flush();
+			FlushFileBuffers(stream);			
+		}
+
+		private static void FlushFileBuffers(System.IO.FileStream stream)
+		{
+			if (0 == FlushFileBuffers(stream.Handle))
+			{
+				Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+			}
+		}
+
+		// TODO: Remove if at all possible this Win32 dependency
+		[DllImport("KERNEL32.DLL", EntryPoint="FlushFileBuffers", PreserveSig=true, CallingConvention=CallingConvention.Winapi, SetLastError=true)]
+		private static extern int FlushFileBuffers(IntPtr handle);
 
 		private System.IO.FileStream NextOutputLog()
 		{				
