@@ -81,6 +81,13 @@ namespace Bamboo.Prevalence.Util.Tests
 			ClearPrevalenceBase();
 			CrashRecover();
 		}
+
+		[TearDown]
+		public override void TearDown()
+		{
+			HandsOffOutputLog();
+			base.TearDown();
+		}
 		
 		[Test]
 		public void TestSnapshotTaker()
