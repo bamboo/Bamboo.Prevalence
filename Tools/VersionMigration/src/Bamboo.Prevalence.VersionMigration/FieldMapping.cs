@@ -77,6 +77,8 @@ namespace Bamboo.Prevalence.VersionMigration
 			_initializers["const"] = typeof(ConstInitializer);
 			_initializers["fromField"] = typeof(FromFieldInitializer);
 			_initializers["newObject"] = typeof(NewObjectInitializer);
+			_initializers["new"] = typeof(NewObjectInitializer);
+			_initializers["guid"] = typeof(GuidInitializer);
 		}
 
 		internal FieldMapping(XmlElement fieldElement)

@@ -142,6 +142,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Initializers\GuidInitializer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Initializers\NewObjectInitializer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
