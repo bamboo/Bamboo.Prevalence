@@ -1,9 +1,9 @@
 <project name='Bamboo.Prevalence' default='debug'>
 
-	<property name='ndocconsole' value='\dotnet\ndoc\src\Console\bin\Release\ndocconsole' />
+	<property name='ndocconsole' value='\dotnet\ndoc\bin\.net-1.1\NDocConsole' />
 	<property name='nunit-console' value='\dotnet\nunit\bin\nunit-console' />
 	<property name='nunit.framework.dll' value='\dotnet\nunit\bin\nunit.framework.dll' />
-	<property name='version' value='1.4' />
+	<property name='version' value='1.4.1' />
 
 	<target name='doc' depends='debug'>
 		<exec program='${ndocconsole}' commandline='-project=Bamboo.Prevalence.ndoc' />
@@ -64,16 +64,15 @@
 				<includes name="src/Bamboo.Prevalence.Util/**/*.csproj" />
 				<includes name="src/Bamboo.Prevalence.Util.Tests/**/*.cs" />
 				<includes name="src/Bamboo.Prevalence.Util.Tests/**/*.csproj" />
-				<includes name="examples/TaskManagement/**/*.build" />
-				<includes name="examples/TaskManagement/**/*.cs" />
-				<includes name="examples/TaskManagement/**/*.csproj" />
-				<includes name="examples/TaskManagement/**/*.sln" />
-				<includes name="examples/TaskManagement/**/*.ico" />
-				<includes name="examples/TaskManagement/**/*.resx" />
-				<includes name="examples/MyFirstPrevalentSystem/*.cs*" />
-				<includes name="examples/RemotingPrevalence/*.cs" />
-				<includes name="examples/RemotingPrevalence/*.build" />
-				<includes name="examples/RemotingPrevalence/*.txt" />
+				<includes name="examples/**/*.build" />
+				<includes name="examples/**/*.cs" />
+				<includes name="examples/**/*.csproj" />
+				<includes name="examples/**/*.sln" />
+				<includes name="examples/**/*.ico" />
+				<includes name="examples/**/*.resx" />
+				<includes name="examples/**/*.txt" />
+				<includes name="examples/**/*.aspx" />
+				<includes name="examples/**/*.asax" />
 				<includes name="web/*.*" />
 				<includes name="docs/MSDN/*.chm" />
 

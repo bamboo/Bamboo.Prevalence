@@ -41,7 +41,7 @@ namespace Bamboo.Prevalence.Implementation
 	/// Enumerates through all the commands in the pending logs
 	/// returned by <see cref="NumberedFileFinder.NextPendingLog" />.
 	/// </summary>
-	internal sealed class PendingCommandsEnumerator : System.Collections.IEnumerator
+	internal sealed class PendingCommandsEnumerator : System.Collections.IEnumerator, IDisposable
 	{
 		private BinaryFormatter _formatter;
 
@@ -53,6 +53,14 @@ namespace Bamboo.Prevalence.Implementation
 
 		internal PendingCommandsEnumerator(NumberedFileFinder finder, BinaryFormatter formatter)
 		{
+			if (null == finder)
+			{
+				throw new ArgumentNullException("finder");
+			}
+			if (null == formatter)
+			{
+				throw new ArgumentNullException("formatter");
+			}
 			_fileFinder = finder;
 			_formatter = formatter;	
 		}
@@ -89,6 +97,20 @@ namespace Bamboo.Prevalence.Implementation
 		}
 		#endregion
 
+		public void Dispose()
+		{
+			CloseCurrentStream();
+			_fileFinder = null;
+		}
+
+		private void CloseCurrentStream()
+		{
+			if (_currentLogStream != null)
+			{
+				_currentLogStream.Close();
+			}
+		}
+
 		private bool IsAtEnd(System.IO.FileStream stream)
 		{
 			return stream.Position == stream.Length;
@@ -96,10 +118,12 @@ namespace Bamboo.Prevalence.Implementation
 
 		private System.IO.FileStream NextLogStream()
 		{
-			if (_currentLogStream != null)
+			if (null == _fileFinder)
 			{
-				_currentLogStream.Close();
+				throw new ObjectDisposedException("PendingCommandsEnumerator");
 			}
+
+			CloseCurrentStream();
 
 			while (true)
 			{
