@@ -239,12 +239,12 @@ namespace Bamboo.Prevalence.Indexing.Tests
 
 		void DumpPostings(Postings[] postings)
 		{
-			Console.WriteLine("\n**************");
+			System.Diagnostics.Trace.WriteLine("\n**************");
 			foreach (Postings p in postings)
 			{
-				Console.WriteLine(p.ToString());
+				System.Diagnostics.Trace.WriteLine(p.ToString());
 			}
-			Console.WriteLine("**************");
+			System.Diagnostics.Trace.WriteLine("**************");
 		}
 	}
 }

@@ -38,6 +38,24 @@ using Bamboo.Prevalence.Indexing.Records;
 
 namespace Bamboo.Prevalence.Indexing.Tests
 {
+	class AgeFilter : ISearchHitFilter
+	{
+		int _min;
+		int _max;
+
+		public AgeFilter(int min, int max)
+		{
+			_min = min;
+			_max = max;
+		}
+
+		public bool Test(SearchHit hit)
+		{
+			int age = (int)hit.Record["Age"];
+			return (age >= _min && age <= _max);
+		}
+	}
+
 	/// <summary>
 	/// Summary description for SearchResultTest.
 	/// </summary>
@@ -76,6 +94,13 @@ namespace Bamboo.Prevalence.Indexing.Tests
 		}
 
 		[Test]
+		public void TestFilter()
+		{
+			AssertSearchHits(_result.Filter(new AgeFilter(25, 28)),
+				_record2, _record3);
+		}
+
+		[Test]
 		public void TestIntersect()
 		{
 			SearchResult other = new SearchResult();
@@ -91,6 +116,17 @@ namespace Bamboo.Prevalence.Indexing.Tests
 
 			AssertEquals(0, _result.Intersect(new SearchResult()).Count);
 			AssertSearchHits(_result.Intersect(_result), _record1, _record2, _record3);
+		}
+
+		[Test]
+		public void TestForEach()
+		{
+			int i=0;
+			IRecord[] expected = { _record1, _record2, _record3 };
+			foreach (SearchHit hit in _result)
+			{
+				AssertEquals(expected[i++], hit.Record);
+			}
 		}
 
 		void AssertSearchHits(SearchResult result, params IRecord[] expectedRecords)

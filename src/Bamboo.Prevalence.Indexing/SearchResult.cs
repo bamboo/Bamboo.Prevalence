@@ -66,7 +66,7 @@ namespace Bamboo.Prevalence.Indexing
 	/// <summary>
 	/// Accumulates the results of a search.
 	/// </summary>
-	public class SearchResult
+	public class SearchResult : IEnumerable
 	{
 		#region RecordFieldComparer (used by SortByField)
 		/// <summary>
@@ -166,6 +166,27 @@ namespace Bamboo.Prevalence.Indexing
 			return result;
 		}
 
+		/// <summary>
+		/// Build a new SearchResult object including
+		/// only those elements for which the 
+		/// filter returns true.
+		/// </summary>
+		/// <param name="filter">filter</param>
+		/// <returns>a new SearchResult containing all the elements for which 
+		/// <see cref="ISearchFilter.Test"/> returned true</returns>
+		public SearchResult Filter(ISearchHitFilter filter)
+		{
+			SearchResult result = new SearchResult();
+			foreach (SearchHit hit in _hits)
+			{
+				if (filter.Test(hit))
+				{
+					result.Add(hit);
+				}
+			}			
+			return result;
+		}
+
 		public void SortByField(string field)
 		{
 			_hits.Sort(new RecordFieldComparer(field));
@@ -182,5 +203,12 @@ namespace Bamboo.Prevalence.Indexing
 			}
 			return null;
 		}
+
+		#region Implementation of IEnumerable
+		public IEnumerator GetEnumerator()
+		{
+			return _hits.GetEnumerator();
+		}
+		#endregion
 	}
 }
