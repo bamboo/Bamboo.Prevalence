@@ -36,7 +36,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Configuration;
 
-#if MONO
+#region Mono Support
 namespace System.IO
 {
 	using System.Runtime.CompilerServices;
@@ -49,7 +49,7 @@ namespace System.IO
 		public static extern bool Flush(IntPtr handle, out MonoIOError error);
 	}
 }
-#endif
+#endregion
 
 namespace Bamboo.Prevalence.Implementation
 {
@@ -63,6 +63,8 @@ namespace Bamboo.Prevalence.Implementation
 		private BinaryFormatter _formatter;
 
 		private NumberedFileCreator _fileCreator;
+		
+		private static HardFlushDelegate HardFlush = SelectHardFlushImpl();
 
 		public CommandLogWriter(NumberedFileCreator creator, BinaryFormatter formatter)
 		{
@@ -102,6 +104,12 @@ namespace Bamboo.Prevalence.Implementation
 				throw;
 			}
 			*/
+			
+			// New strategy for dealing with out of space errors,
+			// sometimes the _output.SetLength above would fail
+			// leaving the file corrupted.
+			// This new strategy fixes the problem by always
+			// growing the file before writing anything to it.
 			
 			MemoryStream stream = new MemoryStream();
 			_formatter.Serialize(stream, command);
@@ -183,10 +191,26 @@ namespace Bamboo.Prevalence.Implementation
 				FileMode.CreateNew, FileAccess.Write, FileShare.Read
 				);
 		}
+		
+#region Mono support
 
-#if MONO
+		delegate void HardFlushDelegate(System.IO.FileStream stream);
+		
+		private static HardFlushDelegate SelectHardFlushImpl()
+		{
+			// mono linux is 128
+			if (128 == (int)Environment.OSVersion.Platform)
+			{
+				return new HardFlushDelegate(MonoHardFlush);
+			}
+			else
+			{
+				return new HardFlushDelegate(Win32HardFlush);
+			}
+		}
+
 		[System.Security.SuppressUnmanagedCodeSecurity]
-		private static void HardFlush(System.IO.FileStream stream)
+		private static void MonoHardFlush(System.IO.FileStream stream)
 		{
 			System.IO.MonoIOError result = System.IO.MonoIOError.ERROR_SUCCESS;
 			System.IO.MonoIO.Flush(stream.Handle, out result);
@@ -196,19 +220,17 @@ namespace Bamboo.Prevalence.Implementation
 			}			
 		}
 
-#else
 		[System.Security.SuppressUnmanagedCodeSecurity] // optimization...
-		private static void HardFlush(System.IO.FileStream stream)
+		private static void Win32HardFlush(System.IO.FileStream stream)
 		{
 			if (0 == FlushFileBuffers(stream.Handle))
 			{
 				Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
 			}
 		}
-
-		// TODO: Remove this dependency on win32 if at all possible
+		
 		[DllImport("KERNEL32.DLL", EntryPoint="FlushFileBuffers", PreserveSig=true, CallingConvention=CallingConvention.Winapi, SetLastError=true)]
 		private static extern int FlushFileBuffers(IntPtr handle);
-#endif
+#endregion
 	}
 }
