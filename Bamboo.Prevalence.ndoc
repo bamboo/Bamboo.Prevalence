@@ -3,10 +3,13 @@
         <assembly location=".\bin\Bamboo.Prevalence.dll" documentation=".\bin\Bamboo.Prevalence.xml" />
         <assembly location="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.Indexing.dll" documentation="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.Indexing.xml" />
         <assembly location="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.XPath.dll" documentation="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.XPath.xml" />
+        <assembly location="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.Collections.dll" documentation="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.Collections.xml" />
+        <assembly location="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.Util.dll" documentation="D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.Util.xml" />
     </assemblies>
     <namespaces>
         <namespace name="Bamboo.Prevalence"></namespace>
         <namespace name="Bamboo.Prevalence.Attributes"></namespace>
+        <namespace name="Bamboo.Prevalence.Collections"></namespace>
         <namespace name="Bamboo.Prevalence.Configuration"></namespace>
         <namespace name="Bamboo.Prevalence.Implementation"></namespace>
         <namespace name="Bamboo.Prevalence.Indexing"></namespace>
@@ -15,6 +18,7 @@
         <namespace name="Bamboo.Prevalence.Indexing.FullText.Tokenizers"></namespace>
         <namespace name="Bamboo.Prevalence.Indexing.Records"></namespace>
         <namespace name="Bamboo.Prevalence.Serialization"></namespace>
+        <namespace name="Bamboo.Prevalence.Util"></namespace>
         <namespace name="Bamboo.Prevalence.XPath"></namespace>
         <namespace name="Bamboo.Prevalence.XPath.Internal"></namespace>
     </namespaces>
@@ -107,10 +111,10 @@
         <documenter name="MSDN">
             <property name="OutputDirectory" value="D:\dev\dotnet\Bamboo.Prevalence\docs\MSDN\" />
             <property name="HtmlHelpName" value="Bamboo.Prevalence" />
-            <property name="IncludeFavorites" value="False" />
+            <property name="IncludeFavorites" value="True" />
             <property name="Title" value="Bamboo.Prevalence - an object prevalence engine" />
             <property name="SplitTOCs" value="False" />
-            <property name="DefaulTOC" value="Bamboo.Prevalence" />
+            <property name="DefaulTOC" value="Bamboo.Prevalence.PrevalenceEngine" />
             <property name="IncludeHierarchy" value="True" />
             <property name="ShowVisualBasic" value="True" />
             <property name="RootPageContainsNamespaces" value="True" />
@@ -130,7 +134,7 @@
             <property name="DocumentProtectedInternalAsProtected" value="False" />
             <property name="DocumentEmptyNamespaces" value="False" />
             <property name="IncludeAssemblyVersion" value="True" />
-            <property name="CopyrightText" value="" />
+            <property name="CopyrightText" value="Copyright (C) 2002 Rodrigo B. de Oliveira" />
             <property name="CopyrightHref" value="" />
             <property name="ReferencesPath" value="" />
             <property name="SkipNamespacesWithoutSummaries" value="False" />

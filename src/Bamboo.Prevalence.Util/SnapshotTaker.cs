@@ -44,6 +44,7 @@ namespace Bamboo.Prevalence.Util
 	/// and applies a clean up policy to the prevalence base folder.
 	/// </summary>
 	/// <example>
+	/// <code>
 	/// SnapshotTaker _taker;
 	/// 
 	/// void Application_Start()
@@ -56,6 +57,7 @@ namespace Bamboo.Prevalence.Util
 	/// {
 	///		_taker.Dispose();
 	/// }
+	/// </code>
 	/// </example>
 	public class SnapshotTaker : System.IDisposable
 	{		
