@@ -4,5 +4,6 @@ lib
 *.zip
 *.txt
 *.suo
+build
 _ReSharper.Bamboo.Prevalence
 Bamboo.Prevalence.resharperoptions

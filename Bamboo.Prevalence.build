@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name='Bamboo.Prevalence' default='debug'>
 		
-	<property name='version' value='1.4.4.2' />	
+	<property name='version' value='1.4.4.3' />	
 	
 	<property name="framework.family" value="${framework::get-family(framework::get-target-framework())}" />
 	<property name="csc.codepage" value="" />
@@ -20,7 +20,7 @@
 	<target name='rebuild' depends='clean, debug' description='full debug build' />	
 	
 	<target name="update-assembly-info">
-		<script language="c#">
+		<script language="C#">
 		<code><![CDATA[
 		public static void ScriptMain(Project project)
 		{
@@ -333,6 +333,6 @@
 	</target>
 
 	<target name='clean'>
-		<delete dir='bin' />
+		<delete dir='bin' if="${directory::exists('bin')}" />
 	</target>
 </project>
