@@ -43,6 +43,8 @@ namespace Bamboo.Prevalence.Implementation
 {
 	internal class PrevalentSystemProxy : RealProxy
 	{
+		private static Type ObjectType = typeof(object);
+
 		private PrevalenceEngine _engine;
 
 		private MarshalByRefObject _system;
@@ -58,11 +60,11 @@ namespace Bamboo.Prevalence.Implementation
 			IMethodCallMessage call = msg as IMethodCallMessage;
 
 			try
-			{				
-				if (!IsNestedEngineCall())
+			{		
+				if (!IsPassThrough(call.MethodBase))
 				{
-					if (!IsPassThrough(call.MethodBase))
-					{
+					if (!IsNestedEngineCall())
+					{						
 						if (IsQuery(call.MethodBase))
 						{
 							return ExecuteQuery(call);
@@ -119,7 +121,8 @@ namespace Bamboo.Prevalence.Implementation
 
 		private bool IsPassThrough(MethodBase method)
 		{
-			return Attribute.IsDefined(method, typeof(PassThroughAttribute));
+			return Attribute.IsDefined(method, typeof(PassThroughAttribute)) ||
+				method.DeclaringType == ObjectType;
 		}
 
 		private bool IsPropertyGet(MethodBase method)

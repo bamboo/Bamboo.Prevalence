@@ -203,6 +203,15 @@ namespace Bamboo.Prevalence.Tests
 			ExecuteCommand(new AddCommand(5));
 			AssertTotal(15);
 		}
+
+		[Test]
+		public void TestObjectMethodsAreNotCommands()
+		{
+			CrashRecover();
+			_engine.Pause();
+			
+			Type type = _engine.PrevalentSystem.GetType();			
+		}
 	}
 }
 
