@@ -1,5 +1,7 @@
 <project name='Bamboo.Prevalence' default='debug'>
 
+	<property name='nunit-console' value='\dotnet\nunit\bin\nunit-console' />
+
 	<target name='debug' depends='setDebugProperties,test' />
 
 	<target name='release' depends='clean,setReleaseProperties,test' />
@@ -13,7 +15,7 @@
 	</target>
 
 	<target name='test' depends='Bamboo.Prevalence.Tests'>
-		<exec program='nunit-console' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
+		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
 	</target>
 
 	<target name="distribution" depends="release">
@@ -41,8 +43,11 @@
 				<includes name="Tools/VersionMigration/bin/*.exe" />
 				<includes name="Tools/VersionMigration/bin/*.xml" />
 				<includes name="Tools/VersionMigration/src/*.xml" />
+				<includes name="Tools/VersionMigration/src/**/*.csproj" />
+				<includes name="Tools/VersionMigration/src/**/*.sln" />
 				<includes name="Tools/VersionMigration/src/**/*.cs" />
 				<includes name="Tools/VersionMigration/src/**/*.xml" />
+				<includes name="Tools/VersionMigration/src/**/*.resx" />
 			</fileset>
 		</zip>
 	</target>
