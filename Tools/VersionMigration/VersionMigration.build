@@ -1,0 +1,151 @@
+<project name="VersionMigrationTools" default="allTests">
+
+	<property name="Bamboo.Util.dll" value="..\..\lib\Bamboo.Util.dll" />
+	<property name="Bamboo.Prevalence.dll" value="..\..\bin\Bamboo.Prevalence.dll" />
+	<property name="NUnit.Framework.dll" value="..\..\lib\nunit.framework.dll" />
+
+	<target name="allTests" depends="testVersionMigrationLibrary, testVersionMigrator" />
+
+	<target name="testVersionMigrationLibrary" depends="Bamboo.Prevalence.VersionMigration.Tests">
+		<exec program="nunit-console" commandline="/assembly:bin\Bamboo.Prevalence.VersionMigration.Tests.dll" />
+	</target>
+
+	<target name="testVersionMigrator" depends="VersionMigrator, SetUpData10, TestData20">
+
+		<exec program="build\1.0\SetUpData10.exe" basedir="build\1.0" />
+
+		<exec program="bin/VersionMigrator"
+			commandline="/overwrite /plan:src\MigrationPlan1-2.xml /from:build\1.0\data\00000000000000000001.snapshot /to:build\2.0\data\00000000000000000001.snapshot /assembly:build\2.0\SamplePrevalentSystem.dll">
+		</exec>
+			
+		<exec program="build\2.0\TestData20.exe" basedir="build\2.0" />
+		
+	</target>
+
+	<target name="VersionMigrator" depends="Bamboo.Prevalence.VersionMigration">
+
+		<copy file="${Bamboo.Util.dll}" todir="bin" />
+
+		<csc target="exe" output="bin/VersionMigrator.exe" debug="true">
+
+			<sources>
+				<includes name="src/VersionMigrator/*.cs" />
+			</sources>
+
+			<references>
+				<includes name="bin/Bamboo.Prevalence.VersionMigration.dll" />
+				<includes name="bin/Bamboo.Util.dll" />
+			</references>
+
+		</csc>
+
+	</target>
+
+	<target name="Bamboo.Prevalence.VersionMigration.Tests" depends="Bamboo.Prevalence.VersionMigration">
+		<csc target="library" output="bin/Bamboo.Prevalence.VersionMigration.Tests.dll" debug="true">
+			<sources>
+				<includes name="src/Bamboo.Prevalence.VersionMigration.Tests/*.cs" />
+			</sources>
+
+			<references>
+				<includes name="bin/Bamboo.Prevalence.VersionMigration.dll" />
+				<includes name="${NUnit.Framework.dll}" />
+			</references>
+		</csc>
+
+		<!-- test files -->
+		<copy todir="bin">
+			<fileset basedir="src/Bamboo.Prevalence.VersionMigration.Tests">
+				<includes name="*.xml" />
+			</fileset>
+		</copy>
+			
+	</target>
+
+	<target name="Bamboo.Prevalence.VersionMigration" depends="init">
+		
+		<csc target="library" output="bin/Bamboo.Prevalence.VersionMigration.dll" debug="true">
+
+			<sources>
+				<includes name="src/Bamboo.Prevalence.VersionMigration/**.cs" />
+			</sources>
+
+		</csc>
+
+	</target>
+
+	<target name="SetUpData10" depends="SamplePrevalentSystem10">
+
+		<copy file="${Bamboo.Prevalence.dll}" todir="build/1.0/" />
+		<copy file="src/titles.xml" todir="build/1.0" />
+		
+		<csc target="exe" output="build/1.0/SetUpData10.exe" debug="true">
+			<sources>
+				<includes name="src/SetUpData10/*.cs" />
+			</sources>
+
+			<references>
+				<includes name="build/1.0/*.dll" />
+			</references>
+		</csc>
+
+	</target>
+
+	<target name="TestData20" depends="SamplePrevalentSystem20">
+
+		<copy file="${Bamboo.Prevalence.dll}" todir="build/2.0" />
+		<copy file="${NUnit.Framework.dll}" todir="build/2.0" />
+		<copy file="src/titles.xml" todir="build/2.0" />
+		
+		<csc target="exe" output="build/2.0/TestData20.exe" debug="true">
+			<sources>
+				<includes name="src/TestData20/*.cs" />
+			</sources>
+
+			<references>
+				<includes name="build/2.0/*.dll" />
+			</references>
+		</csc>
+
+	</target>
+
+	<target name="SamplePrevalentSystem10" depends="init">
+		
+		<csc target="library" output="build/1.0/SamplePrevalentSystem.dll">
+			<sources>
+				<includes name="src/SamplePrevalentSystem10/*.cs" />
+			</sources>
+
+			<references>
+				<includes name="${Bamboo.Prevalence.dll}" />
+			</references>
+		</csc>
+
+	</target>
+
+	<target name="SamplePrevalentSystem20" depends="init">
+		
+		<csc target="library" output="build/2.0/SamplePrevalentSystem.dll">
+			<sources>
+				<includes name="src/SamplePrevalentSystem20/*.cs" />
+			</sources>
+
+
+			<references>
+				<includes name="${Bamboo.Prevalence.dll}" />
+			</references>
+		</csc>
+
+	</target>
+
+	<target name="init">
+		<mkdir dir="bin" />
+		<mkdir dir="build/1.0" />
+		<mkdir dir="build/2.0" />
+	</target>
+
+	<target name="clean">
+		<delete dir="bin" />
+		<delete dir="build" />
+	</target>
+</project>

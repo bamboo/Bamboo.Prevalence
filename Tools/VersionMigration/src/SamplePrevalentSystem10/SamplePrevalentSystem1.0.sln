@@ -1,0 +1,57 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamplePrevalentSystem1.0", "SamplePrevalentSystem1.0.csproj", "{F7AD2111-EA43-42E4-9CD6-F3C7D48EBCD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamplePrevalentSystem2.0", "..\SamplePrevalentSystem20\SamplePrevalentSystem2.0.csproj", "{F7744D9E-69CB-414D-AE91-04EDD8374E49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetUpData10", "..\SetUpData10\SetUpData10.csproj", "{EBDF4DB2-EC8A-486F-ADA7-D08AC751B5B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestData20", "..\TestData20\TestData20.csproj", "{40546098-7042-4691-909D-AF223D2B6319}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.VersionMigration", "..\Bamboo.Prevalence.VersionMigration\Bamboo.Prevalence.VersionMigration.csproj", "{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionMigrator", "..\VersionMigrator\VersionMigrator.csproj", "{EDEDC715-43F4-4B86-AE98-BEFE3876F814}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.VersionMigration.Tests", "..\Bamboo.Prevalence.VersionMigration.Tests\Bamboo.Prevalence.VersionMigration.Tests.csproj", "{58BADCA3-6B14-4DAD-A80D-36B257A4F963}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F7AD2111-EA43-42E4-9CD6-F3C7D48EBCD8}.Debug.ActiveCfg = Debug|.NET
+		{F7AD2111-EA43-42E4-9CD6-F3C7D48EBCD8}.Debug.Build.0 = Debug|.NET
+		{F7AD2111-EA43-42E4-9CD6-F3C7D48EBCD8}.Release.ActiveCfg = Release|.NET
+		{F7AD2111-EA43-42E4-9CD6-F3C7D48EBCD8}.Release.Build.0 = Release|.NET
+		{F7744D9E-69CB-414D-AE91-04EDD8374E49}.Debug.ActiveCfg = Debug|.NET
+		{F7744D9E-69CB-414D-AE91-04EDD8374E49}.Debug.Build.0 = Debug|.NET
+		{F7744D9E-69CB-414D-AE91-04EDD8374E49}.Release.ActiveCfg = Release|.NET
+		{F7744D9E-69CB-414D-AE91-04EDD8374E49}.Release.Build.0 = Release|.NET
+		{EBDF4DB2-EC8A-486F-ADA7-D08AC751B5B2}.Debug.ActiveCfg = Debug|.NET
+		{EBDF4DB2-EC8A-486F-ADA7-D08AC751B5B2}.Debug.Build.0 = Debug|.NET
+		{EBDF4DB2-EC8A-486F-ADA7-D08AC751B5B2}.Release.ActiveCfg = Release|.NET
+		{EBDF4DB2-EC8A-486F-ADA7-D08AC751B5B2}.Release.Build.0 = Release|.NET
+		{40546098-7042-4691-909D-AF223D2B6319}.Debug.ActiveCfg = Debug|.NET
+		{40546098-7042-4691-909D-AF223D2B6319}.Debug.Build.0 = Debug|.NET
+		{40546098-7042-4691-909D-AF223D2B6319}.Release.ActiveCfg = Release|.NET
+		{40546098-7042-4691-909D-AF223D2B6319}.Release.Build.0 = Release|.NET
+		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Debug.ActiveCfg = Debug|.NET
+		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Debug.Build.0 = Debug|.NET
+		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Release.ActiveCfg = Release|.NET
+		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Release.Build.0 = Release|.NET
+		{EDEDC715-43F4-4B86-AE98-BEFE3876F814}.Debug.ActiveCfg = Debug|.NET
+		{EDEDC715-43F4-4B86-AE98-BEFE3876F814}.Debug.Build.0 = Debug|.NET
+		{EDEDC715-43F4-4B86-AE98-BEFE3876F814}.Release.ActiveCfg = Release|.NET
+		{EDEDC715-43F4-4B86-AE98-BEFE3876F814}.Release.Build.0 = Release|.NET
+		{58BADCA3-6B14-4DAD-A80D-36B257A4F963}.Debug.ActiveCfg = Debug|.NET
+		{58BADCA3-6B14-4DAD-A80D-36B257A4F963}.Debug.Build.0 = Debug|.NET
+		{58BADCA3-6B14-4DAD-A80D-36B257A4F963}.Release.ActiveCfg = Release|.NET
+		{58BADCA3-6B14-4DAD-A80D-36B257A4F963}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

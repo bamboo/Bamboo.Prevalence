@@ -1,0 +1,39 @@
+<!--
+	xml:lang attribute controls how
+	const values are interpreted
+-->
+<migrationPlan xml:lang="pt-br">
+
+	<!--
+		A typeMapping specifies how a type should be
+		loaded from a serialized stream.
+	-->
+	<typeMapping type="SamplePrevalentSystem.Title">
+	
+		<!--
+			Each field definition specifies how
+			the specific field should be 
+			initialized.
+			
+			Unspecified fields are loaded directly
+			from the stream.
+			
+			An unspecified field that is not present
+			in the stream represents an error.
+		-->	
+		<field name="_description">
+			<fromField>_summary</fromField>
+		</field>
+		
+		<field name="_publishDate">
+			<!-- September 10th, see xml:lang at the top -->
+			<const>10/09/2002</const>
+		</field>
+		
+		<field name="_reviews">
+			<newObject />
+		</field>
+		
+	</typeMapping>		 
+
+</migrationPlan>

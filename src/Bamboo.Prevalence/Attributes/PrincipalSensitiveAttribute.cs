@@ -47,14 +47,15 @@ namespace Bamboo.Prevalence.Attributes
 	/// must be serializable. Further more, Thread.CurrentPrincipal
 	/// serialization mechanism must permit the object to
 	/// be successfully deserialized in a different process/time. <br />
-	/// Unfortunately, this restriction rules out
+	/// Unfortunately this restriction rules out
 	/// System.Security.Principal.WindowsPrincipal.
 	/// </remarks>
 	/// <example>
+	/// <code>
 	/// <![CDATA[
 	/// [Serializable]
 	/// [PrincipalSensitive]
-	/// public class MyPrevalentSystem
+	/// public class MyPrevalentSystem : System.MarshalByRefObject
 	/// {
 	///		[PrincipalPermission(SecurityAction.Demand, Role="Administrator")]
 	///		public void AddUser(User user)
@@ -63,6 +64,7 @@ namespace Bamboo.Prevalence.Attributes
 	///		}
 	///	}
 	/// ]]>
+	/// </code>
 	/// </example>
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]	

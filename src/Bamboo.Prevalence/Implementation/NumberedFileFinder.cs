@@ -35,12 +35,17 @@ using System.IO;
 namespace Bamboo.Prevalence.Implementation
 {
 	/// <summary>
-	/// Summary description for NumberedFileFinder.
+	/// Models the strategy for naming files in 
+	/// a prevalence base.
 	/// </summary>
-	internal sealed class NumberedFileFinder : NumberedFileBase
+	public sealed class NumberedFileFinder : NumberedFileBase
 	{		
 		private FileInfo _lastSnapshot;
 
+		/// <summary>
+		/// Creates a new name strategy for the directory prevalenceBase.
+		/// </summary>
+		/// <param name="prevalenceBase">directory where the files will be stored</param>
 		public NumberedFileFinder(DirectoryInfo prevalenceBase) :
 			base(prevalenceBase, 0)
 		{			
@@ -48,6 +53,9 @@ namespace Bamboo.Prevalence.Implementation
 			_nextNumber = _lastSnapshot == null ? 0 : NumberFromFileInfo(_lastSnapshot);
 		}	
 	
+		/// <summary>
+		/// The last snapshot file.
+		/// </summary>
 		public FileInfo LastSnapshot
 		{
 			get
@@ -56,7 +64,7 @@ namespace Bamboo.Prevalence.Implementation
 			}
 		}
 
-		public FileInfo NextPendingLog()
+		internal FileInfo NextPendingLog()
 		{
 			FileInfo pendingLog = FormatFileInfo(LogFileNameFormat, _nextNumber + 1);
 			if (pendingLog.Exists)

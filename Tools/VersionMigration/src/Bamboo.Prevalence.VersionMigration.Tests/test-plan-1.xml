@@ -1,0 +1,21 @@
+<migrationPlan xml:lang="pt-BR">
+
+	<typeMapping type="SamplePrevalentSystem.Title">
+	
+		<field name="_description">
+			<fromField>_summary</fromField>
+		</field>
+		
+		<field name="_publishDate">
+			<const>10/09/2002</const>
+		</field>
+		
+		<field name="_reviews">
+			<newObject />
+		</field>
+		
+	</typeMapping>		 
+	
+	<typeMapping type="SamplePrevalentSystem.Library" />
+
+</migrationPlan>

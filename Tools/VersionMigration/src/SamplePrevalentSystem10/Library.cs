@@ -32,146 +32,95 @@
 using System;
 using System.Collections;
 using Bamboo.Prevalence;
+using Bamboo.Prevalence.Attributes;
 
-namespace MyFirstPrevalentSystem
+namespace SamplePrevalentSystem
 {
-	/// <summary>
-	/// A task in my ToDoList.
-	/// </summary>
 	[Serializable]
-	public class Task
+	public class Title
 	{
-		private int _id;
-		
+		private Guid _id;
+
+		private string _name;
+
 		private string _summary;
 
-		private bool _done;
-
-		private DateTime _dateCreated;
-		
-		public Task()
+		public Title()
 		{
-			_id = -1;			
+			_id = Guid.NewGuid();
+		}		
+
+		public Title(string name, string summary) : this()
+		{
+			_name = name;
+			_summary = summary;
 		}
-		
-		public int ID
+
+		public Guid ID
 		{
 			get
 			{
 				return _id;
 			}
+		}
+
+		public string Name
+		{
+			get
+			{
+				return _name;
+			}
 
 			set
 			{
-				if (-1 != _id)
-				{
-					throw new InvalidOperationException("ID cannot be changed!");
-				}
-				_id = value;
+				_name = value;
 			}
 		}
-		
+
 		public string Summary
 		{
 			get
 			{
 				return _summary;
 			}
-			
+
 			set
 			{
 				_summary = value;
 			}
 		}
-
-		public bool Done
-		{
-			get
-			{
-				return _done;
-			}
-		}
-
-		public DateTime DateCreated
-		{
-			get
-			{
-				return _dateCreated;
-			}
-
-			set
-			{
-				_dateCreated = value;
-			}
-		}
-
-		public void Validate()
-		{
-			if (null == _summary || 0 == _summary.Length)
-			{
-				throw new ApplicationException("Task.Summary is required!");
-			}
-		}
-
-		internal void SetDone()
-		{
-			_done = true;
-		}
 	}
 
 	/// <summary>
-	/// The prevalent system class.
+	/// Library version 1.0
 	/// </summary>
 	[Serializable]
-	public class ToDoList : System.MarshalByRefObject
-	{
-		private int _nextTaskID;
+	[TransparentPrevalence]
+	public class Library : System.MarshalByRefObject
+	{	
+		Hashtable _titles;
 
-		private Hashtable _tasks;
-
-		public ToDoList()
+		public Library()
 		{
-			_tasks = new Hashtable();
+			_titles = new Hashtable();
 		}
 
-		public void AddTask(Task task)
+		public void AddTitle(Title title)
 		{
-			task.Validate();
-
-			task.ID = _nextTaskID++;
-
-			// we must use PrevalenceEngine.Now as our clock
-			// if we want our system to be deterministic
-			//
-			task.DateCreated = PrevalenceEngine.Now;
-
-			_tasks.Add(task.ID, task);
+			_titles[title.ID] = title;
 		}
 
-		public IList PendingTasks
+		[Query]
+		public IList GetTitles()
 		{
-			get
-			{
-				ArrayList pendingTasks = new ArrayList();
-				foreach (Task task in _tasks.Values)
-				{
-					if (!task.Done)
-					{
-						pendingTasks.Add(task);
-					}
-				}
-				return pendingTasks;
-			}
+			return ToArray(typeof(Title), _titles.Values);
 		}
 
-		public void MarkTaskAsDone(int taskID)
-		{
-			Task task = _tasks[taskID] as Task;
-			if (null == task)
-			{
-				throw new ArgumentException("Task not found!", "taskID");
-			}
-			task.SetDone();
+		private Array ToArray(System.Type type, ICollection items)
+		{				
+			Array array = Array.CreateInstance(type, items.Count);
+			items.CopyTo(array, 0);
+			return array;
 		}
 	}
 }

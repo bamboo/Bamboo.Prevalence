@@ -37,8 +37,7 @@ namespace Bamboo.Prevalence
 	/// <summary>
 	/// A clock that can be used by a prevalent system for all
 	/// its date/time related functions.
-	/// </summary>
-	[Serializable]
+	/// </summary>	
 	public class AlarmClock
 	{
 		private bool _paused;
