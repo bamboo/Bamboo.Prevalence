@@ -37,6 +37,8 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using Bamboo.Prevalence;
+using System.Collections;
+using System.Runtime.Serialization.Formatters;
 
 namespace RemotingPrevalence
 {
@@ -46,7 +48,12 @@ namespace RemotingPrevalence
 	{		
 		public static void Main(string[] args)
 		{				
-			ChannelServices.RegisterChannel(new TcpChannel(8080));
+			//ChannelServices.RegisterChannel(new TcpChannel(8080));
+			BinaryServerFormatterSinkProvider provider = new BinaryServerFormatterSinkProvider(); provider.TypeFilterLevel = TypeFilterLevel.Full;
+			IDictionary props = new Hashtable();
+			props["port"] = 8080;
+			ChannelServices.RegisterChannel(new TcpChannel(props,null,provider));
+
 			
 			PrevalenceEngine engine = PrevalenceActivator.CreateTransparentEngine(typeof(AddressBook), Path.Combine(Environment.CurrentDirectory, "data"));
 			AddressBook book = engine.PrevalentSystem as AddressBook;
