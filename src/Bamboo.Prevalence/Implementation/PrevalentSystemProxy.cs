@@ -28,6 +28,8 @@
 //
 // http://bbooprevalence.sourceforge.net
 // mailto:rodrigobamboo@users.sourceforge.net
+//
+// Thanks to Jesse Ezell for coming up with the idea.
 
 using System;
 using System.Reflection;
