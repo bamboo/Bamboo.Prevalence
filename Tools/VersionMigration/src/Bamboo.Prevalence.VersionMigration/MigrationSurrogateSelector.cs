@@ -32,6 +32,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Bamboo.Prevalence.VersionMigration.Initializers;
 
 namespace Bamboo.Prevalence.VersionMigration
 {
@@ -84,22 +85,14 @@ namespace Bamboo.Prevalence.VersionMigration
 			Type type = obj.GetType();
 			TypeMapping mapping = _context.GetTypeMapping(type);
 
-			if (null != mapping.Initializer)
+			IObjectInitializer initializer = mapping.Initializer;
+			if (null != initializer)
 			{
-				mapping.Initializer.InitializeObject(_context);
+				initializer.InitializeObject(_context);
 			}
 			else
 			{
-				FieldInfo[] fields = _context.GetSerializableFields(type);
-				foreach (FieldInfo field in fields)
-				{								
-					_context.EnterField(field);
-
-					IFieldInitializer initializer = mapping.GetFieldInitializer(field.Name);
-					initializer.InitializeField(_context);
-
-					_context.LeaveField();
-				}
+				DefaultObjectInitializer.Default.InitializeObject(_context);
 			}
 
 			_context.LeaveObject();

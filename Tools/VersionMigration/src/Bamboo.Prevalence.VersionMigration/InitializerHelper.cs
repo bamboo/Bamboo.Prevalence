@@ -45,7 +45,12 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		public static void SetField(object target, string name, object value)
 		{
-			target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(target, value);
+			FieldInfo fi = target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+			if (null == fi)
+			{
+				throw new ApplicationException(string.Format("Field {0} not found in type {1}!", name, target.GetType()));
+			}
+			fi.SetValue(target, value);
 		}
 
 		public static object Call(object target, string methodName, params object[] parameters)

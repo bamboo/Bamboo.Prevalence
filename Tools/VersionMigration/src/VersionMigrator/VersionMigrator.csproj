@@ -77,11 +77,6 @@
                     Project = "{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
-                <Reference
-                    Name = "Bamboo.Util"
-                    AssemblyName = "Bamboo.Util"
-                    HintPath = "..\..\..\..\..\Bamboo.Util\bin\Bamboo.Util.dll"
-                />
             </References>
         </Build>
         <Files>

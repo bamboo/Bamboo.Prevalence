@@ -1,8 +1,8 @@
 <project name="VersionMigrationTools" default="all">
 
 	<property name="Bamboo.Prevalence.dll" value="..\..\bin\Bamboo.Prevalence.dll" />
-	<property name="nunit.framework.dll" value="d:\dotnet\nunit\bin\nunit.framework.dll" />
-	<property name="nunit-console" value="d:\dotnet\nunit\bin\nunit-console.exe" />
+	<property name="nunit.framework.dll" value="\dotnet\nunit\bin\nunit.framework.dll" />
+	<property name="nunit-console" value="\dotnet\nunit\bin\nunit-console.exe" />
 
 	<target name="all" depends="test,VersionMigratorGUI" />
 

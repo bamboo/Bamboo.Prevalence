@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Xml;
+using Bamboo.Prevalence.VersionMigration.Initializers;
 
 namespace Bamboo.Prevalence.VersionMigration
 {
@@ -40,6 +41,8 @@ namespace Bamboo.Prevalence.VersionMigration
 	/// </summary>
 	public class TypeMapping
 	{
+		public static readonly TypeMapping Default = new TypeMapping();
+
 		private string _typeName;
 
 		private FieldMappingCollection _fieldMappings;

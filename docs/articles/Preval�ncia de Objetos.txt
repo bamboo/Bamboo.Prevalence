@@ -36,7 +36,7 @@ Quem se importa?
 
 A prevalência de objetos torna o processo de desenvolvimento mais simples
 pois elimina toda a complexidade adicional comumente associada
-à utilização de um banco de dados:
+à utilização de um banco de dados relacional:
 
   * esquemas de dados e blocos de código SQL que devem ser mantidos em sincronia com o modelo de objetos;
   * camadas de mapeamento objeto-relacional;
@@ -733,11 +733,17 @@ Codifique um Pouco
 A codificação do comando é trivial::
 
 		public object Execute(object system)
+
 		{
+
 			TaskManagementSystem tasksystem = (TaskManagementSystem)system;
+
 			Project project = tasksystem.Projects[_projectID];
+
 			project.Tasks.Add(_task);
+
 			return null;
+
 		}
 
 O código acima não seria tão simples sem uma pequena ajuda da classe
@@ -745,26 +751,47 @@ O código acima não seria tão simples sem uma pequena ajuda da classe
 do identificador de projeto::
 
 		/// <summary>
+
 		/// Retorna o projeto de identificador
+
 		/// indicado.
+
 		/// </summary>
+
 		/// <exception cref="ObjectNotFoundException">
+
 		/// caso não exista projeto algum de identificador
+
 		/// igual ao indicado
+
 		/// </exception>
+
 		public Project this[Guid id]
+
 		{
+
 			get
+
 			{
+
 				foreach (Project project in InnerList)
+
 				{
+
 					if (id == project.ID)
+
 					{
+
 						return project;
+
 					}
+
 				}
+
 				throw new ObjectNotFoundException(string.Format("O projeto de ID {0} não foi encontrado!", id));
+
 			}
+
 		}
 
 O Resto
@@ -795,15 +822,15 @@ externamente aos comandos, não representa problema algum.
 Desafios
 ========
 
-Maestria
---------
+Mestria
+-------
 Assim como o músico que sente dificuldade em se expressar com seu
 instrumento após algumas semanas sem ele, os praticantes de nossa
 arte ainda se expressam com dificuldade sob o paradigma da orientação
 a objetos. Os anos de exposição e prática da arquitetura de 3 camadas
 lógicas que dissocia dados e comportamento contribuiram, sem sombra de
 dúvida, para esse estado de quase alienação. Não
-nos resta opção senão readquirir a maestria através da prática constante.
+nos resta opção senão readquirir a mestria através da prática constante.
 
 Expressividade
 --------------

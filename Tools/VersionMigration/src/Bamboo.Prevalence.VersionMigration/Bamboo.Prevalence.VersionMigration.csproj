@@ -157,6 +157,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Initializers\DefaultObjectInitializer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Initializers\FromFieldInitializer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
