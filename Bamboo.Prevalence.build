@@ -259,6 +259,7 @@
 
 	<target name='init'>
 		<mkdir dir='bin' />
+		<copy todir='bin' file='${nunit.framework.dll}' />
 	</target>
 
 	<target name='clean'>

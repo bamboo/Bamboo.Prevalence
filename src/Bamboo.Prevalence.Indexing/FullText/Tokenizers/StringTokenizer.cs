@@ -56,10 +56,8 @@ namespace Bamboo.Prevalence.Indexing.FullText.Tokenizers
 		/// in the text argument.
 		/// </summary>
 		/// <param name="text">token source</param>
-		public StringTokenizer(string text)
+		public StringTokenizer(string text) : this(text, 0)
 		{
-			_text = text;
-			_current = 0;
 		}
 
 		/// <summary>
@@ -72,6 +70,11 @@ namespace Bamboo.Prevalence.Indexing.FullText.Tokenizers
 		/// <param name="current">starting position</param>
 		protected StringTokenizer(string text, int current)
 		{
+			if (null == text)
+			{
+				throw new ArgumentNullException("text", "text can't be null");
+			}
+
 			_text = text;
 			_current = current;
 		}

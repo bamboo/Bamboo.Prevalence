@@ -197,6 +197,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "FullText\Tokenizers\NullTokenizer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "FullText\Tokenizers\StringTokenizer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

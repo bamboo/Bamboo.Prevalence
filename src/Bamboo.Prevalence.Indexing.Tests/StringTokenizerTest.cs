@@ -78,5 +78,12 @@ namespace Bamboo.Prevalence.Indexing.Tests
 				"didn", "t", "think", "so", "yep"
 				);
 		}		
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void TestNullValues()
+		{
+			StringTokenizer tokenizer = new StringTokenizer(null);
+		}
 	}
 }

@@ -384,6 +384,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 
 		ITokenizer CreateTokenizer(string value)
 		{
+			if (null == value || 0 == value.Length)
+			{
+				return NullTokenizer.Instance;
+			}
 			return _filter.Clone(new StringTokenizer(value));
 		}
 	}
