@@ -32,54 +32,59 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Reflection;
+using System.IO;
+using Bamboo.Prevalence;
 
-namespace Bamboo.Prevalence.Collections
+namespace Bamboo.Prevalence.Util
 {
 	/// <summary>
-	/// Compares objects by property (the property value
-	/// must be IComparable).
+	/// Removes all files that are no longer necessary for 
+	/// the prevalent system to recover.
 	/// </summary>
-	public class ObjectPropertyComparer : IComparer
+	public class CleanUpAllFilesPolicy : ICleanUpPolicy
 	{
-		PropertyInfo _property;		
+		/// <summary>
+		/// The one and only CleanUpAllFilesPolicy instance.
+		/// </summary>
+		public static readonly ICleanUpPolicy Default = new CleanUpAllFilesPolicy();
 
-		public ObjectPropertyComparer(Type objectType, string propertyName)
-		{
-			MemberInfo[] members = objectType.GetMember(propertyName, MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public);
-			if (1 != members.Length)
-			{
-				throw new ArgumentException(string.Format("Could not resolve the property name \"{0}\"!", propertyName), propertyName);
-			}
-			_property = (PropertyInfo)members[0];
+		private CleanUpAllFilesPolicy()
+		{		
 		}
 
-		public ObjectPropertyComparer(PropertyInfo property)
+		FileInfo[] ICleanUpPolicy.SelectFiles(PrevalenceEngine engine)
 		{
-			if (null == property)
-			{
-				throw new ArgumentNullException("property");
+			DirectoryInfo prevalenceBase = engine.PrevalenceBase;			
+			FileInfo[] all = prevalenceBase.GetFiles("*.*");
+			SortFilesByName(all);
+			int lastSnapshotIndex = FindLastSnapshot(all);
+			if (lastSnapshotIndex > 0)
+			{				
+				FileInfo[] files = new FileInfo[lastSnapshotIndex];
+				Array.Copy(all, files, lastSnapshotIndex);
+				return files;
 			}
-			_property = property;
+			else
+			{
+				return NullCleanUpPolicy.EmptyFileInfoArray;
+			}
 		}
-		
-		public int Compare(object lhs, object rhs)
+
+		void SortFilesByName(FileInfo[] files)
+		{			
+			Array.Sort(files, Bamboo.Prevalence.Implementation.FileNameComparer.Default);
+		}
+
+		int FindLastSnapshot(FileInfo[] files)
 		{
-			object lhsValue = _property.GetValue(lhs, null);
-			object rhsValue = _property.GetValue(rhs, null);
-			
-			int value = 0;
-			if (null != lhsValue)
+			for (int i=files.Length-1; i>-1; --i)
 			{
-				value = ((IComparable)lhsValue).CompareTo(rhsValue);
+				if (0 == String.Compare(files[i].Extension, ".snapshot", true))
+				{
+					return i;
+				}
 			}
-			else if (null != rhsValue)
-			{
-				value = ((IComparable)rhsValue).CompareTo(lhsValue);
-				value *= -1; // inverts the value since we changed the comparison
-			}
-			return value;
+			return -1;
 		}
 	}
 }

@@ -55,6 +55,17 @@ namespace Bamboo.Prevalence.Implementation
 		}
 
 		/// <summary>
+		/// Prevalence base folder.
+		/// </summary>
+		public DirectoryInfo PrevalenceBase
+		{
+			get
+			{
+				return _fileCreator.PrevalenceBase;
+			}
+		}
+
+		/// <summary>
 		/// Writes a command to the current log file. If necessary
 		/// UndoWriteCommand can be called before the next WriteCommand
 		/// call to undo this operation.

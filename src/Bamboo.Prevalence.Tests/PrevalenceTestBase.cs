@@ -30,6 +30,7 @@
 // mailto:rodrigobamboo@users.sourceforge.net
 
 using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace Bamboo.Prevalence.Tests
@@ -49,7 +50,8 @@ namespace Bamboo.Prevalence.Tests
 			{
 				if (null == _PrevalenceBase)
 				{
-					_PrevalenceBase = new Uri(new Uri(GetType().Assembly.CodeBase), "prevalence").LocalPath;
+					//_PrevalenceBase = new Uri(new Uri(GetType().Assembly.CodeBase), "prevalence").LocalPath;
+					_PrevalenceBase = Path.Combine(Path.GetTempPath(), GetType().FullName);					
 				}
 				return _PrevalenceBase;
 			}
@@ -135,20 +137,12 @@ namespace Bamboo.Prevalence.Tests
 			AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
 		}
 
-		public System.Reflection.Assembly ResolveAssembly(object sender, ResolveEventArgs args)
+		System.Reflection.Assembly ResolveAssembly(object sender, ResolveEventArgs args)
 		{
 			if (args.Name.Equals(PrevalentSystemType.Assembly.FullName))
 			{
 				return PrevalentSystemType.Assembly;
-			}
-			if (args.Name.Equals(_engine.GetType().Assembly.FullName))
-			{
-				// Bamboo.Prevalence.AlarmClock
-				// is serialized to the snapshot stream so we must
-				// be able to resolve to the Bamboo.Prevalence
-				// assembly
-				return _engine.GetType().Assembly;
-			}
+			}			
 			return null;
 		}
 

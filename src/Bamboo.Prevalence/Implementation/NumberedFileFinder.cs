@@ -84,27 +84,33 @@ namespace Bamboo.Prevalence.Implementation
 			System.IO.FileInfo[] files = _prevalenceBase.GetFiles("*.snapshot");			
 			if (files.Length > 0)
 			{
-				Array.Sort(files, FileNameComparer.Instance);
+				Array.Sort(files, FileNameComparer.Default);
 				_lastSnapshot = files[files.Length-1];
 			}
 		}
 	}
 
-	internal class FileNameComparer : System.Collections.IComparer
+	/// <summary>
+	/// Compares System.IO.FileInfo objects by name.
+	/// </summary>
+	public class FileNameComparer : System.Collections.IComparer
 	{	
-		public static readonly FileNameComparer Instance = new FileNameComparer();
+		/// <summary>
+		/// The one and only FileNameComparer instance.
+		/// </summary>
+		public static readonly System.Collections.IComparer Default = new FileNameComparer();
 
 		private FileNameComparer()
 		{
 		}
 
 		#region Implementation of IComparer
-		public int Compare(object x, object y)
+		int System.Collections.IComparer.Compare(object lhs, object rhs)
 		{
 			// We know lhs and rhs can never be null
-			FileInfo lhs = (FileInfo)x;
-			FileInfo rhs = (FileInfo)y;
-			return lhs.Name.CompareTo(rhs.Name);
+			FileInfo lhsFileInfo = (FileInfo)lhs;
+			FileInfo rhsFileInfo = (FileInfo)rhs;
+			return lhsFileInfo.Name.CompareTo(rhsFileInfo.Name);
 		}	
 		#endregion
 	}

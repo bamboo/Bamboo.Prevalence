@@ -58,7 +58,8 @@ namespace Bamboo.Prevalence.Collections
 			}
 
 			_enumerators = enumerators;
-			Reset();
+			_currentIndex = 0;
+			_current = _enumerators[0];
 		}
 
 		public CompositeEnumerator(params IEnumerable[] enumerables)
@@ -79,7 +80,8 @@ namespace Bamboo.Prevalence.Collections
 				_enumerators[i] = enumerables[i].GetEnumerator();
 			}		
 	
-			Reset();
+			_currentIndex = 0;
+			_current = _enumerators[0];
 		}
 
 		public IEnumerator GetEnumerator()
@@ -99,21 +101,21 @@ namespace Bamboo.Prevalence.Collections
 
 		public bool MoveNext()
 		{		
-			bool next = _current.MoveNext();
-			while (!next)
+			bool hasNext = _current.MoveNext();
+			while (!hasNext)
 			{
 				++_currentIndex;
 				if (_currentIndex < _enumerators.Length)
 				{
 					_current = _enumerators[_currentIndex];
-					next = _current.MoveNext();
+					hasNext = _current.MoveNext();
 				}
 				else
 				{
 					break;
 				}
 			}
-			return next;
+			return hasNext;
 		}
 
 		public object Current

@@ -32,54 +32,31 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Reflection;
 
-namespace Bamboo.Prevalence.Collections
+namespace Bamboo.Prevalence.Util
 {
 	/// <summary>
-	/// Compares objects by property (the property value
-	/// must be IComparable).
+	/// NullObject implementation for ICleanUpPolicy.
 	/// </summary>
-	public class ObjectPropertyComparer : IComparer
+	public class NullCleanUpPolicy : ICleanUpPolicy
 	{
-		PropertyInfo _property;		
+		/// <summary>
+		/// The one and only NullCleanUpPolicy instance.
+		/// </summary>
+		public static readonly ICleanUpPolicy Default = new NullCleanUpPolicy();
 
-		public ObjectPropertyComparer(Type objectType, string propertyName)
+		/// <summary>
+		/// The one and only FileInfo empty array.
+		/// </summary>
+		public static readonly System.IO.FileInfo[] EmptyFileInfoArray = new System.IO.FileInfo[0];
+
+		private NullCleanUpPolicy()
 		{
-			MemberInfo[] members = objectType.GetMember(propertyName, MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public);
-			if (1 != members.Length)
-			{
-				throw new ArgumentException(string.Format("Could not resolve the property name \"{0}\"!", propertyName), propertyName);
-			}
-			_property = (PropertyInfo)members[0];
 		}
 
-		public ObjectPropertyComparer(PropertyInfo property)
+		System.IO.FileInfo[] ICleanUpPolicy.SelectFiles(Bamboo.Prevalence.PrevalenceEngine ignored)
 		{
-			if (null == property)
-			{
-				throw new ArgumentNullException("property");
-			}
-			_property = property;
-		}
-		
-		public int Compare(object lhs, object rhs)
-		{
-			object lhsValue = _property.GetValue(lhs, null);
-			object rhsValue = _property.GetValue(rhs, null);
-			
-			int value = 0;
-			if (null != lhsValue)
-			{
-				value = ((IComparable)lhsValue).CompareTo(rhsValue);
-			}
-			else if (null != rhsValue)
-			{
-				value = ((IComparable)rhsValue).CompareTo(lhsValue);
-				value *= -1; // inverts the value since we changed the comparison
-			}
-			return value;
+			return EmptyFileInfoArray;
 		}
 	}
 }

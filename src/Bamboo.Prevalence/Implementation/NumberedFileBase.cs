@@ -69,6 +69,17 @@ namespace Bamboo.Prevalence.Implementation
 			_prevalenceBase = prevalenceBase;
 			_nextNumber = nextNumber;
 		}		
+
+		/// <summary>
+		/// Prevalence base folder.
+		/// </summary>
+		public DirectoryInfo PrevalenceBase
+		{
+			get
+			{
+				return _prevalenceBase;
+			}
+		}
 	
 		/// <summary>
 		/// Formats a file name and returns the corresponding FileInfo

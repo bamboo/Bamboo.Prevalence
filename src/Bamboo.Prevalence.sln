@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Collectio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Collections.Tests", "Bamboo.Prevalence.Collections.Tests\Bamboo.Prevalence.Collections.Tests.csproj", "{99F4E694-730F-472A-9420-05716E071CCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Util", "Bamboo.Prevalence.Util\Bamboo.Prevalence.Util.csproj", "{057BC383-AEA4-4A03-B1FC-9401FE42F382}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Util.Tests", "Bamboo.Prevalence.Util.Tests\Bamboo.Prevalence.Util.Tests.csproj", "{5ACA07B5-0EAF-4833-A4E8-5FD390FD82BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Tests", "Bamboo.Prevalence.Tests\Bamboo.Prevalence.Tests.csproj", "{6D730430-8180-497D-B7F0-76B01E6ECF5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -55,6 +61,18 @@ Global
 		{99F4E694-730F-472A-9420-05716E071CCA}.Debug.Build.0 = Debug|.NET
 		{99F4E694-730F-472A-9420-05716E071CCA}.Release.ActiveCfg = Release|.NET
 		{99F4E694-730F-472A-9420-05716E071CCA}.Release.Build.0 = Release|.NET
+		{057BC383-AEA4-4A03-B1FC-9401FE42F382}.Debug.ActiveCfg = Debug|.NET
+		{057BC383-AEA4-4A03-B1FC-9401FE42F382}.Debug.Build.0 = Debug|.NET
+		{057BC383-AEA4-4A03-B1FC-9401FE42F382}.Release.ActiveCfg = Release|.NET
+		{057BC383-AEA4-4A03-B1FC-9401FE42F382}.Release.Build.0 = Release|.NET
+		{5ACA07B5-0EAF-4833-A4E8-5FD390FD82BB}.Debug.ActiveCfg = Debug|.NET
+		{5ACA07B5-0EAF-4833-A4E8-5FD390FD82BB}.Debug.Build.0 = Debug|.NET
+		{5ACA07B5-0EAF-4833-A4E8-5FD390FD82BB}.Release.ActiveCfg = Release|.NET
+		{5ACA07B5-0EAF-4833-A4E8-5FD390FD82BB}.Release.Build.0 = Release|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Debug.ActiveCfg = Debug|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Debug.Build.0 = Debug|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Release.ActiveCfg = Release|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

@@ -190,6 +190,17 @@ namespace Bamboo.Prevalence
 		}
 
 		/// <summary>
+		/// Prevalence base folder.
+		/// </summary>
+		public DirectoryInfo PrevalenceBase
+		{
+			get
+			{
+				return _commandLog.PrevalenceBase;
+			}
+		}
+
+		/// <summary>
 		/// Returns the current executing PrevalenceEngine when 
 		/// called inside ICommand and IQuery objects Execute method.
 		/// </summary>
