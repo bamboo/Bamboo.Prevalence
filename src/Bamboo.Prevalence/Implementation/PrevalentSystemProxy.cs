@@ -33,6 +33,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
 using Bamboo.Prevalence;
@@ -44,9 +45,9 @@ namespace Bamboo.Prevalence.Implementation
 	{
 		private PrevalenceEngine _engine;
 
-		private object _system;
+		private MarshalByRefObject _system;
 
-		public PrevalentSystemProxy(PrevalenceEngine engine, object system) : base(system.GetType())
+		public PrevalentSystemProxy(PrevalenceEngine engine, MarshalByRefObject system) : base(system.GetType())
 		{
 			_engine = engine;
 			_system = system;
@@ -128,8 +129,7 @@ namespace Bamboo.Prevalence.Implementation
 
 		private IMessage InvokeSystem(IMethodCallMessage call)
 		{
-			object returnValue = call.MethodBase.Invoke(_system, BindingFlags.Instance, null, call.Args, null);
-			return new ReturnMessage(returnValue, null, 0, call.LogicalCallContext, call);			
+			return RemotingServices.ExecuteMessage(_system, call);			
 		}
 
 		private IMessage ExecuteCommand(IMethodCallMessage call)

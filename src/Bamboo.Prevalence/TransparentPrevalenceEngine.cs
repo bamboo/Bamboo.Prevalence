@@ -44,7 +44,7 @@ namespace Bamboo.Prevalence
 		public TransparentPrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter) :
 			base(systemType, prevalenceBase, formatter)
 		{			
-			_transparentProxy = new PrevalentSystemProxy(this, _system).GetTransparentProxy();
+			_transparentProxy = new PrevalentSystemProxy(this, (MarshalByRefObject)_system).GetTransparentProxy();
 		}
 
 		public override object PrevalentSystem

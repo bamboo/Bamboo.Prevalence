@@ -8,10 +8,12 @@
 
 	<target name='setDebugProperties'>
 		<property name='debug' value='true' />
+		<property name='optimize' value='false' />
 	</target>
 
 	<target name='setReleaseProperties'>
 		<property name='debug' value='false' />
+		<property name='optimize' value='true' />
 	</target>
 
 	<target name='test' depends='Bamboo.Prevalence.Tests'>
@@ -75,7 +77,8 @@
 			doc='bin\Bamboo.Prevalence.xml'
 			target='library'
 			output='bin\Bamboo.Prevalence.dll'
-			debug='${debug}'>
+			debug='${debug}'
+			optimize='${optimize}'>
 
 			<sources>
 				<includes name='src/Bamboo.Prevalence/**.cs' />

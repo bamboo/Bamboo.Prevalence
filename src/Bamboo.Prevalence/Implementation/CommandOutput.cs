@@ -119,6 +119,7 @@ namespace Bamboo.Prevalence.Implementation
 			FlushFileBuffers(stream);			
 		}
 
+		[System.Security.SuppressUnmanagedCodeSecurity] // optimization...
 		private static void FlushFileBuffers(System.IO.FileStream stream)
 		{
 			if (0 == FlushFileBuffers(stream.Handle))
@@ -127,7 +128,7 @@ namespace Bamboo.Prevalence.Implementation
 			}
 		}
 
-		// TODO: Remove if at all possible this Win32 dependency
+		// TODO: Remove this dependency on win32 if at all possible
 		[DllImport("KERNEL32.DLL", EntryPoint="FlushFileBuffers", PreserveSig=true, CallingConvention=CallingConvention.Winapi, SetLastError=true)]
 		private static extern int FlushFileBuffers(IntPtr handle);
 
