@@ -58,7 +58,7 @@ namespace Bamboo.Prevalence
 		/// <returns>a new prevalence engine</returns>
 		public static PrevalenceEngine CreateEngine(System.Type systemType, string prevalenceBase)
 		{
-			return CreateEngine(systemType, prevalenceBase, CreateBinaryFormatter());
+			return CreateEngine(systemType, prevalenceBase, CreateBinaryFormatter(), null);
 		}
 
 		/// <summary>
@@ -70,8 +70,9 @@ namespace Bamboo.Prevalence
 		/// <param name="systemType">prevalent system type, must be serializable</param>
 		/// <param name="prevalenceBase">directory where to store log files</param>
 		/// <param name="autoVersionMigration">include support for auto version migration</param>
+		/// <param name="handler">delegate to receive notifications about any exceptions during recovery</param>
 		/// <returns>a new prevalence engine</returns>
-		public static PrevalenceEngine CreateEngine(System.Type systemType, string prevalenceBase, bool autoVersionMigration)
+		public static PrevalenceEngine CreateEngine(System.Type systemType, string prevalenceBase, bool autoVersionMigration, PrevalenceEngine.ExceptionDuringRecoveryHandler handler)
 		{
 			CheckEngineParameters(systemType, prevalenceBase);
 
@@ -86,7 +87,19 @@ namespace Bamboo.Prevalence
 				formatter = CreateBinaryFormatter();
 			}
 
-			return CreateRequestedEngine(systemType, prevalenceBase, formatter);
+			return CreateRequestedEngine(systemType, prevalenceBase, formatter, handler);
+		}
+
+		/// <summary>
+		/// See <see cref="CreateEngine(System.Type,System.String,System.Boolean,PrevalenceEngine.ExceptionDuringRecoveryHandler)"/>.
+		/// </summary>
+		/// <param name="systemType"></param>
+		/// <param name="prevalenceBase"></param>
+		/// <param name="autoVersionMigration"></param>
+		/// <returns></returns>
+		public static PrevalenceEngine CreateEngine(System.Type systemType, string prevalenceBase, bool autoVersionMigration)
+		{
+			return CreateEngine(systemType, prevalenceBase, autoVersionMigration, null);
 		}
 
 		/// <summary>
@@ -96,13 +109,14 @@ namespace Bamboo.Prevalence
 		/// <param name="systemType">prevalent system type, must be serializable</param>
 		/// <param name="prevalenceBase">directory where to store log files</param>
 		/// <param name="formatter">serialization formatter that should be used for reading from/writing to the logs</param>
+		/// <param name="handler">delegate to receive notifications of any exceptions thrown during recovery</param>
 		/// <returns>a new prevalence engine</returns>
-		public static PrevalenceEngine CreateEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter)
+		public static PrevalenceEngine CreateEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter, PrevalenceEngine.ExceptionDuringRecoveryHandler handler)
 		{
 			CheckEngineParameters(systemType, prevalenceBase);
 			Assertion.AssertParameterNotNull("formatter", formatter);
 
-			return CreateRequestedEngine(systemType, prevalenceBase, formatter);
+			return CreateRequestedEngine(systemType, prevalenceBase, formatter, handler);
 		}
 
 		/// <summary>
@@ -169,15 +183,15 @@ namespace Bamboo.Prevalence
 			return new TransparentPrevalenceEngine(systemType, prevalenceBase, formatter);
 		}
 
-		private static PrevalenceEngine CreateRequestedEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter)
+		private static PrevalenceEngine CreateRequestedEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter, PrevalenceEngine.ExceptionDuringRecoveryHandler handler)
 		{
 			if (Attribute.IsDefined(systemType, typeof(Bamboo.Prevalence.Attributes.TransparentPrevalenceAttribute), false))
 			{
-				return new TransparentPrevalenceEngine(systemType, prevalenceBase, formatter);
+				return new TransparentPrevalenceEngine(systemType, prevalenceBase, formatter, handler);
 			}
 			else
 			{
-				return new PrevalenceEngine(systemType, prevalenceBase, formatter);
+				return new PrevalenceEngine(systemType, prevalenceBase, formatter, handler);
 			}
 		}
 

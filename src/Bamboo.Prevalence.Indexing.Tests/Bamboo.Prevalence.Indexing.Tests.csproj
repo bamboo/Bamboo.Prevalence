@@ -3,20 +3,20 @@
         ProjectType = "Local"
         ProductVersion = "7.0.9466"
         SchemaVersion = "1.0"
-        ProjectGuid = "{6D730430-8180-497D-B7F0-76B01E6ECF5C}"
+        ProjectGuid = "{9258A316-B31F-4A5F-8A8C-AB77FDD7C9EF}"
     >
         <Build>
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "Bamboo.Prevalence.Tests"
+                AssemblyName = "Bamboo.Prevalence.Indexing.Tests"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                RootNamespace = "Bamboo.Prevalence.Tests"
+                RootNamespace = "Bamboo.Prevalence.Indexing.Tests"
                 StartupObject = ""
             >
                 <Config
@@ -31,7 +31,7 @@
                     FileAlignment = "4096"
                     IncrementalBuild = "true"
                     Optimize = "false"
-                    OutputPath = "..\..\bin\"
+                    OutputPath = "bin\Debug\"
                     RegisterForComInterop = "false"
                     RemoveIntegerChecks = "false"
                     TreatWarningsAsErrors = "false"
@@ -73,8 +73,8 @@
                     HintPath = "C:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
-                    Name = "Bamboo.Prevalence"
-                    Project = "{BA30B295-66F0-4C15-84C7-41B9C6BE6131}"
+                    Name = "Bamboo.Prevalence.Indexing"
+                    Project = "{9C5CF44A-9C33-4F84-A895-344A6B12813D}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
@@ -87,77 +87,22 @@
         <Files>
             <Include>
                 <File
-                    RelPath = "AbstractAddingSystemTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AbstractPrevalenceEngineTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AddCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AddingSystem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "IAddingSystem.cs"
+                    RelPath = "FullTextSearchTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MultiThreadedTests.cs"
+                    RelPath = "SpecialCharactersFilterTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PrevalenceEngineTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PrevalenceTestBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PrincipalSensitiveAddingSystem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PrincipalSensitivePrevalenceEngineTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "QueryTotal.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestCurrentCommandAndQuery.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TransparentAddingSystem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TransparentPrevalenceEngineTest.cs"
+                    RelPath = "StringTokenizerTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

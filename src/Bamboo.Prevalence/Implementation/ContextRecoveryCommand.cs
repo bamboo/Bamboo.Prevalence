@@ -55,5 +55,14 @@ namespace Bamboo.Prevalence.Implementation
 			PrevalenceEngine.Current.Clock.Recover(_dateTime);
 			return _command.Execute(system);
 		}
+
+		/// <summary>
+		/// Delegate to the inner command ToString method.
+		/// </summary>
+		/// <returns>inner command's string representation</returns>
+		public override string ToString()
+		{
+			return _command.ToString();
+		}
 	}
 }

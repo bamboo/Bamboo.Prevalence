@@ -54,5 +54,10 @@ namespace Bamboo.Prevalence.Implementation
 		{
 			return system.GetType().InvokeMember(_methodName, BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, system, _args);
 		}
+
+		public override string ToString()
+		{
+			return _methodName;
+		}
 	}
 }

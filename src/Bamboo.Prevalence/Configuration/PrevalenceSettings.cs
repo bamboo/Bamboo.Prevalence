@@ -198,7 +198,7 @@ namespace Bamboo.Prevalence.Configuration
 
 			try
 			{
-				engines[id] = PrevalenceActivator.CreateEngine(systemType, prevalenceBase, autoVersionMigration);
+				engines[id] = PrevalenceActivator.CreateEngine(systemType, prevalenceBase, autoVersionMigration, null);
 			}
 			catch (System.Exception x)
 			{

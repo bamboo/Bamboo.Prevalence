@@ -41,10 +41,15 @@ namespace Bamboo.Prevalence
 	{
 		private object _transparentProxy;
 
-		public TransparentPrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter) :
-			base(systemType, prevalenceBase, formatter)
+		public TransparentPrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter, PrevalenceEngine.ExceptionDuringRecoveryHandler handler) :
+			base(systemType, prevalenceBase, formatter, handler)
 		{			
 			_transparentProxy = new PrevalentSystemProxy(this, (MarshalByRefObject)_system).GetTransparentProxy();
+		}
+
+		public TransparentPrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter) :
+			this(systemType, prevalenceBase, formatter, null)
+		{
 		}
 
 		public override object PrevalentSystem

@@ -87,6 +87,65 @@ namespace Bamboo.Prevalence
 	/// </remarks>
 	public class PrevalenceEngine
 	{
+		#region inner types
+
+		/// <summary>
+		/// Arguments for the <see cref="PrevalenceEngine.ExceptionDuringRecoveryHandler"/> delegate.
+		/// </summary>
+		public class ExceptionDuringRecoveryEventArgs : System.EventArgs
+		{
+			ICommand _command;
+
+			Exception _exception;
+
+			/// <summary>
+			/// Create a new argument object.
+			/// </summary>
+			/// <param name="command">the failing command</param>
+			/// <param name="x">the exception thrown by the command</param>
+			public ExceptionDuringRecoveryEventArgs(ICommand command, Exception x)
+			{
+				_command = command;
+				_exception = x;
+			}
+
+
+			/// <summary>
+			/// The exception thrown by the command during recovery
+			/// </summary>
+			public System.Exception Exception
+			{
+				get
+				{
+					return _exception;
+				}
+			}
+
+			/// <summary>
+			/// The failing command
+			/// </summary>
+			public ICommand Command
+			{
+				get
+				{
+					return _command;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Raised for every command that throws an exception
+		/// during recovery.<br />
+		/// Note that commands are allowed to throw exceptions
+		/// and there's no way for the PrevalenceEngine to
+		/// know what to do in that case. The event is a
+		/// chance for the application to take the
+		/// appropriate measures (most of the time, do nothing).
+		/// </summary>
+		public delegate void ExceptionDuringRecoveryHandler(PrevalenceEngine sender, ExceptionDuringRecoveryEventArgs args);
+
+		#endregion		
+
 		/// <summary>
 		/// the prevalent system.
 		/// </summary>
@@ -108,15 +167,26 @@ namespace Bamboo.Prevalence
 		/// <param name="systemType"></param>
 		/// <param name="prevalenceBase"></param>
 		/// <param name="formatter"></param>
-		internal PrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter)
+		/// <param name="handler"></param>
+		internal PrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter, ExceptionDuringRecoveryHandler handler)
 		{				
 			_clock = new AlarmClock();
 
 			CommandLogReader reader = new CommandLogReader(CheckPrevalenceBase(prevalenceBase), formatter);
-			RecoverSystem(systemType, reader);
+			RecoverSystem(systemType, reader, handler);
 			_commandLog = reader.ToWriter();
 			_lock = new ReaderWriterLock();
 			_decorators = GetCommandDecorators(systemType);
+		}
+
+		/// <summary>
+		/// See <see cref="PrevalenceActivator.CreateEngine(System.Type, string)"/>
+		/// </summary>
+		/// <param name="systemType"></param>
+		/// <param name="prevalenceBase"></param>
+		/// <param name="formatter"></param>
+		internal PrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter) : this(systemType, prevalenceBase, formatter, null)
+		{
 		}
 
 		/// <summary>
@@ -270,17 +340,17 @@ namespace Bamboo.Prevalence
 			return di;
 		}		
 
-		private void RecoverSystem(System.Type systemType, CommandLogReader reader)
+		private void RecoverSystem(System.Type systemType, CommandLogReader reader, ExceptionDuringRecoveryHandler handler)
 		{
 			_system = reader.ReadLastSnapshot();			
 			if (null == _system)
 			{
 				_system = System.Activator.CreateInstance(systemType);
 			}
-			RecoverCommands(reader);
+			RecoverCommands(reader, handler);
 		}
 		
-		private void RecoverCommands(CommandLogReader reader)
+		private void RecoverCommands(CommandLogReader reader, ExceptionDuringRecoveryHandler handler)
 		{
 			ShareCurrentObject();
 
@@ -294,9 +364,12 @@ namespace Bamboo.Prevalence
 					{
 						command.Execute(_system);
 					}
-					catch (System.Exception)
+					catch (System.Exception x)
 					{
 						// commands are allowed to throw exceptions
+						// it is up to the client to decide what to
+						// do with them
+						OnExceptionDuringRecovery(handler, command, x);
 					}
 				}		
                 
@@ -306,6 +379,24 @@ namespace Bamboo.Prevalence
 			{
 				UnshareCurrentObject();
 			}
+		}
+
+		/// <summary>
+		/// Called whenever a exception is thrown by a command
+		/// during recovery.<br />
+		/// Notify the specified delegate of the exception.
+		/// 
+		/// </summary>
+		/// <param name="handler">a delegate that should be notified of the exception</param>
+		/// <param name="command">commands that has thrown the exception</param>
+		/// <param name="exception">the exception</param>
+		protected virtual void OnExceptionDuringRecovery(ExceptionDuringRecoveryHandler handler, ICommand command, Exception exception)
+		{
+			if (null != handler)
+			{
+				handler(this, new ExceptionDuringRecoveryEventArgs(command, exception));
+			}
+			System.Diagnostics.Trace.WriteLine(string.Format("Exception {0} during recovery of the command {1}", exception, command));
 		}
 
 		private object DoExecuteCommand(ICommand command)

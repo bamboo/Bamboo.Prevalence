@@ -1,11 +1,9 @@
 Microsoft Visual Studio Solution File, Format Version 7.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence", "Bamboo.Prevalence\Bamboo.Prevalence.csproj", "{BA30B295-66F0-4C15-84C7-41B9C6BE6131}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Indexing.Tests", "Bamboo.Prevalence.Indexing.Tests\Bamboo.Prevalence.Indexing.Tests.csproj", "{9258A316-B31F-4A5F-8A8C-AB77FDD7C9EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Tests", "Bamboo.Prevalence.Tests\Bamboo.Prevalence.Tests.csproj", "{6D730430-8180-497D-B7F0-76B01E6ECF5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Indexing", "Bamboo.Prevalence.Indexing\Bamboo.Prevalence.Indexing.csproj", "{9C5CF44A-9C33-4F84-A895-344A6B12813D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.VersionMigration", "..\Tools\VersionMigration\src\Bamboo.Prevalence.VersionMigration\Bamboo.Prevalence.VersionMigration.csproj", "{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionMigratorGUI", "..\Tools\VersionMigration\src\VersionMigratorGUI\VersionMigratorGUI.csproj", "{164386A7-B7FE-4EAF-8487-40DBBCBE1585}"
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -15,22 +13,18 @@ Global
 	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{BA30B295-66F0-4C15-84C7-41B9C6BE6131}.Debug.ActiveCfg = Debug|.NET
-		{BA30B295-66F0-4C15-84C7-41B9C6BE6131}.Debug.Build.0 = Debug|.NET
-		{BA30B295-66F0-4C15-84C7-41B9C6BE6131}.Release.ActiveCfg = Release|.NET
-		{BA30B295-66F0-4C15-84C7-41B9C6BE6131}.Release.Build.0 = Release|.NET
-		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Debug.ActiveCfg = Debug|.NET
-		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Debug.Build.0 = Debug|.NET
-		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Release.ActiveCfg = Release|.NET
-		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Release.Build.0 = Release|.NET
+		{9258A316-B31F-4A5F-8A8C-AB77FDD7C9EF}.Debug.ActiveCfg = Debug|.NET
+		{9258A316-B31F-4A5F-8A8C-AB77FDD7C9EF}.Debug.Build.0 = Debug|.NET
+		{9258A316-B31F-4A5F-8A8C-AB77FDD7C9EF}.Release.ActiveCfg = Release|.NET
+		{9258A316-B31F-4A5F-8A8C-AB77FDD7C9EF}.Release.Build.0 = Release|.NET
+		{9C5CF44A-9C33-4F84-A895-344A6B12813D}.Debug.ActiveCfg = Debug|.NET
+		{9C5CF44A-9C33-4F84-A895-344A6B12813D}.Debug.Build.0 = Debug|.NET
+		{9C5CF44A-9C33-4F84-A895-344A6B12813D}.Release.ActiveCfg = Release|.NET
+		{9C5CF44A-9C33-4F84-A895-344A6B12813D}.Release.Build.0 = Release|.NET
 		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Debug.ActiveCfg = Debug|.NET
 		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Debug.Build.0 = Debug|.NET
 		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Release.ActiveCfg = Release|.NET
 		{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}.Release.Build.0 = Release|.NET
-		{164386A7-B7FE-4EAF-8487-40DBBCBE1585}.Debug.ActiveCfg = Debug|.NET
-		{164386A7-B7FE-4EAF-8487-40DBBCBE1585}.Debug.Build.0 = Debug|.NET
-		{164386A7-B7FE-4EAF-8487-40DBBCBE1585}.Release.ActiveCfg = Release|.NET
-		{164386A7-B7FE-4EAF-8487-40DBBCBE1585}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

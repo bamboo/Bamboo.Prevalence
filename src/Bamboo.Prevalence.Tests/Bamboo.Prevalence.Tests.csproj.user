@@ -1,7 +1,7 @@
 <VisualStudioProject>
     <CSHARP>
         <Build>
-            <Settings ReferencePath = "D:\dev\Bamboo.Prevalence\lib\;C:\dev\Bamboo.Prevalence\lib\;D:\dev\dotnet\Bamboo.Prevalence\lib\" >
+            <Settings ReferencePath = "C:\Program Files\NUnit Addin\;D:\dev\Bamboo.Prevalence\lib\;C:\dev\Bamboo.Prevalence\lib\;D:\dev\dotnet\Bamboo.Prevalence\lib\" >
                 <Config
                     Name = "Debug"
                     EnableASPDebugging = "false"
