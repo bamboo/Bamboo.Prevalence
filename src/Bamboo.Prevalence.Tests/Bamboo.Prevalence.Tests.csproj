@@ -104,32 +104,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "AddCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AddingSystem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "IAddingSystem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "MultiThreadedTests.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NonSerializableCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -144,17 +124,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PrincipalSensitiveAddingSystem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "PrincipalSensitivePrevalenceEngineTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "QueryTotal.cs"
+                    RelPath = "SubSystemPrevalenceEngineTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -164,16 +139,65 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TransparentAddingSystem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "TransparentPrevalenceEngineTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
-                <Folder RelPath = "Serialization\" />
+                <File
+                    RelPath = "Model\AddCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\AddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\IAddCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\IAddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\ISubAddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\NonSerializableCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\PrincipalSensitiveAddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\QueryTotal.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\SubSystemAddCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\TransparentAddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Model\TransparentSubAddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
             </Include>
         </Files>
     </CSHARP>

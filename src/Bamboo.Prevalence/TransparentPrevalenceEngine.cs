@@ -33,8 +33,10 @@
 // Thanks to Jesse Ezell for coming up with the idea.
 
 using System;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Bamboo.Prevalence.Implementation;
+using Bamboo.Prevalence.Attributes;
 
 namespace Bamboo.Prevalence
 {	
@@ -44,12 +46,8 @@ namespace Bamboo.Prevalence
 
 		public TransparentPrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter, PrevalenceEngine.ExceptionDuringRecoveryHandler handler) :
 			base(systemType, prevalenceBase, formatter, handler)
-		{			
-			if (!(_system is MarshalByRefObject))
-			{
-				throw new ArgumentException("Prevalent system type must extend MarshalByRefObject to be used with TransparentPrevalenceEngine!", "systemType");
-			}
-			_transparentProxy = new PrevalentSystemProxy(this, (MarshalByRefObject)_system).GetTransparentProxy();
+		{
+			CreateProxy();
 		}
 
 		public TransparentPrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter) :
@@ -63,6 +61,38 @@ namespace Bamboo.Prevalence
 			{
 				return _transparentProxy;
 			}
+		}
+		
+		private void CreateProxy()
+		{
+			if (!(_system is MarshalByRefObject))
+			{
+				throw new ArgumentException("Prevalent system type must extend MarshalByRefObject to be used with TransparentPrevalenceEngine!", "systemType");
+			}
+			
+			if (HasSubSystems(_system.GetType()))
+			{
+				_transparentProxy = new PrevalentSubSystemHolderProxy(this, (MarshalByRefObject)_system).GetTransparentProxy();
+			}
+			else
+			{
+				_transparentProxy = new PrevalentSystemProxy(this, (MarshalByRefObject)_system).GetTransparentProxy();
+			}
+		}
+
+		private bool HasSubSystems(Type type)
+		{
+			PropertyInfo[] properties = type.GetProperties();
+
+			foreach(PropertyInfo property in properties)
+			{
+				if (Attribute.IsDefined(property, typeof(SubSystemAttribute)))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }

@@ -31,44 +31,37 @@
 #endregion
 
 using System;
-using System.Security.Permissions;
-using NUnit.Framework;
-using Bamboo.Prevalence;
-using Bamboo.Prevalence.Attributes;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Tests.Model
 {
-	/// <summary>
-	/// IAddingSystem implementation that uses
-	/// Role Based security. The attribute PrincipalSensitive
-	/// guarantees that the principal associated with the
-	/// command will be written to the command log.
-	/// </summary>
 	[Serializable]
-	[TransparentPrevalence]
-	[PrincipalSensitive]
-	public class PrincipalSensitiveAddingSystem : System.MarshalByRefObject, IAddingSystem
+	public class SubSystemAddCommand : IAddCommand
 	{
-		private int _total;		
-		
-		[PrincipalPermission(SecurityAction.Demand, Role="Adder")]
-		public int Add(int amount)
-		{
-			if (amount < 0)
-			{
-				throw new ArgumentOutOfRangeException("amount", amount, "amount must be positive!");
-			}
+		private int _amount;
 
-			_total += amount;
-			return _total;
+		public SubSystemAddCommand(int amount)
+		{
+			_amount = amount;
 		}
 
-		public int Total
+		public int Amount
 		{
-			get
-			{
-				return _total;
-			}
+			get { return _amount; }
+			set { _amount = value; }
 		}
+
+		#region ICommand Members
+
+		public object Execute(object theSystem)
+		{
+			ISubAddingSystem system = theSystem as ISubAddingSystem;
+
+			system.AddingSystem.Add(_amount);
+			system.GetAnotherAddingSystem().Add(_amount);
+
+			return system.Add(_amount);
+		}
+
+		#endregion
 	}
 }

@@ -30,18 +30,20 @@
 // mailto:rodrigobamboo@users.sourceforge.net
 #endregion
 
-using System;
+using Bamboo.Prevalence.Tests.Model;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Tests.Model
 {
 	/// <summary>
-	/// Queries the total amount accumulated by the system.
+	/// Summary description for IComplexAddingSystem.
 	/// </summary>
-	public class QueryTotal : Bamboo.Prevalence.IQuery
+	public interface ISubAddingSystem : IAddingSystem
 	{
-		object Bamboo.Prevalence.IQuery.Execute(object system)
+		IAddingSystem AddingSystem
 		{
-			return ((IAddingSystem)system).Total;
+			get;
 		}
+
+		IAddingSystem GetAnotherAddingSystem();
 	}
 }

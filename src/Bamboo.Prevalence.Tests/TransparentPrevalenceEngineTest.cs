@@ -31,6 +31,7 @@
 #endregion
 
 using System;
+using Bamboo.Prevalence.Tests.Model;
 using NUnit.Framework;
 using Bamboo.Prevalence;
 

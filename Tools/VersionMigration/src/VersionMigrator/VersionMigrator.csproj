@@ -80,6 +80,11 @@
                     HintPath = "C:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
+                    Name = "Bamboo.Prevalence"
+                    Project = "{BA30B295-66F0-4C15-84C7-41B9C6BE6131}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
                     Name = "Bamboo.Prevalence.VersionMigration"
                     Project = "{5F516F0A-1FB4-4764-B1ED-F3E1D512A699}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"

@@ -46,9 +46,9 @@ namespace Bamboo.Prevalence.Implementation
 	{
 		private static Type ObjectType = typeof(object);
 
-		private PrevalenceEngine _engine;
+		protected PrevalenceEngine _engine;
 
-		private MarshalByRefObject _system;
+		protected MarshalByRefObject _system;
 
 		public PrevalentSystemProxy(PrevalenceEngine engine, MarshalByRefObject system) : base(system.GetType())
 		{
@@ -126,25 +126,26 @@ namespace Bamboo.Prevalence.Implementation
 				method.DeclaringType == ObjectType;
 		}
 
-		private bool IsPropertyGet(MethodBase method)
+		protected bool IsPropertyGet(MethodBase method)
 		{
 			return method.IsSpecialName && method.Name.StartsWith("get_");
 		}
 
-		private IMessage InvokeSystem(IMethodCallMessage call)
+		protected virtual IMessage InvokeSystem(IMethodCallMessage call)
 		{
 			return RemotingServices.ExecuteMessage(_system, call);			
 		}
 
-		private IMessage ExecuteCommand(IMethodCallMessage call)
+		protected virtual IMessage ExecuteCommand(IMethodCallMessage call)
 		{			
 			object returnValue = _engine.ExecuteCommand(new MethodCallCommand(call.MethodName, call.Args));
 			return new ReturnMessage(returnValue, null, 0, call.LogicalCallContext, call);
 		}
 
-		private IMessage ExecuteQuery(IMethodCallMessage call)
+		protected virtual IMessage ExecuteQuery(IMethodCallMessage call)
 		{
 			_engine.BeforeQuery();
+
 			try
 			{
 				return InvokeSystem(call);

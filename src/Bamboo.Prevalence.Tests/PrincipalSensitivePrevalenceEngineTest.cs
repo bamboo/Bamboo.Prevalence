@@ -34,6 +34,7 @@ using System;
 using System.Security;
 using System.Security.Principal;
 using System.Threading;
+using Bamboo.Prevalence.Tests.Model;
 using NUnit.Framework;
 
 namespace Bamboo.Prevalence.Tests

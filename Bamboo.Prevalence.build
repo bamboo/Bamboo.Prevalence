@@ -155,6 +155,7 @@
 
 			<sources>
 				<include name='src/Bamboo.Prevalence.Tests/*.cs' />
+				<include name='src/Bamboo.Prevalence.Tests/Model/*.cs' />
 			</sources>
 
 			<references>

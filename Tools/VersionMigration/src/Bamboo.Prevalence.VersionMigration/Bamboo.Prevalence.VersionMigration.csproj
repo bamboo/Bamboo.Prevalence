@@ -139,6 +139,26 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Script.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ScriptCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ScriptImport.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ScriptImportCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TypeMapping.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

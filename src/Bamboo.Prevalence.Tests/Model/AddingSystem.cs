@@ -32,46 +32,39 @@
 
 using System;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Tests.Model
 {
 	/// <summary>
-	/// Adds a specified amount to the system Total.
+	/// A simple prevalent system. Note that no synchronization
+	/// is necessary because only commands and queries have
+	/// access to the system.
 	/// </summary>
 	[Serializable]
-	public class AddCommand : Bamboo.Prevalence.ICommand
+	public class AddingSystem : IAddingSystem
 	{
-		private int _amount;
+		private int _total;		
 
-		public AddCommand(int amount)
-		{
-			_amount = amount;
+		public AddingSystem()
+		{			
 		}
 
-		///
-		/// <summary>
-		/// For testing purposes this
-		/// command implementation is not
-		/// immutable.
-		/// See <see cref="PrevalenceEngineTest.TestExecutingTheSameCommandTwice" />.
-		/// </summary>
-		/// 
-		public int Amount
+		int IAddingSystem.Total
 		{
 			get
 			{
-				return _amount;
-			}
-			
-			set
-			{
-				_amount = value;
+				return _total;
 			}
 		}
 
-		object Bamboo.Prevalence.ICommand.Execute(object theSystem)
+		int IAddingSystem.Add(int amount)
 		{
-			IAddingSystem system = theSystem as IAddingSystem;
-			return system.Add(_amount);
+			if (amount < 0)
+			{
+				throw new ArgumentOutOfRangeException("amount", amount, "amount must be positive!");
+			}
+
+			_total += amount;
+			return _total;
 		}
 	}
 }

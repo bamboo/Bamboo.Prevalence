@@ -36,7 +36,7 @@
                     NoStdLib = "false"
                     NoWarn = ""
                     Optimize = "false"
-                    OutputPath = "..\..\..\..\websiterecord\output\website\bin\"
+                    OutputPath = "..\..\bin\"
                     RegisterForComInterop = "false"
                     RemoveIntegerChecks = "false"
                     TreatWarningsAsErrors = "false"

@@ -31,70 +31,17 @@
 #endregion
 
 using System;
-using System.Threading;
-using Bamboo.Prevalence.Tests.Model;
-using NUnit.Framework;
-using Bamboo.Prevalence;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Tests.Model
 {
 	/// <summary>
-	/// Tests the multithreaded behavior of PrevalenceEngine
+	/// Queries the total amount accumulated by the system.
 	/// </summary>
-	[TestFixture]
-	public class MultiThreadedTests : AbstractAddingSystemTest
-	{		
-		protected override PrevalenceEngine CreateEngine()
+	public class QueryTotal : Bamboo.Prevalence.IQuery
+	{
+		object Bamboo.Prevalence.IQuery.Execute(object system)
 		{
-			return PrevalenceActivator.CreateEngine(PrevalentSystemType, PrevalenceBase, true);
-		}
-
-		[Test]
-		public void TestMultiThreadedWrites()
-		{
-			ClearPrevalenceBase();
-			CrashRecover();
-
-			AssertTotal(0);
-
-			Thread[] threads = new Thread[20];
-			for (int i = 0; i<threads.Length; ++i)
-			{
-				threads[i] = new Thread(new ThreadStart(ExecuteAddCommand));
-			}
-
-			Start(threads);
-			Join(threads);			
-
-			CrashRecover();
-
-			// 20 threads adding the value 10, 10 times
-			AssertTotal(20*10*20);
-		}
-
-		private void ExecuteAddCommand()
-		{	
-			for (int i = 0; i<20; ++i)
-			{
-				ExecuteCommand(new AddCommand(10));
-				Thread.Sleep(100);
-			}
-		}
-
-		private void Join(Thread[] threads)
-		{
-			foreach (Thread t in threads)
-			{
-				t.Join();
-			}
-		}
-
-		private void Start(Thread[] threads)
-		{
-			foreach (Thread t in threads)
-			{
-				t.Start();			
-			}
+			return ((IAddingSystem)system).Total;
 		}
 	}
 }

@@ -37,6 +37,7 @@ using NUnit.Framework;
 using Bamboo.Prevalence;
 using Bamboo.Prevalence.Implementation;
 using Bamboo.Prevalence.Tests;
+using Bamboo.Prevalence.Tests.Model;
 using Bamboo.Prevalence.Util;
 
 namespace Bamboo.Prevalence.Util.Tests

@@ -154,6 +154,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\SubSystemAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Attributes\TransparentPrevalenceAttribute.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -209,7 +214,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Implementation\PrevalentSubSystemHolderProxy.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Implementation\PrevalentSubSystemProxy.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Implementation\PrevalentSystemProxy.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Implementation\SubSystemMethodCallCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

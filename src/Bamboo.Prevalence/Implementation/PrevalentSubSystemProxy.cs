@@ -31,70 +31,23 @@
 #endregion
 
 using System;
-using System.Threading;
-using Bamboo.Prevalence.Tests.Model;
-using NUnit.Framework;
-using Bamboo.Prevalence;
+using System.Runtime.Remoting.Messaging;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Implementation
 {
-	/// <summary>
-	/// Tests the multithreaded behavior of PrevalenceEngine
-	/// </summary>
-	[TestFixture]
-	public class MultiThreadedTests : AbstractAddingSystemTest
-	{		
-		protected override PrevalenceEngine CreateEngine()
+	internal class PrevalentSubSystemProxy : PrevalentSystemProxy
+	{
+		private string _fieldName;
+
+		public PrevalentSubSystemProxy(PrevalenceEngine engine, MarshalByRefObject system, string fieldName) : base(engine, system)
 		{
-			return PrevalenceActivator.CreateEngine(PrevalentSystemType, PrevalenceBase, true);
+			_fieldName = fieldName;
 		}
 
-		[Test]
-		public void TestMultiThreadedWrites()
+		protected override IMessage ExecuteCommand(IMethodCallMessage call)
 		{
-			ClearPrevalenceBase();
-			CrashRecover();
-
-			AssertTotal(0);
-
-			Thread[] threads = new Thread[20];
-			for (int i = 0; i<threads.Length; ++i)
-			{
-				threads[i] = new Thread(new ThreadStart(ExecuteAddCommand));
-			}
-
-			Start(threads);
-			Join(threads);			
-
-			CrashRecover();
-
-			// 20 threads adding the value 10, 10 times
-			AssertTotal(20*10*20);
-		}
-
-		private void ExecuteAddCommand()
-		{	
-			for (int i = 0; i<20; ++i)
-			{
-				ExecuteCommand(new AddCommand(10));
-				Thread.Sleep(100);
-			}
-		}
-
-		private void Join(Thread[] threads)
-		{
-			foreach (Thread t in threads)
-			{
-				t.Join();
-			}
-		}
-
-		private void Start(Thread[] threads)
-		{
-			foreach (Thread t in threads)
-			{
-				t.Start();			
-			}
+			object returnValue = _engine.ExecuteCommand(new SubSystemMethodCallCommand(_fieldName, call.MethodName, call.Args));
+			return new ReturnMessage(returnValue, null, 0, call.LogicalCallContext, call);
 		}
 	}
 }

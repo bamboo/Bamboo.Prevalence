@@ -4,3 +4,5 @@ lib
 *.zip
 *.txt
 *.suo
+_ReSharper.Bamboo.Prevalence
+Bamboo.Prevalence.resharperoptions

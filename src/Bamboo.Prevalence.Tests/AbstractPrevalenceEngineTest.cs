@@ -32,6 +32,7 @@
 
 using System;
 using System.IO;
+using Bamboo.Prevalence.Tests.Model;
 using NUnit.Framework;
 using Bamboo.Prevalence;
 
@@ -133,7 +134,7 @@ namespace Bamboo.Prevalence.Tests
 		[Test]
 		public void TestExecutingTheSameCommandTwice()
 		{
-			AddCommand command = new AddCommand(10);
+			IAddCommand command = CreateAddCommand(10);
 			AssertEquals("AddCommand 10", 10, ExecuteCommand(command));
 
 			command.Amount = 20;
@@ -157,7 +158,7 @@ namespace Bamboo.Prevalence.Tests
 		{
 			CrashRecover();
 
-			ExecuteCommand(new AddCommand(20));
+			ExecuteCommand(CreateAddCommand(20));
 			AssertTotal(20);
 			
 			try
@@ -168,20 +169,30 @@ namespace Bamboo.Prevalence.Tests
 			{
 			}
 
-			ExecuteCommand(new AddCommand(5));
+			ExecuteCommand(CreateAddCommand(5));
 			CrashRecover();
 			AssertTotal(25);
-			ExecuteCommand(new AddCommand(10));
+			ExecuteCommand(CreateAddCommand(10));
 			AssertTotal(35);
 			CrashRecover();
 			AssertTotal(35);
+		}
+
+		private IAddCommand CreateAddCommand(int amount)
+		{
+			if (typeof(ISubAddingSystem).IsAssignableFrom(PrevalentSystemType))
+			{
+				return new SubSystemAddCommand(amount);
+			}
+
+			return new AddCommand(amount);
 		}
 
 		[Test]
 		public void TestPausedState()
 		{
 			CrashRecover();
-			ExecuteCommand(new AddCommand(10));
+			ExecuteCommand(CreateAddCommand(10));
 			AssertTotal(10);
 
 			_engine.Pause();
@@ -189,7 +200,7 @@ namespace Bamboo.Prevalence.Tests
 
 			try
 			{
-				ExecuteCommand(new AddCommand(5));
+				ExecuteCommand(CreateAddCommand(5));
 				Fail("PausedEngineException expected!");
 			}
 			catch (PausedEngineException)
@@ -201,7 +212,7 @@ namespace Bamboo.Prevalence.Tests
 			_engine.Resume();
 			Assert(!_engine.IsPaused);
 
-			ExecuteCommand(new AddCommand(5));
+			ExecuteCommand(CreateAddCommand(5));
 			AssertTotal(15);
 		}
 

@@ -30,65 +30,63 @@
 // mailto:rodrigobamboo@users.sourceforge.net
 #endregion
 
-using System;
 using NUnit.Framework;
-using Bamboo.Prevalence;
-using Bamboo.Prevalence.Attributes;
+using Bamboo.Prevalence.Tests.Model;
 
 namespace Bamboo.Prevalence.Tests
 {
-	/// <summary>
-	/// An transparently prevalent class. The methods can be
-	/// directly exposed to clients, there's no need to use command
-	/// and query objects (they will be created automatically
-	/// by the system as needed).
-	/// </summary>
-	[Serializable]
-	[TransparentPrevalence]	
-	public class TransparentAddingSystem : System.MarshalByRefObject, IAddingSystem
+	[TestFixture]
+	public class SubSystemPrevalenceEngineTest : AbstractPrevalenceEngineTest
 	{
-		private int _total;
-
-		public TransparentAddingSystem()
-		{		
+		public SubSystemPrevalenceEngineTest()
+		{
 		}
 
-		public int Total
+		protected override System.Type PrevalentSystemType
 		{
-			// property accessor are treated as query objects (read lock)
 			get
 			{
-				AssertIsPrevalenceEngineCall();
-
-				return _total;
+				return typeof(TransparentSubAddingSystem);
 			}
 		}
 
-		// public methods are treated as command objects (write lock)
-		// unless the attribute Query has been applied to the method.
-		public int Add(int amount)
+		protected TransparentSubAddingSystem SubAddingSystem
 		{
-			AssertIsPrevalenceEngineCall();
-
-			if (amount < 0)
+			get
 			{
-				throw new ArgumentOutOfRangeException("amount", amount, "amount must be positive!");
+				return _engine.PrevalentSystem as TransparentSubAddingSystem;
 			}
-			_total += amount;
-			return _total;
 		}
 
-		[PassThrough]
-		public void PassThroughMethod()
+		protected override void Add(int amount, int expectedTotal)
 		{
-			Assertion.AssertNull("PassThrough should prevent engine call!", PrevalenceEngine.Current);
+			AssertEquals("Method SubSystem Add", expectedTotal, SubAddingSystem.GetAnotherAddingSystem().Add(amount));
+			AssertEquals("Property SubSystem Add", expectedTotal, SubAddingSystem.AddingSystem.Add(amount));
+			AssertEquals("Engine Add", expectedTotal, SubAddingSystem.Add(amount));
 		}
 
-		private void AssertIsPrevalenceEngineCall()
+		protected override void AssertTotal(int total)
 		{
-			// Just making sure that this call was intercepted and
-			// the PrevalenceEngine is available!
-			Assertion.AssertNotNull("PrevalenceEngine.Current", PrevalenceEngine.Current);
+			AssertEquals("Engine Total", total, SubAddingSystem.Total);
+			AssertEquals("Property SubSystem Total", total, SubAddingSystem.AddingSystem.Total);
+			AssertEquals("Method SubSystem Total", total, SubAddingSystem.GetAnotherAddingSystem().Total);
+		}
+
+		[Test]
+		public void TestInstancesAreDiferent()
+		{
+			Assert("Property", !object.ReferenceEquals(SubAddingSystem, SubAddingSystem.AddingSystem));
+			Assert("Method", !object.ReferenceEquals(SubAddingSystem, SubAddingSystem.GetAnotherAddingSystem()));
+		}
+
+		[Test]
+		public void TestPassThroughAttribute()
+		{			
+			SubAddingSystem.PassThroughMethod();
+
+			((TransparentAddingSystem)SubAddingSystem.AddingSystem).PassThroughMethod();
+
+			((TransparentAddingSystem)SubAddingSystem.GetAnotherAddingSystem()).PassThroughMethod();
 		}
 	}
 }

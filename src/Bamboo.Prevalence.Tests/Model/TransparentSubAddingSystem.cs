@@ -31,40 +31,36 @@
 #endregion
 
 using System;
+using Bamboo.Prevalence.Attributes;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Tests.Model
 {
-	/// <summary>
-	/// A simple prevalent system. Note that no synchronization
-	/// is necessary because only commands and queries have
-	/// access to the system.
-	/// </summary>
 	[Serializable]
-	public class AddingSystem : IAddingSystem
+	[TransparentPrevalence]
+	public class TransparentSubAddingSystem : TransparentAddingSystem, ISubAddingSystem
 	{
-		private int _total;		
+		IAddingSystem _addingSystem;
+		IAddingSystem _anotherAddingSystem;
 
-		public AddingSystem()
-		{			
+		public TransparentSubAddingSystem()
+		{
+			_addingSystem = new TransparentAddingSystem();
+			_anotherAddingSystem = new TransparentAddingSystem();
 		}
 
-		int IAddingSystem.Total
+		[SubSystem("_addingSystem")]
+		public IAddingSystem AddingSystem
 		{
 			get
 			{
-				return _total;
+				return _addingSystem;
 			}
 		}
 
-		int IAddingSystem.Add(int amount)
+		[Query, SubSystem("_anotherAddingSystem")]
+		public IAddingSystem GetAnotherAddingSystem()
 		{
-			if (amount < 0)
-			{
-				throw new ArgumentOutOfRangeException("amount", amount, "amount must be positive!");
-			}
-
-			_total += amount;
-			return _total;
+			return _anotherAddingSystem;
 		}
 	}
 }

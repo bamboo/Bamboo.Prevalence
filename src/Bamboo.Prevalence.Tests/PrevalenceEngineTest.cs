@@ -32,6 +32,7 @@
 
 using System;
 using System.IO;
+using Bamboo.Prevalence.Tests.Model;
 using NUnit.Framework;
 using Bamboo.Prevalence;
 

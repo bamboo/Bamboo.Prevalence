@@ -31,70 +31,48 @@
 #endregion
 
 using System;
-using System.Threading;
-using Bamboo.Prevalence.Tests.Model;
-using NUnit.Framework;
-using Bamboo.Prevalence;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Tests.Model
 {
 	/// <summary>
-	/// Tests the multithreaded behavior of PrevalenceEngine
+	/// Adds a specified amount to the system Total.
 	/// </summary>
-	[TestFixture]
-	public class MultiThreadedTests : AbstractAddingSystemTest
-	{		
-		protected override PrevalenceEngine CreateEngine()
+	[Serializable]
+	public class AddCommand : IAddCommand
+	{
+		private int _amount;
+
+		public AddCommand(int amount)
 		{
-			return PrevalenceActivator.CreateEngine(PrevalentSystemType, PrevalenceBase, true);
+			_amount = amount;
 		}
 
-		[Test]
-		public void TestMultiThreadedWrites()
+		///
+		/// <summary>
+		/// For testing purposes this
+		/// command implementation is not
+		/// immutable.
+		/// See <see cref="PrevalenceEngineTest.TestExecutingTheSameCommandTwice" />.
+		/// </summary>
+		/// 
+		public int Amount
 		{
-			ClearPrevalenceBase();
-			CrashRecover();
-
-			AssertTotal(0);
-
-			Thread[] threads = new Thread[20];
-			for (int i = 0; i<threads.Length; ++i)
+			get
 			{
-				threads[i] = new Thread(new ThreadStart(ExecuteAddCommand));
+				return _amount;
 			}
-
-			Start(threads);
-			Join(threads);			
-
-			CrashRecover();
-
-			// 20 threads adding the value 10, 10 times
-			AssertTotal(20*10*20);
-		}
-
-		private void ExecuteAddCommand()
-		{	
-			for (int i = 0; i<20; ++i)
+			
+			set
 			{
-				ExecuteCommand(new AddCommand(10));
-				Thread.Sleep(100);
+				_amount = value;
 			}
 		}
 
-		private void Join(Thread[] threads)
+		object Bamboo.Prevalence.ICommand.Execute(object theSystem)
 		{
-			foreach (Thread t in threads)
-			{
-				t.Join();
-			}
-		}
-
-		private void Start(Thread[] threads)
-		{
-			foreach (Thread t in threads)
-			{
-				t.Start();			
-			}
+			
+			IAddingSystem system = theSystem as IAddingSystem;
+			return system.Add(_amount);
 		}
 	}
 }

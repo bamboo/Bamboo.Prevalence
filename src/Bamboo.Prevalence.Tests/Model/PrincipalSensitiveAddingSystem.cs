@@ -31,69 +31,41 @@
 #endregion
 
 using System;
-using System.Threading;
-using Bamboo.Prevalence.Tests.Model;
-using NUnit.Framework;
-using Bamboo.Prevalence;
+using System.Security.Permissions;
+using Bamboo.Prevalence.Attributes;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Tests.Model
 {
 	/// <summary>
-	/// Tests the multithreaded behavior of PrevalenceEngine
+	/// IAddingSystem implementation that uses
+	/// Role Based security. The attribute PrincipalSensitive
+	/// guarantees that the principal associated with the
+	/// command will be written to the command log.
 	/// </summary>
-	[TestFixture]
-	public class MultiThreadedTests : AbstractAddingSystemTest
-	{		
-		protected override PrevalenceEngine CreateEngine()
+	[Serializable]
+	[TransparentPrevalence]
+	[PrincipalSensitive]
+	public class PrincipalSensitiveAddingSystem : System.MarshalByRefObject, IAddingSystem
+	{
+		private int _total;		
+		
+		[PrincipalPermission(SecurityAction.Demand, Role="Adder")]
+		public int Add(int amount)
 		{
-			return PrevalenceActivator.CreateEngine(PrevalentSystemType, PrevalenceBase, true);
-		}
-
-		[Test]
-		public void TestMultiThreadedWrites()
-		{
-			ClearPrevalenceBase();
-			CrashRecover();
-
-			AssertTotal(0);
-
-			Thread[] threads = new Thread[20];
-			for (int i = 0; i<threads.Length; ++i)
+			if (amount < 0)
 			{
-				threads[i] = new Thread(new ThreadStart(ExecuteAddCommand));
+				throw new ArgumentOutOfRangeException("amount", amount, "amount must be positive!");
 			}
 
-			Start(threads);
-			Join(threads);			
-
-			CrashRecover();
-
-			// 20 threads adding the value 10, 10 times
-			AssertTotal(20*10*20);
+			_total += amount;
+			return _total;
 		}
 
-		private void ExecuteAddCommand()
-		{	
-			for (int i = 0; i<20; ++i)
-			{
-				ExecuteCommand(new AddCommand(10));
-				Thread.Sleep(100);
-			}
-		}
-
-		private void Join(Thread[] threads)
+		public int Total
 		{
-			foreach (Thread t in threads)
+			get
 			{
-				t.Join();
-			}
-		}
-
-		private void Start(Thread[] threads)
-		{
-			foreach (Thread t in threads)
-			{
-				t.Start();			
+				return _total;
 			}
 		}
 	}

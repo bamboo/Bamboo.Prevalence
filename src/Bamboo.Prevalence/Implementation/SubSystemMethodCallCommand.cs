@@ -31,20 +31,38 @@
 #endregion
 
 using System;
+using System.Reflection;
 
-namespace Bamboo.Prevalence.Tests
+namespace Bamboo.Prevalence.Implementation
 {
-	/// <summary>
-	/// IAddingSystem interface. Allow our commands to be applied to both
-	/// AddingSystem and TransparentAddingSystem.
-	/// </summary>
-	public interface IAddingSystem
+	[Serializable]
+	public class SubSystemMethodCallCommand : ICommand
 	{
-		int Total
+		private string _fieldName;
+
+		private string _methodName;
+
+		private object[] _args;
+
+		public SubSystemMethodCallCommand(string fieldName, string methodName, object[] args)
 		{
-			get;
+			_methodName = methodName;
+			_args = args;
+			_fieldName = fieldName;
 		}
 
-		int Add(int amount);
+		object Bamboo.Prevalence.ICommand.Execute(object system)
+		{
+			FieldInfo fieldInfo =  system.GetType().GetField(_fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance );
+
+			object field = fieldInfo.GetValue(system);
+
+			return field.GetType().InvokeMember(_methodName, BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, field, _args);
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}.{1}", _fieldName, _methodName);
+		}
 	}
 }
