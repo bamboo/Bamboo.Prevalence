@@ -1,0 +1,40 @@
+<Project name="Bamboo.Prevalence.Tests" standardNamespace="Bamboo.Prevalence.Tests" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+  <Contents>
+    <File name=".\AbstractAddingSystemTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\AbstractPrevalenceEngineTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\AddCommand.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\AddingSystem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\IAddingSystem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\MultiThreadedTests.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\NonSerializableCommand.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrevalenceEngineTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrevalenceTestBase.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrincipalSensitiveAddingSystem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrincipalSensitivePrevalenceEngineTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\QueryTotal.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\TestCurrentCommandAndQuery.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\TransparentAddingSystem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\TransparentPrevalenceEngineTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Serialization\LeanMeanFormatterTestCase.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+  </Contents>
+  <References />
+  <DeploymentInformation target="" script="" strategy="File" />
+  <Configuration runwithwarnings="False" name="Debug">
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+    <Execution commandlineparameters="" consolepause="False" />
+    <Output directory="..\..\build\" assembly="Bamboo.Prevalence.Tests" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+  </Configuration>
+  <Configurations active="Debug">
+    <Configuration runwithwarnings="False" name="Debug">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.Tests" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Release">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.Tests" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    </Configuration>
+  </Configurations>
+</Project>

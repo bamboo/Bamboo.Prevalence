@@ -1,0 +1,54 @@
+<Combine fileversion="1.0" name="Bamboo.Prevalence" description="">
+  <StartMode startupentry="Bamboo.Prevalence" single="True">
+    <Execute entry="Bamboo.Prevalence" type="None" />
+    <Execute entry="Bamboo.Prevalence.Collections" type="None" />
+    <Execute entry="Bamboo.Prevalence.Collections.Tests" type="None" />
+    <Execute entry="Bamboo.Prevalence.Indexing" type="None" />
+    <Execute entry="Bamboo.Prevalence.Util" type="None" />
+    <Execute entry="Bamboo.Prevalence.Tests" type="None" />
+    <Execute entry="Bamboo.Prevalence.Indexing.Tests" type="None" />
+    <Execute entry="Bamboo.Prevalence.util.Tests" type="None" />
+    <Execute entry="Bamboo.Prevalence.XPath" type="None" />
+    <Execute entry="Bamboo.Prevalence.XPath.Tests" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\Bamboo.Prevalence.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.Collections\Bamboo.Prevalence.Collections.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.Collections.Tests\Bamboo.Prevalence.Collections.Tests.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.Indexing\Bamboo.Prevalence.Indexing.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.Util\Bamboo.Prevalence.Util.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.Tests\Bamboo.Prevalence.Tests.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.Indexing.Tests\Bamboo.Prevalence.Indexing.Tests.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.Util.Tests\Bamboo.Prevalence.util.Tests.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.XPath\Bamboo.Prevalence.XPath.prjx" />
+    <Entry filename="..\Bamboo.Prevalence.XPath.Tests\Bamboo.Prevalence.XPath.Tests.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release">
+      <Entry name="Bamboo.Prevalence" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Collections" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Collections.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Indexing" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Util" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Indexing.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Indexing.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.util.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.XPath" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.XPath.Tests" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="Bamboo.Prevalence" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Collections" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Collections.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Indexing" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Util" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Indexing.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.Indexing.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.util.Tests" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.XPath" configurationname="Debug" build="False" />
+      <Entry name="Bamboo.Prevalence.XPath.Tests" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

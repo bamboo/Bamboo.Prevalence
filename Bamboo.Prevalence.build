@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name='Bamboo.Prevalence' default='debug'>
 		
-	<property name='version' value='1.4.4.1' />	
+	<property name='version' value='1.4.4.2' />	
 
 	<include buildfile="common.inc" />	
 
@@ -89,6 +89,7 @@
 		<zip zipfile="Bamboo.Prevalence.${version}.zip">
 			<fileset>
 				<includes name="*.build" />
+				<includes name="license.txt" />
 				<includes name="common.inc" />
 				<includes name="History.txt" />
 				<includes name="bin/*.dll" />

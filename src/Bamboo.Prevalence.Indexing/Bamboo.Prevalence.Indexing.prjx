@@ -1,4 +1,4 @@
-<Project name="Bamboo.Prevalence.Indexing" standardNamespace="NewProject" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+<Project name="Bamboo.Prevalence.Indexing" standardNamespace="Bamboo.Prevalence.Indexing" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
   <Contents>
     <File name=".\AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\IIndex.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
@@ -33,18 +33,18 @@
   <Configuration runwithwarnings="False" name="Debug">
     <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
     <Execution commandlineparameters="" consolepause="False" />
-    <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    <Output directory="..\..\build\" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
   </Configuration>
   <Configurations active="Debug">
     <Configuration runwithwarnings="False" name="Debug">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
       <Execution commandlineparameters="" consolepause="False" />
-      <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="Release">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
       <Execution commandlineparameters="" consolepause="False" />
-      <Output directory=".\bin\Release" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
     </Configuration>
   </Configurations>
 </Project>

@@ -1,30 +1,29 @@
-#region License
+#region license
 // Bamboo.Prevalence - a .NET object prevalence engine
-// Copyright (C) 2002 Rodrigo B. de Oliveira
+// Copyright (C) 2004 Rodrigo B. de Oliveira
 //
 // Based on the original concept and implementation of Prevayler (TM)
 // by Klaus Wuestefeld. Visit http://www.prevayler.org for details.
 //
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-//
-// As a special exception, if you link this library with other files to
-// produce an executable, this library does not by itself cause the
-// resulting executable to be covered by the GNU General Public License.
-// This exception does not however invalidate any other reasons why the
-// executable file might be covered by the GNU General Public License.
-//
+// Permission is hereby granted, free of charge, to any person 
+// obtaining a copy of this software and associated documentation 
+// files (the "Software"), to deal in the Software without restriction, 
+// including without limitation the rights to use, copy, modify, merge, 
+// publish, distribute, sublicense, and/or sell copies of the Software, 
+// and to permit persons to whom the Software is furnished to do so, 
+// subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included 
+// in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+// OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// 
 // Contact Information
 //
 // http://bbooprevalence.sourceforge.net
@@ -71,15 +70,15 @@ namespace Bamboo.Prevalence.Indexing.Tests
 			_record1 = new HashtableRecord();
 			_record1["Title"] = "Bolo de Chocolate";
 			_record1["Calories"] = 300;
-			_record1["Ingredients"] = "3 colheres de aÁucar\n1 lata de nescau\nfermento";
+			_record1["Ingredients"] = "3 colheres de a√ßucar\n1 lata de nescau\nfermento";
 			_index.Add(_record1);
 			_multipleFieldIndex.Add(_record1);
 			DumpPostings(index.Postings);
 
 			_record2 = new HashtableRecord();
-			_record2["Title"] = "Bolo de AÁafr„o";
+			_record2["Title"] = "Bolo de A√ßafr√£o";
 			_record2["Calories"] = 100;
-			_record2["Ingredients"] = "10 folhas de aÁafr„o\n1 colher de fermento em pÛ";
+			_record2["Ingredients"] = "10 folhas de a√ßafr√£o\n1 colher de fermento em p√≥";
 			_index.Add(_record2);
 			_multipleFieldIndex.Add(_record2);
 			DumpPostings(index.Postings);
@@ -87,7 +86,7 @@ namespace Bamboo.Prevalence.Indexing.Tests
 			_record3 = new HashtableRecord();
 			_record3["Title"] = "Torta de Chocolate";
 			_record3["Calories"] = 400;
-			_record3["Ingredients"] = "1 lata de nescau\nchocolate granulado\naÁucar";
+			_record3["Ingredients"] = "1 lata de nescau\nchocolate granulado\na√ßucar";
 			_index.Add(_record3);
 			_multipleFieldIndex.Add(_record3);
 			DumpPostings(index.Postings);
@@ -102,7 +101,7 @@ namespace Bamboo.Prevalence.Indexing.Tests
 			expression = new FullTextSearchExpression("chocolate");
 			AssertSearchContains(_index.Search(expression), _record1, _record3);
 
-			expression = new FullTextSearchExpression("acafr„o");
+			expression = new FullTextSearchExpression("acafr√£o");
 			AssertSearchContains(_index.Search(expression), _record2);
 
 			expression = new FullTextSearchExpression("bolo AcaFrao");
@@ -129,7 +128,7 @@ namespace Bamboo.Prevalence.Indexing.Tests
 			AssertSearchContains(_index.Search(expression), _record1);
 			AssertSearchContains(_multipleFieldIndex.Search(expression), _record1);
 
-			expression = new FullTextSearchExpression("Bolo AÁafr„o", FullTextSearchMode.IncludeAll);
+			expression = new FullTextSearchExpression("Bolo A√ßafr√£o", FullTextSearchMode.IncludeAll);
 			AssertSearchContains(_index.Search(expression), _record2);
 			AssertSearchContains(_multipleFieldIndex.Search(expression), _record2);
 
@@ -169,7 +168,7 @@ namespace Bamboo.Prevalence.Indexing.Tests
 				);
 			
 			AssertSearchContains(
-				_multipleFieldIndex.Search(new FullTextSearchExpression("aÁucar")), 
+				_multipleFieldIndex.Search(new FullTextSearchExpression("a√ßucar")), 
 				_record3
 				);
 		}
