@@ -80,7 +80,7 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			char[] mapped = new char[value.Length];
 			for (int i=0; i<value.Length; ++i)
 			{
-				char c = Char.ToLower(value[i]);
+				char c = char.ToLower(value[i]);
 				switch (c)
 				{
 					case 'á':

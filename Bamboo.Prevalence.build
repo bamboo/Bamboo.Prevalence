@@ -78,7 +78,7 @@
 			<formatter type="Plain" />
 			<test>
 				<assemblies basedir='bin'>
-					<includes name='*.Tests.dll' />
+					<include name='*.Tests.dll' />
 				</assemblies>
 			</test>
 		</nunit2>
@@ -88,59 +88,59 @@
 
 		<zip zipfile="Bamboo.Prevalence-${version}.zip">
 			<fileset>
-				<includes name="*.build" />
-				<includes name="license.txt" />
-				<includes name="common.inc" />
-				<includes name="History.txt" />
-				<includes name="bin/*.dll" />
-				<includes name="lib/*.dll" />
-				<includes name="src/Bamboo.Prevalence/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.Tests/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.Tests/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.Indexing/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.Indexing/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.Indexing.Tests/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.Indexing.Tests/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.XPath/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.XPath/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.XPath.Tests/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.XPath.Tests/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.Collections/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.Collections/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.Collections.Tests/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.Collections.Tests/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.Util/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.Util/**/*.csproj" />
-				<includes name="src/Bamboo.Prevalence.Util.Tests/**/*.cs" />
-				<includes name="src/Bamboo.Prevalence.Util.Tests/**/*.csproj" />
-				<includes name="examples/**/*.build" />
-				<includes name="examples/**/*.cs" />
-				<includes name="examples/**/*.csproj" />
-				<includes name="examples/**/*.sln" />
-				<includes name="examples/**/*.ico" />
-				<includes name="examples/**/*.resx" />
-				<includes name="examples/**/*.txt" />
-				<includes name="examples/**/*.aspx" />
-				<includes name="examples/**/*.ascx" />
-				<includes name="examples/**/*.asax" />
-				<includes name="examples/**/*.config" />
-				<includes name="web/*.*" />
-				<includes name="docs/MSDN/*.chm" />
+				<include name="*.build" />
+				<include name="license.txt" />
+				<include name="common.inc" />
+				<include name="History.txt" />
+				<include name="bin/*.dll" />
+				<include name="lib/*.dll" />
+				<include name="src/Bamboo.Prevalence/**/*.cs" />
+				<include name="src/Bamboo.Prevalence/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.Tests/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.Tests/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.Indexing/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.Indexing/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.Indexing.Tests/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.Indexing.Tests/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.XPath/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.XPath/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.XPath.Tests/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.XPath.Tests/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.Collections/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.Collections/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.Collections.Tests/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.Collections.Tests/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.Util/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.Util/**/*.csproj" />
+				<include name="src/Bamboo.Prevalence.Util.Tests/**/*.cs" />
+				<include name="src/Bamboo.Prevalence.Util.Tests/**/*.csproj" />
+				<include name="examples/**/*.build" />
+				<include name="examples/**/*.cs" />
+				<include name="examples/**/*.csproj" />
+				<include name="examples/**/*.sln" />
+				<include name="examples/**/*.ico" />
+				<include name="examples/**/*.resx" />
+				<include name="examples/**/*.txt" />
+				<include name="examples/**/*.aspx" />
+				<include name="examples/**/*.ascx" />
+				<include name="examples/**/*.asax" />
+				<include name="examples/**/*.config" />
+				<include name="web/*.*" />
+				<include name="docs/MSDN/*.chm" />
 
-				<includes name="Tools/VersionMigration/VersionMigration.build" />
-				<includes name="Tools/VersionMigration/migrationProject.xml" />
-				<includes name="Tools/VersionMigration/bin/*.dll" />
-				<includes name="Tools/VersionMigration/bin/*.exe" />
-				<includes name="Tools/VersionMigration/bin/*.xml" />
-				<includes name="Tools/VersionMigration/src/*.xml" />
-				<includes name="Tools/VersionMigration/src/**/*.csproj" />
-				<includes name="Tools/VersionMigration/src/**/*.sln" />
-				<includes name="Tools/VersionMigration/src/**/*.cs" />
-				<includes name="Tools/VersionMigration/src/**/*.xml" />
-				<includes name="Tools/VersionMigration/src/**/*.resx" />
-				<includes name="Tools/VerifyCommandLogs/**/*.cs" />
-				<includes name="Tools/VerifyCommandLogs/**/*.build" />
+				<include name="Tools/VersionMigration/VersionMigration.build" />
+				<include name="Tools/VersionMigration/migrationProject.xml" />
+				<include name="Tools/VersionMigration/bin/*.dll" />
+				<include name="Tools/VersionMigration/bin/*.exe" />
+				<include name="Tools/VersionMigration/bin/*.xml" />
+				<include name="Tools/VersionMigration/src/*.xml" />
+				<include name="Tools/VersionMigration/src/**/*.csproj" />
+				<include name="Tools/VersionMigration/src/**/*.sln" />
+				<include name="Tools/VersionMigration/src/**/*.cs" />
+				<include name="Tools/VersionMigration/src/**/*.xml" />
+				<include name="Tools/VersionMigration/src/**/*.resx" />
+				<include name="Tools/VerifyCommandLogs/**/*.cs" />
+				<include name="Tools/VerifyCommandLogs/**/*.build" />
 			</fileset>
 		</zip>
 	</target>
@@ -150,12 +150,12 @@
 		<csc target='library' output='bin/Bamboo.Prevalence.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.Tests/*.cs' />
+				<include name='src/Bamboo.Prevalence.Tests/*.cs' />
 			</sources>
 
 			<references>
-				<includes name='${nunit.framework.dll}' />
-				<includes name='bin/Bamboo.Prevalence.dll' />
+				<include name='${nunit.framework.dll}' />
+				<include name='bin/Bamboo.Prevalence.dll' />
 			</references>
 
 		</csc>
@@ -172,7 +172,7 @@
 			optimize='${optimize}'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence/**.cs' />
+				<include name='src/Bamboo.Prevalence/**.cs' />
 			</sources>
 
 		</csc>
@@ -184,12 +184,12 @@
 		<csc target='library' output='bin/Bamboo.Prevalence.Indexing.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.Indexing.Tests/*.cs' />
+				<include name='src/Bamboo.Prevalence.Indexing.Tests/*.cs' />
 			</sources>
 
 			<references>
-				<includes name='${nunit.framework.dll}' />
-				<includes name='bin/Bamboo.Prevalence.Indexing.dll' />
+				<include name='${nunit.framework.dll}' />
+				<include name='bin/Bamboo.Prevalence.Indexing.dll' />
 			</references>
 
 		</csc>
@@ -203,10 +203,11 @@
 			target='library'
 			output='bin/Bamboo.Prevalence.Indexing.dll'
 			debug='${debug}'
-			optimize='${optimize}'>
+			optimize='${optimize}'
+			codepage='utf8'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.Indexing/**.cs' />
+				<include name='src/Bamboo.Prevalence.Indexing/**.cs' />
 			</sources>
 		</csc>
 
@@ -217,12 +218,12 @@
 		<csc target='library' output='bin/Bamboo.Prevalence.XPath.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.XPath.Tests/*.cs' />
+				<include name='src/Bamboo.Prevalence.XPath.Tests/*.cs' />
 			</sources>
 
 			<references>
-				<includes name='${nunit.framework.dll}' />
-				<includes name='bin/Bamboo.Prevalence.XPath.dll' />
+				<include name='${nunit.framework.dll}' />
+				<include name='bin/Bamboo.Prevalence.XPath.dll' />
 			</references>
 
 		</csc>
@@ -239,7 +240,7 @@
 			optimize='${optimize}'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.XPath/**.cs' />
+				<include name='src/Bamboo.Prevalence.XPath/**.cs' />
 			</sources>
 		</csc>
 
@@ -250,12 +251,12 @@
 		<csc target='library' output='bin/Bamboo.Prevalence.Collections.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.Collections.Tests/*.cs' />
+				<include name='src/Bamboo.Prevalence.Collections.Tests/*.cs' />
 			</sources>
 
 			<references>
-				<includes name='${nunit.framework.dll}' />
-				<includes name='bin/Bamboo.Prevalence.Collections.dll' />
+				<include name='${nunit.framework.dll}' />
+				<include name='bin/Bamboo.Prevalence.Collections.dll' />
 			</references>
 
 		</csc>
@@ -272,7 +273,7 @@
 			optimize='${optimize}'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.Collections/**.cs' />
+				<include name='src/Bamboo.Prevalence.Collections/**.cs' />
 			</sources>
 		</csc>
 
@@ -283,14 +284,14 @@
 		<csc target='library' output='bin/Bamboo.Prevalence.Util.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.Util.Tests/*.cs' />
+				<include name='src/Bamboo.Prevalence.Util.Tests/*.cs' />
 			</sources>
 
 			<references>
-				<includes name='${nunit.framework.dll}' />
-				<includes name='bin/Bamboo.Prevalence.Util.dll' />
-				<includes name='bin/Bamboo.Prevalence.Tests.dll' />
-				<includes name='bin/Bamboo.Prevalence.dll' />
+				<include name='${nunit.framework.dll}' />
+				<include name='bin/Bamboo.Prevalence.Util.dll' />
+				<include name='bin/Bamboo.Prevalence.Tests.dll' />
+				<include name='bin/Bamboo.Prevalence.dll' />
 			</references>
 
 		</csc>
@@ -307,11 +308,11 @@
 			optimize='${optimize}'>
 
 			<sources>
-				<includes name='src/Bamboo.Prevalence.Util/**.cs' />
+				<include name='src/Bamboo.Prevalence.Util/**.cs' />
 			</sources>
 
 			<references>
-				<includes name='bin/Bamboo.Prevalence.dll' />
+				<include name='bin/Bamboo.Prevalence.dll' />
 			</references>
 		</csc>
 
