@@ -32,6 +32,8 @@
 #endregion
 
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using Bamboo.Prevalence.Indexing.FullText;
 using Bamboo.Prevalence.Indexing.FullText.Tokenizers;
@@ -55,6 +57,32 @@ namespace Bamboo.Prevalence.Indexing.Tests
 			{
 				Assertion.AssertEquals(expected, actual.NextToken());
 			}
+		}
+
+		public static void AssertTokens(ITokenizer tokenizer, params Token[] tokens)
+		{
+			foreach (Token expected in tokens)
+			{
+				Assertion.AssertEquals(expected, tokenizer.NextToken());
+			}
+		}
+
+		public static void AssertTokenValues(ITokenizer tokenizer, params string[] expectedValues)
+		{
+			foreach (string value in expectedValues)
+			{
+				Assertion.AssertEquals(value, tokenizer.NextToken().Value);
+			}
+		}
+
+		public static object SerializeDeserialize(object graph)
+		{
+			BinaryFormatter formatter = new BinaryFormatter();
+			MemoryStream stream = new MemoryStream();
+			formatter.Serialize(stream, graph);
+			
+			stream.Position = 0;
+			return formatter.Deserialize(stream);
 		}
 	}
 }

@@ -32,6 +32,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using Bamboo.Prevalence.Indexing.FullText;
 
 namespace Bamboo.Prevalence.Indexing.FullText.Filters
@@ -42,7 +43,7 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 	[Serializable]
 	public class WordFilter : AbstractFilter
 	{
-		string[] _words;
+		Hashtable _words;
 
 		public WordFilter(ITokenizer previous, params string[] words) : base(previous)
 		{
@@ -51,7 +52,11 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 				throw new ArgumentNullException("words");
 			}
 
-			_words = words;
+			_words = new Hashtable(words.Length);
+			foreach (string word in words)
+			{
+				_words[word] = null;
+			}
 		}
 
 		public WordFilter(params string[] words) : this(null, words)
@@ -64,7 +69,7 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			Token token = _previous.NextToken();
 			while (null != token)
 			{
-				if (!IsFilteredWord(token.Value))
+				if (!_words.ContainsKey(token.Value))
 				{
 					break;
 				}
@@ -73,17 +78,5 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			return token;
 		}
 		#endregion
-
-		bool IsFilteredWord(string token)
-		{
-			foreach (string word in _words)
-			{
-				if (word == token)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
 	}
 }

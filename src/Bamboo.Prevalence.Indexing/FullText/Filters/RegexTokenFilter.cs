@@ -32,51 +32,57 @@
 #endregion
 
 using System;
-using NUnit.Framework;
+using System.Text.RegularExpressions;
 using Bamboo.Prevalence.Indexing.FullText;
-using Bamboo.Prevalence.Indexing.FullText.Tokenizers;
 
-namespace Bamboo.Prevalence.Indexing.Tests
+namespace Bamboo.Prevalence.Indexing.FullText.Filters
 {
 	/// <summary>
-	/// Tests for the StringTokenizer class.
+	/// Filter a token based on a regular expression.
 	/// </summary>
-	[TestFixture]
-	public class StringTokenizerTest : Assertion
+	[Serializable]
+	public class RegexTokenFilter : AbstractFilter
 	{
-		[Test]
-		public void TestSimpleStrings()
+		Regex _regex;
+
+		public RegexTokenFilter(string regex) : this(null, regex)
+		{		
+		}		
+
+		public RegexTokenFilter(ITokenizer previous, string regex) : base(previous)
 		{
-			string text = "a foo Bar aça\n45\n\n\n";			
-			TokenAssertions.AssertTokens(new StringTokenizer(text),
-				new Token("a", 0),
-				new Token("foo", 2),
-				new Token("Bar", 6),
-				new Token("aça", 10),
-				new Token("45", 14),
-				null
-				);
-
-			TokenAssertions.AssertTokens(new StringTokenizer(""),
-				(Token)null);
-
-			TokenAssertions.AssertTokens(new StringTokenizer("\n\t   "),
-				(Token)null);
-
-			TokenAssertions.AssertTokens(new StringTokenizer("\n\t  a"),
-				new Token("a", 4),
-				null);
+			if (null == regex)
+			{
+				throw new ArgumentNullException("regex", "regex can't be null!");
+			}
+			_regex = new Regex(regex);
 		}
 
-		[Test]
-		public void TestPunctuation()
+		public RegexTokenFilter(Regex regex) : this(null, regex)
+		{				
+		}
+
+		public RegexTokenFilter(ITokenizer previous, Regex regex) : base(previous)
 		{
-			string text = "A foo,bar goest! flu? Oh, yes, flu!!! really? yep.\n.\tdidn't think [so..(yep)";
-			TokenAssertions.AssertTokenValues(new StringTokenizer(text),
-				"A", "foo", "bar", "goest", "flu",
-				"Oh", "yes", "flu", "really", "yep",
-				"didn", "t", "think", "so", "yep"
-				);
-		}		
+			if (null == regex)
+			{
+				throw new ArgumentNullException("regex", "regex can't be null!");
+			}
+			_regex = regex;
+		}
+
+		public override Bamboo.Prevalence.Indexing.FullText.Token NextToken()
+		{
+			Token token = _previous.NextToken();
+			while (null != token)
+			{
+				if (!_regex.IsMatch(token.Value))
+				{
+					break;
+				}
+				token = _previous.NextToken();
+			}
+			return token;
+		}
 	}
 }

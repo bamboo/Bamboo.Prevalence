@@ -172,6 +172,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "FullText\Filters\RegexTokenFilter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "FullText\Filters\SpecialCharactersFilter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

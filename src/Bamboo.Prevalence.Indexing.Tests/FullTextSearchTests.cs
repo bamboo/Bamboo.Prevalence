@@ -32,8 +32,6 @@
 #endregion
 
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using Bamboo.Prevalence.Indexing;
 using Bamboo.Prevalence.Indexing.FullText;
@@ -191,7 +189,7 @@ namespace Bamboo.Prevalence.Indexing.Tests
 		[Test]
 		public void TestIndexSerialization()
 		{			
-			_index = SerializeDeserialize(_index) as IIndex;
+			_index = TokenAssertions.SerializeDeserialize(_index) as IIndex;
 
 			FullTextSearchIndex index = _index as FullTextSearchIndex;
 			IRecord[] records = index.Records;
@@ -213,17 +211,7 @@ namespace Bamboo.Prevalence.Indexing.Tests
 				}
 			}
 			throw new ArgumentException("Record not found!");
-		}
-
-		object SerializeDeserialize(object graph)
-		{
-			BinaryFormatter formatter = new BinaryFormatter();
-			MemoryStream stream = new MemoryStream();
-			formatter.Serialize(stream, graph);
-			
-			stream.Position = 0;
-			return formatter.Deserialize(stream);
-		}
+		}		
 
 		void AssertSearchContains(SearchResult result, params IRecord[] expected)
 		{

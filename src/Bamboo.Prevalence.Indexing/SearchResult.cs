@@ -94,6 +94,52 @@ namespace Bamboo.Prevalence.Indexing
 		}
 		#endregion
 
+		#region SearchHitRecordEnumerator (used by GetRecordEnumerator())
+		public class SearchHitRecordEnumerator : IEnumerator, IEnumerable
+		{
+			IEnumerator _hits;
+
+			public SearchHitRecordEnumerator(IEnumerator hits)
+			{
+				_hits = hits;
+			}
+
+			#region Implementation of IEnumerator
+			public void Reset()
+			{
+				_hits.Reset();
+			}
+			public bool MoveNext()
+			{
+				return _hits.MoveNext();
+			}
+
+			public IRecord Current
+			{
+				get
+				{
+					return ((SearchHit)_hits.Current).Record;
+				}
+			}
+
+			object IEnumerator.Current
+			{
+				get
+				{
+					return ((SearchHit)_hits.Current).Record;
+				}
+			}
+			#endregion
+
+			#region Implementation of IEnumerable
+			public System.Collections.IEnumerator GetEnumerator()
+			{
+				return this;
+			}
+			#endregion
+		}
+		#endregion
+
 		long _elapsedTime;
 
 		ArrayList _hits;
@@ -202,6 +248,11 @@ namespace Bamboo.Prevalence.Indexing
 				}
 			}
 			return null;
+		}
+
+		public SearchHitRecordEnumerator GetRecordEnumerator()
+		{
+			return new SearchHitRecordEnumerator(_hits.GetEnumerator());
 		}
 
 		#region Implementation of IEnumerable
