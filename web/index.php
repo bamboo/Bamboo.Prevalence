@@ -35,11 +35,11 @@
   Bamboo.Prevalence is implemented in C# and intended to be usable from any CLR 
   implementation. </p>
 <h2>History</h2>
-<p><b>09/15/2002</b> Bamboo.Prevalence now supports transparent prevalence. What does it mean?
-It means that if you don't want to you don't need to write command and/or query objects, the Bamboo.Prevalence
-engine will take care of mapping method calls to command/query objects as needed. Take a look 
-<a href="MyFirstPrevalentSystem.htm">here</a>. Thanks to Jesse Ezell for the ideas!
-</p>
+<p><b>09/15/2002</b> Bamboo.Prevalence now supports transparent prevalence. What 
+  does it mean? It means that if you don't want to you don't need to write command 
+  and/or query objects, the Bamboo.Prevalence engine will take care of mapping 
+  method calls to command/query objects as needed. Take a look <a href="MyFirstPrevalentSystem.htm">here</a>. 
+  Thanks to Jesse Ezell for the ideas and talks! </p>
 <h2>System Requirements</h2>
 <p>All you need to start using Bamboo.Prevalence in your projects is the .NET 
   framework runtime.</p>
@@ -71,10 +71,9 @@ I'll be adding a tutorial section to this web site soon.
 <h2>Thanks and Acknowledgements</h2>
 <ul>
   <li><b>Klaus Wuestefeld and the Prevayler team</b> for starting it all</li>
-  <li><b>Jesse Ezell</b> for the great idea of using ContextBoundObject and context attributes
-  to enable transparent prevalence totally removing the need of handcoding command and query
-  objects. Later on we decided on using proxies but all the credits just be given to him.
-  </li>
+  <li><b>Jesse Ezell</b> for the great idea of using ContextBoundObject and context 
+    attributes to enable transparent prevalence totally removing the need of handcoding 
+    command and query objects. Later on we decided on using proxies. </li>
 </ul>
 <h2>Other Resources</h2>
 <p><a href="http://sourceforge.net/projects/bbooprevalence">Project site at SourceForge</a></p>
