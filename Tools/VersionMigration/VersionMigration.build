@@ -1,20 +1,15 @@
+<?xml version="1.0"?>
 <project name="VersionMigrationTools" default="all">
 
-	<property name="Bamboo.Prevalence.dll" value="../../bin/Bamboo.Prevalence.dll" />
-	<property name='nunit.framework.dll' value='${nant.location}/nunit.framework.dll' />
+	<include buildfile="../../common.inc" />
 	
-	<!--
-		while nunit2 doesn't work in mono
-		this property can be used
-		to disable nunit based unit tests
-	-->
-	<property name="skip.nunit.test" value="false" /> 
-
-	<target name="all" depends="test,VersionMigratorGUI" />
+	<property name="Bamboo.Prevalence.dll" value="../../bin/Bamboo.Prevalence.dll" />		
+	
+	<target name="all" depends="test, VersionMigratorGUI" />
 
 	<target name="test" depends="testVersionMigrationLibrary, testVersionMigrator" />
 
-	<target name="testVersionMigrationLibrary" depends="Bamboo.Prevalence.VersionMigration.Tests" unless="${skip.nunit.test}">
+	<target name="testVersionMigrationLibrary" depends="Bamboo.Prevalence.VersionMigration.Tests" if="${nant.tasks.nunit2}">
 
 		<copy todir="bin" file="${nunit.framework.dll}" />
 

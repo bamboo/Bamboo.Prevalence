@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
 <project name='Bamboo.Prevalence' default='debug'>
 
-	<property name='ndocconsole' value='\dotnet\ndoc\bin\.net-1.1\NDocConsole' />
-	<property name='nunit.framework.dll' value='${nant.location}/nunit.framework.dll' />
+	<property name='ndocconsole' value='\dotnet\ndoc\bin\.net-1.1\NDocConsole' />	
 	<property name='version' value='1.4.2' />
 	<property name='build.defines' value='JUST_A_PLACEHOLDER' />
+
+	<include buildfile="common.inc" />	
 
 	<target name='doc' depends='debug'>
 		<exec program='${ndocconsole}' commandline='-project=Bamboo.Prevalence.ndoc' />
 	</target>
 
-	<target name='debug' depends='set-debug-properties,test' description='incremental debug build' />
+	<target name='debug' depends='set-debug-properties, build, test' description='incremental debug build' />
 
-	<target name='release' depends='clean,set-release-properties,test' description='release build' />
+	<target name='release' depends='clean, set-release-properties, build, test' description='release build' />
 	
 	<target name='rebuild' depends='clean, debug' description='full debug build' />
 
@@ -36,8 +37,10 @@
 	<target name='set-mono-1.0-linux-runtime-configuration'>
 		<property name='build.defines' value='MONO' />
 	</target>
+	
+	<target name="build" depends="Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests, Bamboo.Prevalence.Collections.Tests, Bamboo.Prevalence.Util.Tests" />
 
-	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests, Bamboo.Prevalence.Collections.Tests, Bamboo.Prevalence.Util.Tests'>
+	<target name='test' if="${nant.tasks.nunit2}">
 
 		<!--	
 		<script language="C#">
