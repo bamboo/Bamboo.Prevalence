@@ -1,0 +1,50 @@
+<Project name="Bamboo.Prevalence.Indexing" standardNamespace="NewProject" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+  <Contents>
+    <File name=".\AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\IIndex.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\IRecord.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\ISearchExpression.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\ISearchHitFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\SearchResult.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\FullTextSearchExpression.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\FullTextSearchIndex.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\FullTextSearchMode.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\IndexedField.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\IndexedFieldCollection.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\ITokenFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\ITokenizer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Posting.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Postings.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\TermOccurenceCollection.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\TermOccurrence.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Token.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Filters\AbstractFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Filters\ConditionalFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Filters\RegexTokenFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Filters\SpecialCharactersFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Filters\TokenLengthFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Filters\WordFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Tokenizers\NullTokenizer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\FullText\Tokenizers\StringTokenizer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Records\HashtableRecord.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+  </Contents>
+  <References />
+  <DeploymentInformation target="" script="" strategy="File" />
+  <Configuration runwithwarnings="False" name="Debug">
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+    <Execution commandlineparameters="" consolepause="False" />
+    <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+  </Configuration>
+  <Configurations active="Debug">
+    <Configuration runwithwarnings="False" name="Debug">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Release">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory=".\bin\Release" assembly="Bamboo.Prevalence.Indexing" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    </Configuration>
+  </Configurations>
+</Project>

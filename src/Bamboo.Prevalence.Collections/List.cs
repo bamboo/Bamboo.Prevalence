@@ -197,11 +197,16 @@ namespace Bamboo.Prevalence.Collections
 
 		public object[] ToShuffledArray()
 		{			
+			return (object[])ToShuffledArray(typeof(object));
+		}
+		
+		public Array ToShuffledArray(Type elementType)
+		{
 			List copy = new List(ToArray());
-			object[] target = new object[copy.Count];
+			Array target = Array.CreateInstance(elementType, copy.Count);
 			for (int i=0; i<target.Length; ++i)
 			{
-				target[i] = copy.PopAny();
+				target.SetValue(copy.PopAny(), i);
 			}
 			return target;
 		}

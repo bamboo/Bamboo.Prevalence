@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <project name="ObjectOperations" default="run">
 
 	<target name="run" depends="release">
@@ -32,6 +33,7 @@
 
 			<references>
 				<includes name="Bamboo.Prevalence.Collections.dll" />
+				<includes name="Bamboo.Prevalence.XPath.dll" />
 			</references>
 		</csc>
 	</target>

@@ -1,31 +1,33 @@
-<Project name="Bamboo.Prevalence.Collections" standardNamespace="NewProject" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+<Project name="Bamboo.Prevalence.Util" standardNamespace="NewProject" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
   <Contents>
-    <File name=".\CompositeComparer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\CompositeEnumerator.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\FilteredEnumerator.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\List.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\ObjectPropertyComparer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\ReaderWriterList.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\SerializableReaderWriterLock.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\AbstractCleanUpPolicy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\CleanUpAllFilesPolicy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\ICleanUpPolicy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\NullCleanUpPolicy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\OldFilesCleanUpPolicy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrevalenceBaseUtil.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\SnapshotTaker.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
-  <References />
+  <References>
+    <Reference type="Project" refto="Bamboo.Prevalence" localcopy="True" />
+  </References>
   <DeploymentInformation target="" script="" strategy="File" />
   <Configuration runwithwarnings="False" name="Debug">
     <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
     <Execution commandlineparameters="" consolepause="False" />
-    <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Collections" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Util" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
   </Configuration>
   <Configurations active="Debug">
     <Configuration runwithwarnings="False" name="Debug">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
       <Execution commandlineparameters="" consolepause="False" />
-      <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Collections" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+      <Output directory=".\bin\Debug" assembly="Bamboo.Prevalence.Util" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="Release">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
       <Execution commandlineparameters="" consolepause="False" />
-      <Output directory=".\bin\Release" assembly="Bamboo.Prevalence.Collections" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+      <Output directory=".\bin\Release" assembly="Bamboo.Prevalence.Util" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
     </Configuration>
   </Configurations>
 </Project>
