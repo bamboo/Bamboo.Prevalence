@@ -381,6 +381,17 @@ namespace Bamboo.Prevalence.Collections
 
 		public bool Any(Predicate predicate)
 		{
+			return -1 != IndexOf(predicate);
+		}
+
+		public object Find(Predicate predicate)
+		{
+			int index = IndexOf(predicate);
+			return index != -1 ? _list[index] : null;
+		}
+
+		public int IndexOf(Predicate predicate)
+		{
 			if (null == predicate)
 			{
 				throw new ArgumentNullException("predicate");
@@ -389,19 +400,75 @@ namespace Bamboo.Prevalence.Collections
 			AcquireReaderLock();
 			try
 			{
-				foreach (object item in _list)
+				for (int i=0; i<_list.Count; ++i)
 				{
-					if (predicate(item))
+					if (predicate(_list[i]))
 					{
-						return true;
+						return i;
 					}
 				}
-				return false;
+				return -1;
 			}
 			finally
 			{
 				ReleaseReaderLock();
 			}			
+		}
+
+		public object[] Collect(Predicate predicate)
+		{
+			return (object[])Collect(predicate, typeof(object));
+		}
+
+		public System.Array Collect(Predicate predicate, Type returnItemType)
+		{
+			if (null == predicate)
+			{
+				throw new ArgumentNullException("predicate");
+			}
+
+			if (null == returnItemType)
+			{
+				throw new ArgumentNullException("returnItemType");
+			}
+
+			ArrayList items = new ArrayList();
+			InnerCollect(items, predicate);			
+			return items.ToArray(returnItemType);
+		}
+
+		public void Collect(IList list, Predicate predicate)
+		{
+			if (null == list)
+			{
+				throw new ArgumentNullException("list");
+			}
+
+			if (null == predicate)
+			{
+				throw new ArgumentNullException("predicate");
+			}
+
+			InnerCollect(list, predicate);
+		}
+
+		protected void InnerCollect(IList list, Predicate predicate)
+		{
+			AcquireReaderLock();
+			try
+			{
+				foreach (object item in _list)
+				{
+					if (predicate(item))
+					{
+						list.Add(item);
+					}
+				}
+			}
+			finally
+			{
+				ReleaseReaderLock();
+			}
 		}
 
 		#endregion
