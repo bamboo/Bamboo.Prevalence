@@ -97,6 +97,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MigrationBinder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "MigrationContext.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

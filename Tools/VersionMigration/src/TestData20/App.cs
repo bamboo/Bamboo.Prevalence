@@ -54,9 +54,9 @@ namespace TestData20
 		static void Main(string[] args)
 		{
 			string prevalenceBase = Path.Combine(Environment.CurrentDirectory, "data");			
-			PrevalenceEngine engine = PrevalenceActivator.CreateEngine(typeof(Library), prevalenceBase);
+			PrevalenceEngine engine = PrevalenceActivator.CreateEngine(typeof(LibrarySystem), prevalenceBase);
 			
-			Library library = engine.PrevalentSystem as Library;
+			LibrarySystem library = engine.PrevalentSystem as LibrarySystem;
 			IList titles = library.GetTitles();
 
 			XmlDocument data = new XmlDocument();

@@ -302,7 +302,7 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private void InstallAssemblyResolver()
 		{
-			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);		
 		}
 
 		private Assembly ResolveAssembly(object sender, ResolveEventArgs e)

@@ -53,11 +53,21 @@ namespace Bamboo.Prevalence.VersionMigration.Tests
 			
 			TypeMappingCollection mappings = plan.TypeMappings;
 			AssertNotNull("plan.TypeMappings", mappings);
-			AssertEquals("mappings.Count", 2, mappings.Count);
+
+			// 3 mappings counting the aliases...
+			AssertEquals("mappings.Count", 3, mappings.Count);
 
 			TypeMapping mapping = mappings["SamplePrevalentSystem.Title"];
 			AssertNotNull("mapping", mapping);
+			AssertEquals(string.Empty, mapping.AssemblyName);
 			AssertEquals("mapping.FieldMappings.Count", 3, mapping.FieldMappings.Count);
+
+			mapping = mappings["SamplePrevalentSystem.LibrarySystem"];
+			AssertNotNull("mapping", mapping);
+			AssertEquals(string.Empty, mapping.AssemblyName);
+
+			AssertEquals(mapping, mappings["SamplePrevalentSystem.Library"]);
+			
 		}
 	}
 }

@@ -12,13 +12,13 @@
 
 	<target name="testVersionMigrator" depends="VersionMigrator, SetUpData10, TestData20">
 
-		<exec program="build\1.0\SetUpData10.exe" basedir="build\1.0" />
+		<exec program="SetUpData10.exe" basedir="build\1.0" />
 
 		<exec program="bin/VersionMigrator"
 			commandline="/overwrite /plan:src\MigrationPlan1-2.xml /from:build\1.0\data\00000000000000000001.snapshot /to:build\2.0\data\00000000000000000001.snapshot /assembly:build\2.0\SamplePrevalentSystem.dll">
 		</exec>
 			
-		<exec program="build\2.0\TestData20.exe" basedir="build\2.0" />
+		<exec program="TestData20.exe" basedir="build\2.0" />
 		
 	</target>
 

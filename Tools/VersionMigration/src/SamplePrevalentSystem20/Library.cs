@@ -166,15 +166,16 @@ namespace SamplePrevalentSystem
 	}
 
 	/// <summary>
-	/// Library version 1.0
+	/// Library version 2.0
+	/// * Library renamed to LibrarySystem
 	/// </summary>
 	[Serializable]
 	[TransparentPrevalence]
-	public class Library : System.MarshalByRefObject
+	public class LibrarySystem : System.MarshalByRefObject
 	{	
 		Hashtable _titles;
 
-		public Library()
+		public LibrarySystem()
 		{
 			_titles = new Hashtable();
 		}

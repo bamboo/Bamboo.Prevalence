@@ -30,6 +30,7 @@
 // mailto:rodrigobamboo@users.sourceforge.net
 
 using System;
+using System.Collections.Specialized;
 using System.Xml;
 
 namespace Bamboo.Prevalence.VersionMigration
@@ -43,9 +44,14 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private FieldMappingCollection _fieldMappings;
 
+		private StringCollection _aliases;
+
+		private string _assemblyName;
+
 		internal TypeMapping()
 		{
 			_fieldMappings = new FieldMappingCollection();
+			_aliases = new StringCollection();
 		}
 
 		internal TypeMapping(XmlElement element) : this()
@@ -58,6 +64,22 @@ namespace Bamboo.Prevalence.VersionMigration
 			get
 			{
 				return _typeName;
+			}
+		}
+
+		public string AssemblyName
+		{
+			get
+			{
+				return _assemblyName;
+			}
+		}
+		
+		public StringCollection Aliases
+		{
+			get
+			{
+				return _aliases;
 			}
 		}
 
@@ -82,7 +104,9 @@ namespace Bamboo.Prevalence.VersionMigration
 		private void Load(XmlElement element)
 		{
 			_typeName = element.GetAttribute("type");
+			_assemblyName = element.GetAttribute("assembly");
 			LoadFieldMappings(element);
+			LoadAliases(element);
 		}
 
 		private void LoadFieldMappings(XmlElement element)
@@ -96,6 +120,14 @@ namespace Bamboo.Prevalence.VersionMigration
 		private void LoadFieldMapping(XmlElement item)
 		{
 			_fieldMappings.Add(new FieldMapping(item));
+		}
+
+		private void LoadAliases(XmlElement element)
+		{
+			foreach (XmlElement item in element.SelectNodes("alias"))
+			{
+				_aliases.Add(item.InnerText);
+			}
 		}
 	}
 }

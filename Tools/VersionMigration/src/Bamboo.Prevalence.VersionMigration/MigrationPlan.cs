@@ -98,6 +98,7 @@ namespace Bamboo.Prevalence.VersionMigration
 
 			BinaryFormatter formatter = new BinaryFormatter();			
 			formatter.SurrogateSelector = new MigrationSurrogateSelector(context);
+			formatter.Binder = new MigrationBinder(context);
 			formatter.Context = new StreamingContext(StreamingContextStates.Persistence);
 
 			return formatter.Deserialize(stream);
@@ -125,7 +126,8 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private void LoadTypeMapping(XmlElement item)
 		{
-			_typeMappings.Add(new TypeMapping(item));
+			TypeMapping mapping = new TypeMapping(item);
+			_typeMappings.Add(mapping);
 		}
 	}
 }

@@ -16,6 +16,9 @@
 		
 	</typeMapping>		 
 	
-	<typeMapping type="SamplePrevalentSystem.Library" />
+	<typeMapping type="SamplePrevalentSystem.LibrarySystem">
+		<alias>SamplePrevalentSystem.Library</alias>
+	</typeMapping>
+	
 
 </migrationPlan>

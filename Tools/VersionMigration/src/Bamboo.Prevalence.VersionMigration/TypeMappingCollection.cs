@@ -74,7 +74,19 @@ namespace Bamboo.Prevalence.VersionMigration
 				TypeMappingAlreadyExistsError(mapping);
 			}
 
+			foreach (string alias in mapping.Aliases)
+			{
+				if (_items.ContainsKey(alias))
+				{
+					TypeMappingAlreadyExistsError(mapping);
+				}
+			}
+
 			_items[mapping.TypeName] = mapping;
+			foreach (string alias in mapping.Aliases)
+			{
+				_items[alias] = mapping;
+			}
 		}
 
 		private void TypeMappingAlreadyExistsError(TypeMapping mapping)
