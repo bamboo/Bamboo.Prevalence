@@ -238,6 +238,16 @@ namespace Bamboo.Prevalence.Indexing
 			_hits.Sort(new RecordFieldComparer(field));
 		}
 
+		public object[] ToRecordArray(Type recordType)
+		{			
+			object[] records = (object[])Array.CreateInstance(recordType, _hits.Count);
+			for (int i=0; i<records.Length; ++i)
+			{				
+				records[i] = _hits[i];
+			}
+			return records;
+		}
+
 		protected SearchHit FindSearchHit(IRecord record)
 		{
 			foreach (SearchHit hit in _hits)
