@@ -45,11 +45,11 @@
 		<csc target="exe" output="bin/VersionMigrator.exe" debug="true">
 
 			<sources>
-				<includes name="src/VersionMigrator/*.cs" />
+				<include name="src/VersionMigrator/*.cs" />
 			</sources>
 
 			<references>
-				<includes name="bin/Bamboo.Prevalence.VersionMigration.dll" />
+				<include name="bin/Bamboo.Prevalence.VersionMigration.dll" />
 			</references>
 
 		</csc>
@@ -60,13 +60,13 @@
 
 		<csc target="winexe" output="bin/VersionMigratorGUI.exe" debug="true">
 			<sources>
-				<includes name="src/VersionMigratorGUI/*.cs" />
+				<include name="src/VersionMigratorGUI/*.cs" />
 			</sources>
 
 			<references>
-				<includes name="bin/Bamboo.Prevalence.VersionMigration.dll" />
-				<includes name="System.Windows.Forms.dll" />
-				<includes name="System.Drawing.dll" />
+				<include name="bin/Bamboo.Prevalence.VersionMigration.dll" />
+				<include name="System.Windows.Forms.dll" />
+				<include name="System.Drawing.dll" />
 			</references>
 		</csc>
 
@@ -75,19 +75,19 @@
 	<target name="Bamboo.Prevalence.VersionMigration.Tests" depends="Bamboo.Prevalence.VersionMigration">
 		<csc target="library" output="bin/Bamboo.Prevalence.VersionMigration.Tests.dll" debug="true">
 			<sources>
-				<includes name="src/Bamboo.Prevalence.VersionMigration.Tests/*.cs" />
+				<include name="src/Bamboo.Prevalence.VersionMigration.Tests/*.cs" />
 			</sources>
 
 			<references>
-				<includes name="bin/Bamboo.Prevalence.VersionMigration.dll" />
-				<includes name="${nunit.framework.dll}" />
+				<include name="bin/Bamboo.Prevalence.VersionMigration.dll" />
+				<include name="${nunit.framework.dll}" />
 			</references>
 		</csc>
 
 		<!-- test files -->
 		<copy todir="bin">
 			<fileset basedir="src/Bamboo.Prevalence.VersionMigration.Tests">
-				<includes name="*.xml" />
+				<include name="*.xml" />
 			</fileset>
 		</copy>
 			
@@ -98,7 +98,7 @@
 		<csc target="library" output="bin/Bamboo.Prevalence.VersionMigration.dll" debug="true">
 
 			<sources>
-				<includes name="src/Bamboo.Prevalence.VersionMigration/**.cs" />
+				<include name="src/Bamboo.Prevalence.VersionMigration/**.cs" />
 			</sources>
 
 		</csc>
@@ -112,11 +112,11 @@
 		
 		<csc target="exe" output="build/1.0/SetUpData10.exe" debug="true">
 			<sources>
-				<includes name="src/SetUpData10/*.cs" />
+				<include name="src/SetUpData10/*.cs" />
 			</sources>
 
 			<references>
-				<includes name="build/1.0/*.dll" />
+				<include name="build/1.0/*.dll" />
 			</references>
 		</csc>
 
@@ -130,11 +130,11 @@
 		
 		<csc target="exe" output="build/2.0/TestData20.exe" debug="true">
 			<sources>
-				<includes name="src/TestData20/*.cs" />
+				<include name="src/TestData20/*.cs" />
 			</sources>
 
 			<references>
-				<includes name="build/2.0/*.dll" />
+				<include name="build/2.0/*.dll" />
 			</references>
 		</csc>
 
@@ -144,11 +144,11 @@
 		
 		<csc target="library" output="build/1.0/SamplePrevalentSystem.dll">
 			<sources>
-				<includes name="src/SamplePrevalentSystem10/*.cs" />
+				<include name="src/SamplePrevalentSystem10/*.cs" />
 			</sources>
 
 			<references>
-				<includes name="${Bamboo.Prevalence.dll}" />
+				<include name="${Bamboo.Prevalence.dll}" />
 			</references>
 		</csc>
 
@@ -158,12 +158,12 @@
 		
 		<csc target="library" output="build/2.0/SamplePrevalentSystem.dll">
 			<sources>
-				<includes name="src/SamplePrevalentSystem20/*.cs" />
+				<include name="src/SamplePrevalentSystem20/*.cs" />
 			</sources>
 
 
 			<references>
-				<includes name="${Bamboo.Prevalence.dll}" />
+				<include name="${Bamboo.Prevalence.dll}" />
 			</references>
 		</csc>
 

@@ -27,6 +27,12 @@
     <File name=".\Implementation\PendingCommandsEnumerator.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Implementation\PrevalentSystemProxy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Serialization\AutoVersionMigrationSurrogate.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\.cvsignore" subtype="Code" buildaction="Exclude" dependson="" data="" />
+    <File name=".\Bamboo.Prevalence.csproj" subtype="Code" buildaction="Exclude" dependson="" data="" />
+    <File name=".\Attributes\SubSystemAttribute.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\PrevalentSubSystemHolderProxy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\PrevalentSubSystemProxy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\SubSystemMethodCallCommand.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />

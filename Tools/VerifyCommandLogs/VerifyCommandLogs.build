@@ -3,7 +3,7 @@
     <target name="debug" depends="init">
         <csc output="bin/VerifyCommandLogs.exe" target="exe" debug="True">
             <sources basedir="src">
-                <includes name="*.cs" />
+                <include name="*.cs" />
             </sources>
         </csc>
     </target>

@@ -15,7 +15,7 @@
 				<includes name='*.cs' />
 			</sources>
 			<references>
-				<includes name='build/Bamboo.Prevalence.dll' />
+				<include name='build/Bamboo.Prevalence.dll' />
 			</references>
 		</csc>
 	</target>

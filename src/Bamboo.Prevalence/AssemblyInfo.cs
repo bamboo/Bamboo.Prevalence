@@ -46,7 +46,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-[assembly: AssemblyVersion("1.4.4.3")]
+[assembly: AssemblyVersion("1.4.4.4")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("../src/Bamboo.Prevalence.snk")]
 

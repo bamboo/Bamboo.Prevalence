@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name='Bamboo.Prevalence' default='debug'>
 		
-	<property name='version' value='1.4.4.3' />	
+	<property name='version' value='1.4.4.4' />	
 	
 	<property name="framework.family" value="${framework::get-family(framework::get-target-framework())}" />
 	<property name="csc.codepage" value="" />

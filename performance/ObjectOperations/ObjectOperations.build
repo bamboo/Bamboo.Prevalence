@@ -28,12 +28,12 @@
 			optimize="${optimize}">
 
 			<sources>
-				<includes name="*.cs" />
+				<include name="*.cs" />
 			</sources>
 
 			<references>
-				<includes name="Bamboo.Prevalence.Collections.dll" />
-				<includes name="Bamboo.Prevalence.XPath.dll" />
+				<include name="Bamboo.Prevalence.Collections.dll" />
+				<include name="Bamboo.Prevalence.XPath.dll" />
 			</references>
 		</csc>
 	</target>

@@ -4,11 +4,11 @@
 	<target name="all">
 		<ndoc>
 			<assemblies basedir="bin">
-				<includes name="Bamboo.Prevalence.dll" />
-				<includes name="Bamboo.Prevalence.Collections.dll" />
-				<includes name="Bamboo.Prevalence.Indexing.dll" />
-				<includes name="Bamboo.Prevalence.Util.dll" />
-				<includes name="Bamboo.Prevalence.XPath.dll" />
+				<include name="Bamboo.Prevalence.dll" />
+				<include name="Bamboo.Prevalence.Collections.dll" />
+				<include name="Bamboo.Prevalence.Indexing.dll" />
+				<include name="Bamboo.Prevalence.Util.dll" />
+				<include name="Bamboo.Prevalence.XPath.dll" />
 			</assemblies>				
 			<documenters>				
 				<documenter name="MSDN">
@@ -26,9 +26,9 @@
 					<property name="HeaderHtml" value="" />
 					<property name="FooterHtml" value="" />
 					<property name="FilesToInclude" value="" />
-					<property name="ShowMissingSummaries" value="True" />
+					<property name="ShowMissingSummaries" value="False" />
 					<property name="ShowMissingRemarks" value="False" />
-					<property name="ShowMissingParams" value="True" />
+					<property name="ShowMissingParams" value="False" />
 					<property name="ShowMissingReturns" value="False" />
 					<property name="ShowMissingValues" value="False" />
 					<property name="DocumentInternals" value="False" />
@@ -37,7 +37,7 @@
 					<property name="DocumentProtectedInternalAsProtected" value="True" />
 					<property name="DocumentEmptyNamespaces" value="False" />
 					<property name="IncludeAssemblyVersion" value="True" />
-					<property name="CopyrightText" value="Copyright (C) 2003 Rodrigo B. de Oliveira" />
+					<property name="CopyrightText" value="Copyright (C) 2003-2005 Rodrigo B. de Oliveira" />
 					<property name="CopyrightHref" value="" />
 					<property name="ReferencesPath" value="" />
 					<property name="SkipNamespacesWithoutSummaries" value="False" />
