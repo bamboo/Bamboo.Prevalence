@@ -62,10 +62,19 @@ namespace Bamboo.Prevalence.Collections
 	public class ReaderWriterList : IList, IDeserializationCallback
 	{
 		#region public helper classes
+		/// <summary>
+		/// Helper class to acquire/release a writer lock on a
+		/// ReaderWriterList.
+		/// </summary>
 		public class WriterLockDisposer : IDisposable
 		{
 			protected ReaderWriterList _list;
 
+			/// <summary>
+			/// Acquires a writer lock on the list passed
+			/// as argument.
+			/// </summary>
+			/// <param name="list"></param>
 			public WriterLockDisposer(ReaderWriterList list)
 			{
 				if (null == list)
@@ -77,11 +86,38 @@ namespace Bamboo.Prevalence.Collections
 				_list = list;
 			}
 
+			/// <summary>
+			/// Releases the writer lock on the list.
+			/// </summary>
 			public void Dispose()
 			{
 				if (null != _list)
 				{
 					_list.ReleaseWriterLock();
+					_list = null;
+				}
+			}
+		}
+
+		public class ReaderLockDisposer : IDisposable
+		{
+			protected ReaderWriterList _list;
+
+			public ReaderLockDisposer(ReaderWriterList list)
+			{
+				if (null == list)
+				{
+					throw new ArgumentNullException("list");
+				}
+				list.AcquireReaderLock();
+				_list = list;
+			}
+
+			public void Dispose()
+			{
+				if (null != _list)
+				{
+					_list.ReleaseReaderLock();
 					_list = null;
 				}
 			}
@@ -95,6 +131,7 @@ namespace Bamboo.Prevalence.Collections
 		#region protected fields
 		protected ArrayList _list;
 
+		[NonSerialized]
 		protected ReaderWriterLock _lock;
 		#endregion
 
@@ -110,6 +147,21 @@ namespace Bamboo.Prevalence.Collections
 			_list = new ArrayList(collection);
 			_lock = new ReaderWriterLock();
 		}		
+
+		#endregion
+
+		#region non synchronized methods
+		/// <summary>
+		/// Allows bypassing the synchronization mechanism
+		/// giving direct access to the underlying list.
+		/// </summary>
+		public IList InnerList
+		{
+			get
+			{
+				return _list;
+			}
+		}
 
 		#endregion
 
@@ -150,6 +202,22 @@ namespace Bamboo.Prevalence.Collections
 			get
 			{
 				return new WriterLockDisposer(this);
+			}
+		}
+
+		/// <summary>
+		/// <code>
+		/// using (list.ReaderLock)
+		/// {
+		///		// do something...
+		/// }
+		/// </code>
+		/// </summary>
+		public IDisposable ReaderLock
+		{
+			get
+			{
+				return new ReaderLockDisposer(this);
 			}
 		}
 
