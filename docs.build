@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project name="Bamboo.Prevalence Documentation" default="all">
+
+	<target name="all">
+		<ndoc>
+			<assemblies basedir="bin">
+				<includes name="Bamboo.Prevalence.dll" />
+				<includes name="Bamboo.Prevalence.Collections.dll" />
+				<includes name="Bamboo.Prevalence.Util.dll" />
+				<includes name="Bamboo.Prevalence.XPath.dll" />
+			</assemblies>				
+			<documenters>				
+				<documenter name="MSDN">
+					<property name="HtmlHelpCompilerFilename" value="hhc.exe" />
+					<property name="OutputDirectory" value=".\docs\MSDN" />
+					<property name="HtmlHelpName" value="Bamboo.Prevalence" />
+					<property name="IncludeFavorites" value="True" />
+					<property name="Title" value="Bamboo.Prevalence - an object prevalence engine" />
+					<property name="SplitTOCs" value="False" />
+					<property name="DefaulTOC" value="Bamboo.Prevalence.PrevalenceEngine" />
+					<property name="IncludeHierarchy" value="True" />
+					<property name="ShowVisualBasic" value="True" />
+					<property name="RootPageContainsNamespaces" value="True" />
+					<property name="SortTOCByNamespace" value="True" />
+					<property name="OutputTarget" value="HtmlHelp" />
+					<property name="HeaderHtml" value="" />
+					<property name="FooterHtml" value="" />
+					<property name="FilesToInclude" value="" />
+					<property name="ShowMissingSummaries" value="True" />
+					<property name="ShowMissingRemarks" value="True" />
+					<property name="ShowMissingParams" value="True" />
+					<property name="ShowMissingReturns" value="False" />
+					<property name="ShowMissingValues" value="False" />
+					<property name="DocumentInternals" value="False" />
+					<property name="DocumentProtected" value="True" />
+					<property name="DocumentPrivates" value="False" />
+					<property name="DocumentProtectedInternalAsProtected" value="True" />
+					<property name="DocumentEmptyNamespaces" value="True" />
+					<property name="IncludeAssemblyVersion" value="True" />
+					<property name="CopyrightText" value="Copyright (C) 2002 Rodrigo B. de Oliveira" />
+					<property name="CopyrightHref" value="" />
+					<property name="ReferencesPath" value="" />
+					<property name="SkipNamespacesWithoutSummaries" value="False" />
+					<property name="UseNamespaceDocSummaries" value="False" />
+					<property name="AutoPropertyBackerSummaries" value="False" />
+					<property name="AutoDocumentConstructors" value="True" />
+					<property name="DocumentAttributes" value="True" />
+					<property name="DocumentedAttributes" value="" />
+					<property name="GetExternalSummaries" value="True" />
+				</documenter>
+			</documenters>
+		</ndoc>
+	</target>
+</project>
