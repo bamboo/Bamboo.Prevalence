@@ -76,10 +76,7 @@ namespace Bamboo.Prevalence.Tests
 			// The new engine automatically
 			// recovers from crash by loading
 			// its previous state		
-			if (null != _engine)
-			{
-				_engine.HandsOffOutputLog();
-			}
+			HandsOffOutputLog();
 			_engine = CreateEngine();
 		}
 
@@ -99,6 +96,14 @@ namespace Bamboo.Prevalence.Tests
 		protected PrevalenceEngine CreateEngine()
 		{
 			return new PrevalenceEngine(PrevalentSystemType, PrevalenceBase);
+		}
+
+		protected void HandsOffOutputLog()
+		{
+			if (null != _engine)
+			{
+				_engine.HandsOffOutputLog();
+			}
 		}
 
 		protected object ExecuteCommand(Bamboo.Prevalence.ICommand command)
@@ -125,6 +130,7 @@ namespace Bamboo.Prevalence.Tests
 		[TearDown]
 		public virtual void TearDown()
 		{	
+			HandsOffOutputLog();
 			AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
 		}
 
