@@ -104,16 +104,19 @@ namespace Bamboo.Prevalence.Implementation
 			while (true)
 			{
 				System.IO.FileInfo nextLog = _fileFinder.NextPendingLog();
-				if (nextLog.Exists && nextLog.Length > 0)
+				if (nextLog.Exists)
 				{
-					// Open the log file with
-					// FileShare.ReadWrite
-					// because the crashed prevalence engine might
-					// not have closed it
-					// TODO: Is this really necessary/desired?
-					return nextLog.Open(
-						FileMode.Open, FileAccess.Read, FileShare.ReadWrite
-						);
+					if (nextLog.Length > 0)
+					{
+						// Open the log file with
+						// FileShare.ReadWrite
+						// because the crashed prevalence engine might
+						// not have closed it
+						// TODO: Is this really necessary/desired?
+						return nextLog.Open(
+							FileMode.Open, FileAccess.Read, FileShare.ReadWrite
+							);
+					}
 				}
 				else
 				{

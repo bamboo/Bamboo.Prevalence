@@ -46,8 +46,6 @@ namespace Bamboo.Prevalence.Implementation
 
 		private BinaryFormatter _formatter;
 
-		private long _savedOutputLength;
-
 		private NumberedFileCreator _fileCreator;		
 
 		public CommandLogWriter(NumberedFileCreator creator, BinaryFormatter formatter)
@@ -66,14 +64,7 @@ namespace Bamboo.Prevalence.Implementation
 		{
 			CheckOutputLog();
 
-			_savedOutputLength = _output.Length;
 			_formatter.Serialize(_output, command);
-			Flush(_output);
-		}
-
-		public void UndoWriteCommand()
-		{
-			_output.SetLength(_savedOutputLength);
 			Flush(_output);
 		}
 

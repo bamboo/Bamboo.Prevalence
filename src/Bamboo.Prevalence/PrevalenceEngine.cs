@@ -290,7 +290,14 @@ namespace Bamboo.Prevalence
 
 				foreach (ICommand command in reader)
 				{
-					command.Execute(_system);
+					try
+					{
+						command.Execute(_system);
+					}
+					catch (System.Exception)
+					{
+						// commands are allowed to throw exceptions
+					}
 				}		
                 
 				Clock.Resume();
@@ -311,12 +318,7 @@ namespace Bamboo.Prevalence
 			{		
 				ShareCurrentObject();
 				returnValue = command.Execute(_system);					
-			}
-			catch
-			{
-				_commandLog.UndoWriteCommand();
-				throw;
-			}
+			}			
 			finally
 			{
 				UnshareCurrentObject();

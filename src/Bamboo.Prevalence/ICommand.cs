@@ -77,14 +77,7 @@ namespace Bamboo.Prevalence
 	{
 		/// <summary>
 		/// Executes the command logic.
-		/// </summary>
-		/// <remarks>
-		/// You must ensure that if this method
-		/// throws any exceptions it will not
-		/// change the system state.
-		/// See <see cref="PrevalenceEngine.ExecuteCommand"/>
-		/// for details.
-		/// </remarks>
+		/// </summary>		
 		/// <param name="system">the prevalent system</param>
 		/// <returns>command defined return value</returns>
 		object Execute(object system);
