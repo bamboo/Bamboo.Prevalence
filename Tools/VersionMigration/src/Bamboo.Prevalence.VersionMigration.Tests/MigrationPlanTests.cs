@@ -68,6 +68,18 @@ namespace Bamboo.Prevalence.VersionMigration.Tests
 
 			AssertEquals(mapping, mappings["SamplePrevalentSystem.Library"]);
 			
+			AssertEquals(2, plan.Scripts.Count);
+			
+			Script s = plan.Scripts[0];
+			AssertEquals("context", s.TargetObject);
+			AssertEquals("AfterDeserialization", s.TargetEvent);
+			AssertEquals("// Nothing here...", s.Code);
+			AssertEquals("vb", s.Language);
+			
+			s = plan.Scripts[1];
+			AssertEquals("c# must be the default language", "c#", s.Language);
+			AssertEquals(1, s.Imports.Count);
+			AssertEquals("SamplePrevalentSystem", s.Imports[0].Namespace);
 		}
 	}
 }

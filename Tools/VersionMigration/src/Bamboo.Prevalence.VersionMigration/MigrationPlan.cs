@@ -57,10 +57,13 @@ namespace Bamboo.Prevalence.VersionMigration
 		private TypeMappingCollection _typeMappings;
 
 		private CultureInfo _culture;
+		
+		private ScriptCollection _scripts;
 
 		public MigrationPlan()
 		{
 			_typeMappings = new TypeMappingCollection();			
+			_scripts = new ScriptCollection();
 		}
 
 		public MigrationPlan(XmlElement planElement) : this()
@@ -85,6 +88,14 @@ namespace Bamboo.Prevalence.VersionMigration
 				return _typeMappings;
 			}
 		}
+		
+		public ScriptCollection Scripts
+		{
+			get
+			{
+				return _scripts;
+			}
+		}
 
 		public CultureInfo Culture
 		{
@@ -105,11 +116,22 @@ namespace Bamboo.Prevalence.VersionMigration
 
 			return formatter.Deserialize(stream);
 		}
+		
+		internal void SetUpScripts(MigrationContext context)
+		{			
+			string classNameFormat = "__script{0}__";
+			for (int i=0; i<_scripts.Count; ++i)
+			{
+				string className = string.Format(classNameFormat, i);
+				_scripts[i].SetUp(className, context);
+			}			
+		}
 
 		private void Load(XmlElement planElement)
 		{
 			LoadCulture(planElement);
 			LoadTypeMappings(planElement);
+			LoadScripts(planElement);
 		}
 
 		private void LoadCulture(XmlElement element)
@@ -123,6 +145,14 @@ namespace Bamboo.Prevalence.VersionMigration
 			foreach (XmlElement item in planElement.SelectNodes("typeMapping"))
 			{
 				LoadTypeMapping(item);
+			}
+		}
+		
+		private void LoadScripts(XmlElement planElement)
+		{
+			foreach (XmlElement item in planElement.SelectNodes("script"))
+			{
+				_scripts.Add(new Script(item));
 			}
 		}
 

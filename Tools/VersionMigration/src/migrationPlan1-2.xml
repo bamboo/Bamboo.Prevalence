@@ -35,9 +35,27 @@
 		</field>
 		
 		<field name="_reviews">
-			<newObject />
-		</field>
+			<new />
+		</field>	
 		
 	</typeMapping>		 
+	
+	<!--
+	A script can be executed after the entire object model
+	has been deserialized to further process it...
+	-->
+	<script for="context" event="AfterDeserialization">
+		<import namespace="SamplePrevalentSystem" />
+		<code>
+		// adds a mark to every title's name so the test can make
+		// sure we've been executed...						
+		LibrarySystem library = (LibrarySystem)args.Object;
+		foreach (Title title in library.GetTitles())
+		{
+			title.Name += "*";
+		}
+		</code>
+	</script>
+	
 
 </migrationPlan>

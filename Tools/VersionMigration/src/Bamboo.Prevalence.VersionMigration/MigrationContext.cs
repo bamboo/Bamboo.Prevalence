@@ -185,6 +185,7 @@ namespace Bamboo.Prevalence.VersionMigration
 			{
 				LoadMigrationPlan();
 				LoadMainAssembly();
+				CompileAndInstallScriptEventHandlers();
 
 				object graph = ReadObject();
 				WriteObject(graph);
@@ -203,10 +204,17 @@ namespace Bamboo.Prevalence.VersionMigration
 		public void SetCurrentObjectField(string name, object value)
 		{
 			InitializerHelper.SetField(CurrentObject, name, value);
-		}
+		}		
 
 		public object ChangeType(object value, Type conversionType)
 		{
+			if (conversionType.IsEnum)
+			{
+				if (value is string)
+				{
+					return Enum.Parse(conversionType, (string)value);
+				}
+			}
 			return Convert.ChangeType(value, conversionType, _plan.Culture);
 		}
 
@@ -335,6 +343,11 @@ namespace Bamboo.Prevalence.VersionMigration
 		private void UninstallAssemblyResolver()
 		{
 			AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(HandleResolveAssembly);
+		}
+		
+		void CompileAndInstallScriptEventHandlers()
+		{
+			_plan.SetUpScripts(this);
 		}
 
 		public void Trace(string format, params object[] args)

@@ -68,7 +68,7 @@ namespace TestData20
 
 			foreach (XmlElement expected in expectedTitles)
 			{
-				Title title = FindByName(titles, expected.GetAttribute("name"));				
+				Title title = FindByName(titles, expected.GetAttribute("name") + "*");				
 				AssertTitle(expected, title);
 			}
 		}
@@ -87,8 +87,10 @@ namespace TestData20
 		}
 
 		private static void AssertTitle(XmlElement expected, Title actual)
-		{			
-			AssertEquals("title.Name", expected.GetAttribute("name"), actual.Name);
+		{	
+			// the script code will add an * to every name...			
+			AssertEquals("title.Name", expected.GetAttribute("name") + "*", actual.Name);
+			
 			AssertEquals("title.Description", expected.GetAttribute("summary"), actual.Description);
 			AssertEquals("title.PublishDate", ToDateTime(expected.GetAttribute("publishDate")), actual.PublishDate);
 			AssertEquals("title.Reviews.Count", 0, actual.Reviews.Count);

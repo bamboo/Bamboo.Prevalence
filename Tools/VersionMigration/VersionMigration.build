@@ -19,6 +19,7 @@
 		<copy todir="bin" file="${nunit.framework.dll}" />
 
 		<nunit2>
+			<formatter type="Plain" />
 			<test assemblyname="bin/Bamboo.Prevalence.VersionMigration.Tests.dll" />
 		</nunit2>
 	</target>

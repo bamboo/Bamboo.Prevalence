@@ -20,5 +20,14 @@
 		<alias>SamplePrevalentSystem.Library</alias>
 	</typeMapping>
 	
+	<script for="context" event="AfterDeserialization" language="vb">
+	<code>// Nothing here...</code>
+	</script>
+	
+	<script for="context" event="AfterDeserialization">
+	<import namespace="SamplePrevalentSystem" />
+	<code />
+	</script>
+	
 
 </migrationPlan>
