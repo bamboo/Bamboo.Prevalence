@@ -1,0 +1,74 @@
+<project name='Bamboo.Prevalence' default='debug'>
+
+	<target name='debug' depends='setDebugProperties,test' />
+
+	<target name='release' depends='clean,setReleaseProperties,test' />
+
+	<target name='setDebugProperties'>
+		<property name='debug' value='true' />
+	</target>
+
+	<target name='setReleaseProperties'>
+		<property name='debug' value='false' />
+	</target>
+
+	<target name='test' depends='Bamboo.Prevalence.Tests'>
+		<exec program='nunit-console' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
+	</target>
+
+	<target name='Bamboo.Prevalence.Tests' depends='Bamboo.Prevalence'>
+
+		<csc target='library' output='bin\Bamboo.Prevalence.Tests.dll' debug='true'>
+
+			<sources>
+				<includes name='src\Bamboo.Prevalence.Tests\*.cs' />
+			</sources>
+
+			<references>
+				<includes name='lib\*.dll' />
+				<includes name='bin\Bamboo.Prevalence.dll' />
+			</references>
+
+		</csc>
+
+	</target>
+
+	<target name='Bamboo.Prevalence' depends='init'>
+
+		<csc
+			doc='bin\Bamboo.Prevalence.xml'
+			target='library'
+			output='bin\Bamboo.Prevalence.dll'
+			debug='${debug}'>
+
+			<sources>
+				<includes name='src/Bamboo.Prevalence/**.cs' />
+			</sources>
+
+			<references>
+				<includes name='lib\*.dll' />
+			</references>
+
+		</csc>
+
+	</target>
+
+	<target name='init'>
+		<mkdir dir='bin' />
+	</target>
+
+	<target name='clean'>
+		<delete dir='bin' />
+	</target>
+
+	<target name='updateLib'>
+
+		<copy todir='lib'>
+			<fileset basedir='\dotnet\nunit\bin'>
+				<includes name='nunit.framework.dll' />
+			</fileset>
+		</copy>
+
+	</target>
+
+</project>

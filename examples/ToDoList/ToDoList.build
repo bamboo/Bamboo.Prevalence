@@ -1,0 +1,28 @@
+<project name="ToDoList" default="web">
+
+	<target name="web" depends="Bamboo.Prevalence.Examples.ToDoList">
+		<copy todir="web/bin">
+			<fileset basedir="../../bin">
+				<includes name="Bamboo.Prevalence.dll" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="Bamboo.Prevalence.Examples.ToDoList" depends="init">
+		<csc target="library" output="web/bin/Bamboo.Prevalence.Examples.ToDoList.dll">
+
+			<sources>
+				<includes name="src/Bamboo.Prevalence.Examples.ToDoList/**.cs" />
+			</sources>
+
+			<references>
+				<includes name="..\..\bin\Bamboo.Prevalence.dll" />
+			</references>			
+		</csc>
+	</target>
+
+	<target name="init">
+		<mkdir dir="web/bin" />
+	</target>
+
+</project>
