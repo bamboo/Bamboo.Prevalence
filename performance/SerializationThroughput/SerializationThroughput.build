@@ -1,0 +1,32 @@
+<project name="SerializationThroughput" default="run">
+
+	<target name="run" depends="release">
+		<exec program="SerializationThroughput.exe" />
+	</target>
+	
+	<target name="release" depends="set-release-properties, build" />
+	<target name="debug" depends="set-debug-properties, build" />
+
+	<target name="set-release-properties">
+		<property name="debug" value="false" />
+		<property name="optimize" value="true" />
+	</target>
+
+	<target name="set-debug-properties">
+		<property name="debug" value="true" />
+		<property name="optimize" value="false" />
+	</target>
+
+	<target name="build">
+		<csc
+			target="exe"
+			output="SerializationThroughput.exe"
+			debug="${debug}"
+			optimize="${optimize}">
+
+			<sources>
+				<includes name="*.cs" />
+			</sources>
+		</csc>
+	</target>
+</project>

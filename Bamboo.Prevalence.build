@@ -18,12 +18,14 @@
 		<property name='optimize' value='true' />
 	</target>
 
-	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests'>
+	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests, Bamboo.Prevalence.Collections.Tests'>
 		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
 
 		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Indexing.Tests.dll' />
 
 		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.XPath.Tests.dll' />
+
+		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Collections.Tests.dll' />
 	</target>
 
 	<target name="distribution" depends="release">
@@ -47,6 +49,10 @@
 				<includes name="src/Bamboo.Prevalence.XPath/**/*.csproj" />
 				<includes name="src/Bamboo.Prevalence.XPath.Tests/**/*.cs" />
 				<includes name="src/Bamboo.Prevalence.XPath.Tests/**/*.csproj" />
+				<includes name="src/Bamboo.Prevalence.Collection/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence.Collection/**/*.csproj" />
+				<includes name="src/Bamboo.Prevalence.Collection.Tests/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence.Collection.Tests/**/*.csproj" />
 				<includes name="examples/MyFirstPrevalentSystem/*.cs*" />
 				<includes name="examples/RemotingPrevalence/*.cs" />
 				<includes name="examples/RemotingPrevalence/*.build" />
@@ -168,6 +174,38 @@
 
 	</target>
 
+	<target name='Bamboo.Prevalence.Collections.Tests' depends='Bamboo.Prevalence.Collections'>
+
+		<csc target='library' output='bin\Bamboo.Prevalence.Collections.Tests.dll' debug='true'>
+
+			<sources>
+				<includes name='src\Bamboo.Prevalence.Collections.Tests\*.cs' />
+			</sources>
+
+			<references>
+				<includes name='${nunit.framework.dll}' />
+				<includes name='bin\Bamboo.Prevalence.Collections.dll' />
+			</references>
+
+		</csc>
+
+	</target>
+
+	<target name='Bamboo.Prevalence.Collections' depends='init'>
+
+		<csc
+			doc='bin\Bamboo.Prevalence.Collections.xml'
+			target='library'
+			output='bin\Bamboo.Prevalence.Collections.dll'
+			debug='${debug}'
+			optimize='${optimize}'>
+
+			<sources>
+				<includes name='src/Bamboo.Prevalence.Collections/**.cs' />
+			</sources>
+		</csc>
+
+	</target>
 
 	<target name='init'>
 		<mkdir dir='bin' />

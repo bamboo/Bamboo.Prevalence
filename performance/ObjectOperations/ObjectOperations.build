@@ -1,0 +1,38 @@
+<project name="ObjectOperations" default="run">
+
+	<target name="run" depends="release">
+		<exec program="ObjectOperations.exe" />
+	</target>
+	
+	<target name="release" depends="set-release-properties, build" />
+	<target name="debug" depends="set-debug-properties, build" />
+
+	<target name="set-release-properties">
+		<property name="debug" value="false" />
+		<property name="optimize" value="true" />
+	</target>
+
+	<target name="set-debug-properties">
+		<property name="debug" value="true" />
+		<property name="optimize" value="false" />
+	</target>
+
+	<target name="build">
+		<copy file="../../bin/Bamboo.Prevalence.Collections.dll" todir="." />
+
+		<csc
+			target="exe"
+			output="ObjectOperations.exe"
+			debug="${debug}"
+			optimize="${optimize}">
+
+			<sources>
+				<includes name="*.cs" />
+			</sources>
+
+			<references>
+				<includes name="Bamboo.Prevalence.Collections.dll" />
+			</references>
+		</csc>
+	</target>
+</project>

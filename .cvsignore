@@ -1,6 +1,5 @@
 bin
 dist
-docs
 lib
 *.zip
 *.txt
