@@ -77,6 +77,11 @@
                     AssemblyName = "Bamboo.Prevalence.Collections"
                     HintPath = "D:\dev\dotnet\Bamboo.Prevalence\bin\Bamboo.Prevalence.Collections.dll"
                 />
+                <Reference
+                    Name = "Bamboo.Prevalence.XPath"
+                    AssemblyName = "Bamboo.Prevalence.XPath"
+                    HintPath = "..\..\bin\Bamboo.Prevalence.XPath.dll"
+                />
             </References>
         </Build>
         <Files>

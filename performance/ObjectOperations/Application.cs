@@ -112,6 +112,16 @@ namespace ObjectOperations
 			}
 		}		
 
+		public Product[] Products
+		{
+			get
+			{
+				Product[] products = new Product[_products.Count];
+				_products.Values.CopyTo(products, 0);
+				return products;
+			}
+		}
+
 		public void AddProductType(ProductType type)
 		{
 			_productTypes.Add(type);
@@ -225,7 +235,7 @@ namespace ObjectOperations
 				found.Sort(InverseProductNameComparer.Default);
 				elapsed = DateTime.Now - start;
 				Console.WriteLine("It takes {0}ms to sort an ArrayList with {1} elements using a static bound comparer.", elapsed.TotalMilliseconds, found.Count);
-
+				
 				// worst sorting case again...
 				start = DateTime.Now;
 				found.Sort(new Bamboo.Prevalence.Collections.ObjectPropertyComparer(typeof(Product), "Name"));
@@ -233,10 +243,20 @@ namespace ObjectOperations
 				Console.WriteLine("It takes {0}ms to sort an ArrayList with {1} elements using a dynamic bound comparer.", elapsed.TotalMilliseconds, found.Count);
 			}
 
-			System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+			TimeXPathQuery(catalog);
+			
 			System.GC.Collect();
 
-			Console.WriteLine("This process is using {0} bytes to hold {1} products.", process.WorkingSet, catalog.ProductCount);
+			Console.WriteLine("This process is using {0} bytes to hold {1} products.", Environment.WorkingSet, catalog.ProductCount);
+		}		
+
+		static void TimeXPathQuery(ProductCatalog catalog)
+		{
+			Bamboo.Prevalence.XPath.XPathObjectNavigator navigator = new Bamboo.Prevalence.XPath.XPathObjectNavigator(catalog);
+			DateTime start = DateTime.Now;
+			object[] objects = navigator.SelectObjects("Products/Product[ProductType/Code='dvds']");
+			TimeSpan elapsed = DateTime.Now - start;
+			Console.WriteLine("It takes {0}ms to select {1} products using an expensive XPath query", elapsed.TotalMilliseconds, objects.Length);
 		}
 	}
 }
