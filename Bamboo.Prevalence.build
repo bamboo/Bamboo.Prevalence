@@ -16,8 +16,10 @@
 		<property name='optimize' value='true' />
 	</target>
 
-	<target name='test' depends='Bamboo.Prevalence.Tests'>
+	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests'>
 		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
+
+		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Indexing.Tests.dll' />
 	</target>
 
 	<target name="distribution" depends="release">
@@ -82,6 +84,44 @@
 
 			<sources>
 				<includes name='src/Bamboo.Prevalence/**.cs' />
+			</sources>
+
+			<references>
+				<includes name='lib\*.dll' />
+			</references>
+
+		</csc>
+
+	</target>
+
+	<target name='Bamboo.Prevalence.Indexing.Tests' depends='Bamboo.Prevalence.Indexing'>
+
+		<csc target='library' output='bin\Bamboo.Prevalence.Indexing.Tests.dll' debug='true'>
+
+			<sources>
+				<includes name='src\Bamboo.Prevalence.Indexing.Tests\*.cs' />
+			</sources>
+
+			<references>
+				<includes name='lib\*.dll' />
+				<includes name='bin\Bamboo.Prevalence.Indexing.dll' />
+			</references>
+
+		</csc>
+
+	</target>
+
+	<target name='Bamboo.Prevalence.Indexing' depends='init'>
+
+		<csc
+			doc='bin\Bamboo.Prevalence.Indexing.xml'
+			target='library'
+			output='bin\Bamboo.Prevalence.Indexing.dll'
+			debug='${debug}'
+			optimize='${optimize}'>
+
+			<sources>
+				<includes name='src/Bamboo.Prevalence.Indexing/**.cs' />
 			</sources>
 
 			<references>
