@@ -38,16 +38,16 @@ namespace Bamboo.Prevalence.Implementation
 	/// command as if in a specific moment in time.
 	/// </summary>
 	[Serializable]
-	internal sealed class ClockRecoveryCommand : Bamboo.Prevalence.ICommand
+	internal sealed class ContextRecoveryCommand : Bamboo.Prevalence.ICommand
 	{
 		private Bamboo.Prevalence.ICommand _command;
 
-		private System.DateTime _dateTime;
+		private System.DateTime _dateTime;		
 
-		public ClockRecoveryCommand(Bamboo.Prevalence.ICommand command, System.DateTime dateTime)
+		public ContextRecoveryCommand(Bamboo.Prevalence.ICommand command, System.DateTime dateTime)
 		{
 			_command = command;
-			_dateTime = dateTime;
+			_dateTime = dateTime;			
 		}
 
 		object Bamboo.Prevalence.ICommand.Execute(object system)

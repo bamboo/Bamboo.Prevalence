@@ -147,17 +147,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Implementation\ClockRecoveryCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Implementation\CommandInput.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Implementation\CommandOutput.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Implementation\ContextRecoveryCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

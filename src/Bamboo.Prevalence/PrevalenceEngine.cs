@@ -303,7 +303,7 @@ namespace Bamboo.Prevalence
 			object returnValue;
 			
 			Clock.Pause();
-			_commandLog.WriteCommand(new ClockRecoveryCommand(command, Clock.Now));
+			_commandLog.WriteCommand(new ContextRecoveryCommand(command, Clock.Now));
 			try
 			{		
 				ShareCurrentObject();
