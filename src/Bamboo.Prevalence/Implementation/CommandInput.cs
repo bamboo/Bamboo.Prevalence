@@ -58,7 +58,8 @@ namespace Bamboo.Prevalence.Implementation
 			{
 				using (FileStream stream = snapshot.OpenRead())
 				{
-					return _formatter.Deserialize(stream);
+					const int BufferSize = 512*1024;
+					return _formatter.Deserialize(new BufferedStream(stream, BufferSize));
 				}
 			}
 			return null;

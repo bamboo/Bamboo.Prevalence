@@ -100,7 +100,9 @@ namespace Bamboo.Prevalence.Implementation
 			{				
 				using (System.IO.FileStream stream = tempFile.OpenWrite())
 				{				
-					_formatter.Serialize(stream, system);
+					BufferedStream bstream = new BufferedStream(stream);
+					_formatter.Serialize(bstream, system);
+					bstream.Flush();
 					Flush(stream);				
 				}
 				tempFile.MoveTo(snapshotFile.FullName);
@@ -139,7 +141,7 @@ namespace Bamboo.Prevalence.Implementation
 		{
 			if (Bamboo.Prevalence.Configuration.PrevalenceSettings.FlushAfterCommand)
 			{
-				stream.Flush();
+				//stream.Flush();
 				FlushFileBuffers(stream);
 			}
 		}
