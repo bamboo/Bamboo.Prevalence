@@ -1,0 +1,55 @@
+<project name="RemotingPrevalence" default="all">
+
+	<target name="all" depends="Server,Client" />
+
+	<target name="Client" depends="AddressBook">
+
+		<csc target="winexe" output="client.exe" debug="true">
+			<sources>
+				<includes name="Client.cs" />
+				<includes name="AddContactDialog.cs" />
+			</sources>
+
+			<references>
+				<includes name="AddressBook.dll" />
+			</references>
+		</csc>
+
+	</target>
+
+	<target name="Server" depends="AddressBook">
+
+		<csc target="exe" output="server.exe" debug="true">
+			<sources>
+				<includes name="Server.cs" />
+			</sources>
+
+			<references>
+				<includes name="AddressBook.dll" />
+				<includes name="Bamboo.Prevalence.dll" />
+			</references>
+		</csc>
+
+	</target>
+
+	<target name="AddressBook" depends="init">
+
+		<csc target="library" output="AddressBook.dll" debug="true">
+			<sources>
+				<includes name="AddressBook.cs" />
+			</sources>
+
+			<references>
+				<includes name="Bamboo.Prevalence.dll" />
+			</references>
+		</csc>
+	</target>
+
+	<target name="init">
+		<copy todir=".">
+			<fileset basedir="..\..\bin">
+				<includes name="Bamboo.Prevalence.dll" />
+			</fileset>
+		</copy>
+	</target>
+</project>

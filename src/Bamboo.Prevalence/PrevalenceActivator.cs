@@ -38,7 +38,7 @@ using Bamboo.Prevalence.Serialization;
 namespace Bamboo.Prevalence
 {
 	/// <summary>
-	/// Class factory for PrevalenceEngine.
+	/// Class factory for prevalence engines.
 	/// </summary>
 	public class PrevalenceActivator
 	{
@@ -103,6 +103,25 @@ namespace Bamboo.Prevalence
 			Assertion.AssertParameterNotNull("formatter", formatter);
 
 			return new PrevalenceEngine(systemType, prevalenceBase, formatter);
+		}
+
+		/// <summary>
+		/// Creates a new transparent prevalence engine for the prevalent
+		/// system type specified by the systemType argument.
+		/// </summary>
+		/// <remarks>
+		/// A transparent prevalence engine automatically intercepts the
+		/// calls made to the prevalent system and creates command objects
+		/// as needed.
+		/// </remarks>
+		/// <param name="systemType">prevalent system type, must be serializable and inherited from
+		/// System.MarshalByRefObject</param>
+		/// <param name="prevalenceBase">directory where to store log files</param>
+		/// <returns>a new prevalence engine</returns>
+		public static PrevalenceEngine CreateTransparentEngine(System.Type systemType, string prevalenceBase)
+		{
+			CheckEngineParameters(systemType, prevalenceBase);
+			return new TransparentPrevalenceEngine(systemType, prevalenceBase, new BinaryFormatter());
 		}
 
 		private static void CheckEngineParameters(System.Type systemType, string prevalenceBase)

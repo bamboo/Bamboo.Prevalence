@@ -30,10 +30,16 @@
   Commands objects, in turn, always apply changes to the system. With both concepts 
   in place: query objects and command objects the Bamboo.Prevalence engine is 
   able to provide a much more scalable synchronization solution by making use 
-  of the reader/writer lock design pattern.<br>
-  <br>
+  of the reader/writer lock design pattern.</p>
+<p>
   Bamboo.Prevalence is implemented in C# and intended to be usable from any CLR 
   implementation. </p>
+<h2>History</h2>
+<p><b>09/15/2002</b> Bamboo.Prevalence now supports transparent prevalence. What does it mean?
+It means that if you don't want to you don't need to write command and/or query objects, the Bamboo.Prevalence
+engine will take care of mapping method calls to command/query objects as needed. Take a look 
+<a href="MyFirstPrevalentSystem.htm">here</a>. Thanks to Jesse Ezell for the ideas!
+</p>
 <h2>System Requirements</h2>
 <p>All you need to start using Bamboo.Prevalence in your projects is the .NET 
   framework runtime.</p>
@@ -48,7 +54,8 @@
     Prevalence Skeptical FAQ</a></li>
   <li><a target="_blank" href="http://sourceforge.net/project/showfiles.php?group_id=61693&release_id=109035"> 
     Download Bamboo.Prevalence</a></li>
-  <li>Take a look at the included examples and test cases</li>
+  <li>Take a look at the included examples and test cases, you can start by taking a look
+  at <a href="MyFirstPrevalentSystem.htm">MyFirstPrevalentSystem</a></li>
   <li>Start writing your own prevalent system classes</li>
   <li>Subscribe to the <a href="https://sourceforge.net/mail/?group_id=61693">mailing 
     lists</a></li>
@@ -63,7 +70,11 @@ I'll be adding a tutorial section to this web site soon.
 <p>Do you want to help? Drop me a line.</p>
 <h2>Thanks and Acknowledgements</h2>
 <ul>
-  <li>Klaus Wuestefeld and the Prevayler team</li>
+  <li><b>Klaus Wuestefeld and the Prevayler team</b> for starting it all</li>
+  <li><b>Jesse Ezell</b> for the great idea of using ContextBoundObject and context attributes
+  to enable transparent prevalence totally removing the need of handcoding command and query
+  objects. Later on we decided on using proxies but all the credits just be given to him.
+  </li>
 </ul>
 <h2>Other Resources</h2>
 <p><a href="http://sourceforge.net/projects/bbooprevalence">Project site at SourceForge</a></p>

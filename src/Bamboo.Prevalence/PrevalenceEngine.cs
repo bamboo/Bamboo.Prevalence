@@ -78,9 +78,12 @@ namespace Bamboo.Prevalence
 	/// Bamboo.Prevalence.Tests project.
 	/// </p>
 	/// </remarks>
-	public sealed class PrevalenceEngine
+	public class PrevalenceEngine
 	{
-		private object _system;		
+		/// <summary>
+		/// the prevalent system.
+		/// </summary>
+		protected object _system;		
 
 		private CommandLogWriter _commandLog;
 
@@ -132,7 +135,7 @@ namespace Bamboo.Prevalence
 		/// <summary>
 		/// The prevalent system.
 		/// </summary>
-		public object PrevalentSystem
+		public virtual object PrevalentSystem
 		{
 			get
 			{
@@ -184,16 +187,15 @@ namespace Bamboo.Prevalence
 		{
 			Assertion.AssertParameterNotNull("query", query);
 
-			AcquireReaderLock();
+			BeforeQuery();
+
 			try
-			{
-				ShareCurrentObject();
+			{				
 				return query.Execute(_system);
 			}
 			finally
-			{
-				UnshareCurrentObject();
-				ReleaseReaderLock();
+			{				
+				AfterQuery();
 			}
 		}
 
@@ -232,6 +234,18 @@ namespace Bamboo.Prevalence
 			{
 				ReleaseReaderLock();
 			}
+		}
+
+		internal void BeforeQuery()
+		{
+			ShareCurrentObject();
+			AcquireReaderLock();
+		}
+
+		internal void AfterQuery()
+		{
+			ReleaseReaderLock();
+			UnshareCurrentObject();
 		}
 
 		private DirectoryInfo CheckPrevalenceBase(string prevalenceBase)

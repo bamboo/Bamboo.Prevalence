@@ -117,6 +117,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TransparentPrevalenceEngine.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\PassThroughAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\QueryAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\PrevalenceSettings.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -142,6 +157,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Implementation\MethodCallCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Implementation\NumberedFileBase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -158,6 +178,11 @@
                 />
                 <File
                     RelPath = "Implementation\PendingCommandsEnumerator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Implementation\PrevalentSystemProxy.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

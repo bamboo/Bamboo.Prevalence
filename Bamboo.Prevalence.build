@@ -18,7 +18,7 @@
 
 	<target name="distribution" depends="release">
 
-		<zip zipfile="Bamboo.Prevalence.1.1.0.0.zip">
+		<zip zipfile="Bamboo.Prevalence.1.2.0.0.zip">
 			<fileset>
 				<includes name="Bamboo.Prevalence.build" />
 				<includes name="Bamboo.Prevalence.ndoc" />
@@ -29,7 +29,12 @@
 				<includes name="src/Bamboo.Prevalence/**/*.csproj" />
 				<includes name="src/Bamboo.Prevalence.Tests/**/*.cs" />
 				<includes name="src/Bamboo.Prevalence.Tests/**/*.csproj" />
-				<includes name="web/index.php" />
+				<includes name="examples/MyFirstPrevalentSystem/*.*" />
+				<includes name="examples/RemotingPrevalence/*.cs" />
+				<includes name="examples/RemotingPrevalence/*.build" />
+				<includes name="examples/RemotingPrevalence/*.txt" />
+				<includes name="web/*.*" />
+				<includes name="docs/MSDN/*.chm" />
 			</fileset>
 		</zip>
 	</target>
