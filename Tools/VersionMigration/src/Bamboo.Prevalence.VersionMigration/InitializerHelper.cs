@@ -45,7 +45,7 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		public static void SetField(object target, string name, object value)
 		{
-			target.GetType().GetField(name).SetValue(target, value);
+			target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(target, value);
 		}
 
 		public static object Call(object target, string methodName, params object[] parameters)

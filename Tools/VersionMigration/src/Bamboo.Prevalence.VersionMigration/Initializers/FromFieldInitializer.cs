@@ -50,6 +50,10 @@ namespace Bamboo.Prevalence.VersionMigration.Initializers
 		public FromFieldInitializer(XmlElement element)
 		{
 			_fieldName = element.InnerText;
+			if (0 == _fieldName.Length)
+			{
+				throw new ApplicationException(string.Format("fromField tag is empty at field {0}!", element.ParentNode.Attributes["name"].Value));
+			}
 		}
 
 		public void InitializeField(MigrationContext context)

@@ -177,6 +177,16 @@ namespace Bamboo.Prevalence.VersionMigration
 			}
 		}		
 
+		/// <summary>
+		/// Same as <see cref="InitializerHelper.SetField"/>(<see cref="CurrentObject"/>, name, value).
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public void SetCurrentObjectField(string name, object value)
+		{
+			InitializerHelper.SetField(CurrentObject, name, value);
+		}
+
 		public object ChangeType(object value, Type conversionType)
 		{
 			return Convert.ChangeType(value, conversionType, _plan.Culture);

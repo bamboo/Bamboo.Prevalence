@@ -146,6 +146,10 @@ namespace Bamboo.Prevalence.VersionMigration
 		{
 			foreach (XmlElement item in element.SelectNodes("alias"))
 			{
+				if (0 == item.InnerText.Length)
+				{
+					throw new ApplicationException("alias node is empty at node " + element.Name + "!");
+				}
 				_aliases.Add(item.InnerText);
 			}
 		}
