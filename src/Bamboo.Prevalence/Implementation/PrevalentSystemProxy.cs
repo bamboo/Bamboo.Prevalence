@@ -57,9 +57,8 @@ namespace Bamboo.Prevalence.Implementation
 			IMethodCallMessage call = msg as IMethodCallMessage;
 
 			try
-			{
-				// if this is not a nested engine call...
-				if (_engine != PrevalenceEngine.Current)
+			{				
+				if (!IsNestedEngineCall())
 				{
 					if (!IsPassThrough(call.MethodBase))
 					{
@@ -67,7 +66,8 @@ namespace Bamboo.Prevalence.Implementation
 						{
 							return ExecuteQuery(call);
 						}
-						else if (IsCommand(call.MethodBase))
+						
+						if (IsCommand(call.MethodBase))
 						{
 							return ExecuteCommand(call);						
 						}
@@ -83,6 +83,11 @@ namespace Bamboo.Prevalence.Implementation
 			{
 				return new ReturnMessage(x, call);
 			}
+		}
+
+		private bool IsNestedEngineCall()
+		{
+			return _engine == PrevalenceEngine.Current;
 		}
 
 		private bool IsCommand(MethodBase method)

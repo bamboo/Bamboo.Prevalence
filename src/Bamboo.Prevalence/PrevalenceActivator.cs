@@ -58,7 +58,7 @@ namespace Bamboo.Prevalence
 		/// <returns>a new prevalence engine</returns>
 		public static PrevalenceEngine CreateEngine(System.Type systemType, string prevalenceBase)
 		{
-			return CreateEngine(systemType, prevalenceBase, new BinaryFormatter());
+			return CreateEngine(systemType, prevalenceBase, CreateBinaryFormatter());
 		}
 
 		/// <summary>
@@ -83,7 +83,7 @@ namespace Bamboo.Prevalence
 			}
 			else
 			{
-				formatter = new BinaryFormatter();
+				formatter = CreateBinaryFormatter();
 			}
 
 			return CreateRequestedEngine(systemType, prevalenceBase, formatter);
@@ -153,7 +153,7 @@ namespace Bamboo.Prevalence
 		/// </example>
 		public static PrevalenceEngine CreateTransparentEngine(System.Type systemType, string prevalenceBase)
 		{
-			return CreateTransparentEngine(systemType, prevalenceBase, new BinaryFormatter());
+			return CreateTransparentEngine(systemType, prevalenceBase, CreateBinaryFormatter());
 		}
 
 		/// <summary>
@@ -192,6 +192,13 @@ namespace Bamboo.Prevalence
 		{
 			ISurrogateSelector autoVersionMigrationSurrogate = new AutoVersionMigrationSurrogate(type.Assembly);
 			BinaryFormatter formatter = new BinaryFormatter(autoVersionMigrationSurrogate, new StreamingContext(StreamingContextStates.All));
+			return formatter;
+		}
+
+		private static BinaryFormatter CreateBinaryFormatter()
+		{
+			BinaryFormatter formatter = new BinaryFormatter();
+			formatter.Context = new StreamingContext(StreamingContextStates.Persistence);
 			return formatter;
 		}
 	}
