@@ -24,15 +24,15 @@
 	</target>
 
 	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests, Bamboo.Prevalence.Collections.Tests, Bamboo.Prevalence.Util.Tests'>
-		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
+		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Tests.dll' />
 
-		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Indexing.Tests.dll' />
+		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Indexing.Tests.dll' />
 
-		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.XPath.Tests.dll' />
+		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.XPath.Tests.dll' />
 
-		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Collections.Tests.dll' />
+		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Collections.Tests.dll' />
 
-		<exec program='${nunit-console}' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Util.Tests.dll' />
+		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Util.Tests.dll' />
 	</target>
 
 	<target name="distribution" depends="release">
