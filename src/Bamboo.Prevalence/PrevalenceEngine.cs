@@ -204,14 +204,26 @@ namespace Bamboo.Prevalence
 		}
 
 		/// <summary>
-		/// Returns the current executing PrevalenceEngine when 
-		/// called inside ICommand and IQuery objects Execute method.
+		/// Returns the current executing PrevalenceEngine when called
+		/// in the scope of a (ICommand|IQuery).Execute method.
 		/// </summary>
 		public static PrevalenceEngine Current
 		{
 			get
 			{
 				return Thread.GetData(_sharedObjectSlot) as PrevalenceEngine;
+			}
+		}
+
+		/// <summary>
+		/// Returns the current executing prevalent system when called
+		/// in the scope of a (ICommand|IQuery).Execute method.
+		/// </summary>
+		public static object CurrentSystem
+		{
+			get
+			{
+				return GetCurrent("PrevalenceEngine.CurrentSystem").PrevalentSystem;
 			}
 		}
 
@@ -229,13 +241,8 @@ namespace Bamboo.Prevalence
 		public static System.DateTime Now
 		{
 			get
-			{
-				PrevalenceEngine current = PrevalenceEngine.Current;
-				if (null == current)
-				{
-					throw new InvalidOperationException("PrevalenceEngine.Now can only be called during the execution of a command or query!");
-				}
-				return current.Clock.Now;
+			{				
+				return GetCurrent("PrevalenceEngine.Now").Clock.Now;
 			}
 		}
 
@@ -542,15 +549,22 @@ namespace Bamboo.Prevalence
 				{
 					decorators.Add(attribute);
 				}
-			}			
-			return decorators.ToArray(typeof(ICommandDecorator)) as ICommandDecorator[];			
+			}	
+			if (decorators.Count > 0)
+			{
+				return (ICommandDecorator[])decorators.ToArray(typeof(ICommandDecorator));			
+			}
+			return null;
 		}
 
 		private ICommand ApplyCommandDecorators(ICommand command)
 		{			
-			foreach (ICommandDecorator decorator in _decorators)
+			if (null != _decorators)
 			{
-				command = decorator.Decorate(command);
+				for (int i=0; i<_decorators.Length; ++i)
+				{
+					command = _decorators[i].Decorate(command);
+				}
 			}
 			return new ContextRecoveryCommand(command, Clock.Now);
 		}
@@ -561,6 +575,16 @@ namespace Bamboo.Prevalence
 			{
 				throw new PausedEngineException(PrevalenceBase.FullName, "The engine is currently paused and cannot accept commands.");
 			}
+		}
+
+		static PrevalenceEngine GetCurrent(string methodName)
+		{
+			PrevalenceEngine current = PrevalenceEngine.Current;
+			if (null == current)
+			{
+				throw new InvalidOperationException(string.Format("{0} can only be called during the execution of a command or query!"));
+			}
+			return current;
 		}
 	}
 }

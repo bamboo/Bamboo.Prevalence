@@ -132,6 +132,28 @@ namespace Bamboo.Prevalence.Indexing
 		}
 		#endregion
 
+		#region RecordComparer
+		internal class RecordComparer : System.Collections.IComparer
+		{
+			System.Collections.IComparer _comparer;
+
+			public RecordComparer(System.Collections.IComparer comparer)
+			{
+				_comparer = comparer;
+			}
+			#region IComparer Members
+
+			public int Compare(object x, object y)
+			{
+				return _comparer.Compare(((SearchHit)x).Record, ((SearchHit)y).Record);
+			}
+
+			#endregion
+
+		}
+
+		#endregion
+
 		#region SearchHitRecordEnumerator (used by GetRecordEnumerator())
 		/// <summary>
 		/// Enumerates the records in a SearchResult.
@@ -340,9 +362,25 @@ namespace Bamboo.Prevalence.Indexing
 		/// <param name="field">the field to be used in the sort</param>
 		public void SortByField(string field)
 		{
+			if (null == field)
+			{
+				throw new ArgumentNullException("field");
+			}
 			_hits.Sort(new RecordFieldComparer(field));
 		}
 
+		/// <summary>
+		/// Sorts the result using the specified comparer.
+		/// </summary>
+		/// <param name="comparer"></param>
+		public void Sort(IComparer comparer)
+		{
+			if (null == comparer)
+			{
+				throw new ArgumentNullException("comparer");
+			}
+			_hits.Sort(new RecordComparer(comparer));
+		}
 
 		/// <summary>
 		/// Copies all the records to an array. The

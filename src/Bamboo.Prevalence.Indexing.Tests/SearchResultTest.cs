@@ -56,6 +56,16 @@ namespace Bamboo.Prevalence.Indexing.Tests
 		}
 	}
 
+	class NameComparer : System.Collections.IComparer
+	{
+		public int Compare(object a, object b)
+		{
+			HashtableRecord r1 = (HashtableRecord)a;
+			HashtableRecord r2 = (HashtableRecord)b;
+			return ((IComparable)r1["Name"]).CompareTo(r2["Name"]);
+		}
+	}
+
 	/// <summary>
 	/// Summary description for SearchResultTest.
 	/// </summary>
@@ -91,6 +101,13 @@ namespace Bamboo.Prevalence.Indexing.Tests
 
 			_result.SortByField("Age");
 			AssertSearchHits(_result, _record2, _record3, _record1);
+		}
+
+		[Test]
+		public void TestSort()
+		{
+			_result.Sort(new NameComparer());
+			AssertSearchHits(_result, _record3, _record2, _record1);
 		}
 
 		[Test]

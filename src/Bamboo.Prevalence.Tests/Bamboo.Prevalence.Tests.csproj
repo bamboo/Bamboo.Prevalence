@@ -173,11 +173,7 @@
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
-                <File
-                    RelPath = "Serialization\LeanMeanFormatterTestCase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
+                <Folder RelPath = "Serialization\" />
             </Include>
         </Files>
     </CSHARP>
