@@ -77,7 +77,7 @@ namespace Bamboo.Prevalence
 		/// You should not call this method. It is used internally by the prevalence engine
 		/// to execute a command as if in a specific moment in time.
 		/// </remarks>
-		public void Pause()
+		internal void Pause()
 		{
 			if (_paused)
 			{
@@ -96,7 +96,7 @@ namespace Bamboo.Prevalence
 		/// You should not call this method. It is used internally by the prevalence engine
 		/// to execute a command as if in a specific moment in time.
 		/// </remarks>
-		public void Resume()
+		internal void Resume()
 		{
 			if (!_paused)
 			{
@@ -115,7 +115,7 @@ namespace Bamboo.Prevalence
 		/// </remarks>
 		/// <param name="date">the specific date/time value the clock should be set to,
 		/// this will be the value returned by <see cref="Now"/></param>		
-		public void Recover(DateTime date)
+		internal void Recover(DateTime date)
 		{
 			if (!_paused)
 			{
