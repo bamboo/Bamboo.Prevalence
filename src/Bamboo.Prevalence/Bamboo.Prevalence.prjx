@@ -1,0 +1,49 @@
+<Project name="Bamboo.Prevalence" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+  <Contents>
+    <File name=".\AlarmClock.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Attributes\PassThroughAttribute.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Attributes\PrincipalSensitiveAttribute.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Attributes\QueryAttribute.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Attributes\TransparentPrevalenceAttribute.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Configuration\PrevalenceSettings.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\ICommand.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\ICommandDecorator.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\Assertion.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\CommandInput.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\CommandOutput.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\ContextRecoveryCommand.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\MethodCallCommand.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\NumberedFileBase.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\NumberedFileCreator.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\NumberedFileFinder.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\PendingCommandsEnumerator.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Implementation\PrevalentSystemProxy.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\IPrevalentSystem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\IQuery.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PausedEngineException.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrevalenceActivator.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrevalenceEngine.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\PrevalenceException.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Serialization\AutoVersionMigrationSurrogate.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\TransparentPrevalenceEngine.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+  </Contents>
+  <References />
+  <DeploymentInformation target="" script="" strategy="File" />
+  <Configuration runwithwarnings="False" name="Debug">
+    <CodeGeneration runtime="MsNet" compiler="Csc" warninglevel="4" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+    <Execution commandlineparameters="" consolepause="False" />
+    <Output directory="D:\dev\dotnet\Bamboo.Prevalence\bin" assembly="Bamboo.Prevalence" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+  </Configuration>
+  <Configurations active="Debug">
+    <Configuration runwithwarnings="False" name="Debug">
+      <CodeGeneration runtime="MsNet" compiler="Csc" warninglevel="4" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory="D:\dev\dotnet\Bamboo.Prevalence\bin" assembly="Bamboo.Prevalence" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Release">
+      <CodeGeneration runtime="MsNet" compiler="Csc" warninglevel="4" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory=".\bin\" assembly="Bamboo.Prevalence" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    </Configuration>
+  </Configurations>
+</Project>

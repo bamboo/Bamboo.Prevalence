@@ -44,6 +44,10 @@ namespace Bamboo.Prevalence
 		public TransparentPrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter, PrevalenceEngine.ExceptionDuringRecoveryHandler handler) :
 			base(systemType, prevalenceBase, formatter, handler)
 		{			
+			if (!(_system is MarshalByRefObject))
+			{
+				throw new ArgumentException("Prevalent system type must extend MarshalByRefObject to be used with TransparentPrevalenceEngine!", "systemType");
+			}
 			_transparentProxy = new PrevalentSystemProxy(this, (MarshalByRefObject)_system).GetTransparentProxy();
 		}
 
