@@ -255,14 +255,19 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private void WriteObject(object graph)
 		{
-			FileStream stream = CreateTargetFile();
-			new BinaryFormatter().Serialize(stream, graph);
+			// thanks to Iulian Dan Repolschi for reminding me
+			// how important it is to close a file :-)
+			using (FileStream stream = CreateTargetFile())
+			{
+				new BinaryFormatter().Serialize(stream, graph);
+			}
 		}
 
 		private FileStream CreateTargetFile()
 		{
 			CreateDirectoryIfNeeded(Path.GetDirectoryName(_project.TargetFile));
-			return new FileStream(_project.TargetFile, GetCreationFileMode(), FileAccess.Write, FileShare.None);
+			return new FileStream(_project.TargetFile, GetCreationFileMode(),
+									FileAccess.Write, FileShare.None);
 		}
 
 		private FileMode GetCreationFileMode()

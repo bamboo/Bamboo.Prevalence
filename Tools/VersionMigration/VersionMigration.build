@@ -24,6 +24,7 @@
 		<exec
 			program="SetUpData10.exe"
 			basedir="build/1.0"
+			workingdir="build/1.0"
 			useruntimeengine="true" />
 
 		<exec
@@ -34,6 +35,7 @@
 		<exec
 			program="TestData20.exe"
 			basedir="build/2.0"
+			workingdir="build/2.0"
 			useruntimeengine="true" />
 		
 	</target>
