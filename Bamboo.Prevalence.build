@@ -1,9 +1,9 @@
 <project name='Bamboo.Prevalence' default='debug'>
 
 	<property name='ndocconsole' value='\dotnet\ndoc\bin\.net-1.1\NDocConsole' />
-	<property name='nunit-console' value='\dotnet\nunit\bin\nunit-console' />
-	<property name='nunit.framework.dll' value='\dotnet\nunit\bin\nunit.framework.dll' />
+	<property name='nunit.framework.dll' value='${nant.location}/nunit.framework.dll' />
 	<property name='version' value='1.4.1' />
+	<property name='build.defines' value='DUMMY' />
 
 	<target name='doc' depends='debug'>
 		<exec program='${ndocconsole}' commandline='-project=Bamboo.Prevalence.ndoc' />
@@ -13,26 +13,52 @@
 
 	<target name='release' depends='clean,setReleaseProperties,test' />
 
-	<target name='setDebugProperties'>
+	<target name='setDebugProperties' depends='set-runtime-configuration'>
 		<property name='debug' value='true' />
 		<property name='optimize' value='false' />
 	</target>
 
-	<target name='setReleaseProperties'>
+	<target name='setReleaseProperties' depends='set-runtime-configuration'>
 		<property name='debug' value='false' />
 		<property name='optimize' value='true' />
 	</target>
 
+	<target name='set-runtime-configuration'>
+		<echo message='runtime configuration: ${nant.settings.currentframework}' />
+		<if targetexists='set-${nant.settings.currentframework}-runtime-configuration'>
+			<call target='set-${nant.settings.currentframework}-runtime-configuration' />
+		</if>
+	</target>
+
+	<target name='set-mono-1.0-linux-runtime-configuration'>
+		<echo message='mono build' />
+		<property name='build.defines' value='MONO' />
+	</target>
+
 	<target name='test' depends='Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests, Bamboo.Prevalence.Collections.Tests, Bamboo.Prevalence.Util.Tests'>
-		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Tests.dll' />
 
-		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Indexing.Tests.dll' />
+		<!--	
+		<script language="C#">
+        	<code><![CDATA[
+	            public static void ScriptMain(Project project) {
+        	        project.Log(Level.Info, "Properties:");
 
-		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.XPath.Tests.dll' />
+	                foreach (DictionaryEntry entry in project.Properties) {
+        	                project.Log(Level.Info, "{0}={1}", entry.Key, entry.Value);
+                	}
+	            }
+	        ]]></code>
+		</script>
+		-->
 
-		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Collections.Tests.dll' />
 
-		<exec program='${nunit-console}' basedir='bin' commandline='Bamboo.Prevalence.Util.Tests.dll' />
+		<nunit2>
+			<test>
+				<assemblies basedir='bin'>
+					<includes name='*.Tests.dll' />
+				</assemblies>
+			</test>
+		</nunit2>
 	</target>
 
 	<target name="distribution" depends="release">
@@ -114,7 +140,8 @@
 			target='library'
 			output='bin\Bamboo.Prevalence.dll'
 			debug='${debug}'
-			optimize='${optimize}'>
+			optimize='${optimize}'
+			define='${build.defines}'>
 
 			<sources>
 				<includes name='src/Bamboo.Prevalence/**.cs' />
@@ -256,7 +283,7 @@
 			</sources>
 
 			<references>
-				<includes name='bin\Bamboo.Prevalence.dll' />
+				<includes name='bin/Bamboo.Prevalence.dll' />
 			</references>
 		</csc>
 

@@ -1,0 +1,19 @@
+<project name='MyFirstPrevalentSystem' default='build'>
+
+	<target name='build' depends='init'>
+		<csc target='exe' output='build/MyFirstPrevalentSystem.exe' debug='true'>
+			<sources>
+				<includes name='*.cs' />
+			</sources>
+			<references>
+				<includes name='build/Bamboo.Prevalence.dll' />
+			</references>
+		</csc>
+	</target>
+
+	<target name='init'>
+		<mkdir dir='build' />
+		<copy file='../../bin/Bamboo.Prevalence.dll' todir='build' />
+	</target>
+	
+</project>

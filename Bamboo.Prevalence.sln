@@ -71,6 +71,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Collectio
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializationPerformance", "performance\SerializationPerformance\SerializationPerformance.csproj", "{6944BF44-E28C-43CB-9492-E20E02535FAF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -149,6 +153,10 @@ Global
 		{415DEA3C-8AF4-4447-9A48-F54EC50C5780}.Debug.Build.0 = Debug|.NET
 		{415DEA3C-8AF4-4447-9A48-F54EC50C5780}.Release.ActiveCfg = Release|.NET
 		{415DEA3C-8AF4-4447-9A48-F54EC50C5780}.Release.Build.0 = Release|.NET
+		{6944BF44-E28C-43CB-9492-E20E02535FAF}.Debug.ActiveCfg = Debug|.NET
+		{6944BF44-E28C-43CB-9492-E20E02535FAF}.Debug.Build.0 = Debug|.NET
+		{6944BF44-E28C-43CB-9492-E20E02535FAF}.Release.ActiveCfg = Release|.NET
+		{6944BF44-E28C-43CB-9492-E20E02535FAF}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

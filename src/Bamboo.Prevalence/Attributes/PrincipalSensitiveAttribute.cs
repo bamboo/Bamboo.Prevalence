@@ -70,7 +70,7 @@ namespace Bamboo.Prevalence.Attributes
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]	
 	public class PrincipalSensitiveAttribute : System.Attribute, ICommandDecorator
 	{
-		ICommand ICommandDecorator.Decorate(ICommand command)
+		public ICommand Decorate(ICommand command)
 		{
 			IPrincipal principal = Thread.CurrentPrincipal;
 			if (null == principal)
@@ -93,7 +93,7 @@ namespace Bamboo.Prevalence.Attributes
 				_principal = principal;
 			}
 
-			object ICommand.Execute(object system)
+			public object Execute(object system)
 			{
 				IPrincipal saved = Thread.CurrentPrincipal;
 				Thread.CurrentPrincipal = _principal;

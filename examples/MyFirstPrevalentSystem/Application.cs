@@ -68,7 +68,7 @@ namespace MyFirstPrevalentSystem
 				}
 				catch (Exception x)
 				{
-					Console.WriteLine("Error: {0}", x.Message);
+					Console.WriteLine("Error: {0}", x);
 				}				
 			}
 		}

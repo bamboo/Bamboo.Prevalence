@@ -67,9 +67,7 @@ namespace Bamboo.Prevalence.Implementation
 		}
 
 		/// <summary>
-		/// Writes a command to the current log file. If necessary
-		/// UndoWriteCommand can be called before the next WriteCommand
-		/// call to undo this operation.
+		/// Writes a command to the current log file.
 		/// </summary>
 		/// <param name="command">serializable command</param>
 		public void WriteCommand(ICommand command)
@@ -146,6 +144,20 @@ namespace Bamboo.Prevalence.Implementation
 			}
 		}
 
+		private System.IO.FileStream NextOutputLog()
+		{				
+			// FileShare.Read: don't prevent anyone from 
+			// reading the log
+			return _fileCreator.NewOutputLog().Open(
+				FileMode.CreateNew, FileAccess.Write, FileShare.Read
+				);
+		}
+
+#if MONO
+		private static void FlushFileBuffers(System.IO.FileStream stream)
+		{
+		}
+#else
 		[System.Security.SuppressUnmanagedCodeSecurity] // optimization...
 		private static void FlushFileBuffers(System.IO.FileStream stream)
 		{
@@ -158,14 +170,6 @@ namespace Bamboo.Prevalence.Implementation
 		// TODO: Remove this dependency on win32 if at all possible
 		[DllImport("KERNEL32.DLL", EntryPoint="FlushFileBuffers", PreserveSig=true, CallingConvention=CallingConvention.Winapi, SetLastError=true)]
 		private static extern int FlushFileBuffers(IntPtr handle);
-
-		private System.IO.FileStream NextOutputLog()
-		{				
-			// FileShare.Read: don't prevent anyone from 
-			// reading the log
-			return _fileCreator.NewOutputLog().Open(
-				FileMode.CreateNew, FileAccess.Write, FileShare.Read
-				);
-		}
+#endif
 	}
 }
