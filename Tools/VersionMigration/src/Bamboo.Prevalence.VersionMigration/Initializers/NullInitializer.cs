@@ -1,3 +1,4 @@
+#region License
 // Bamboo.Prevalence - a .NET object prevalence engine
 // Copyright (C) 2002 Rodrigo B. de Oliveira
 //
@@ -28,37 +29,28 @@
 //
 // http://bbooprevalence.sourceforge.net
 // mailto:rodrigobamboo@users.sourceforge.net
+#endregion
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Xml;
 using Bamboo.Prevalence.VersionMigration;
 
 namespace Bamboo.Prevalence.VersionMigration.Initializers
 {
 	/// <summary>
-	/// Initializes a field with the value of another
-	/// field (that must be present in the serialized
-	/// state). Use it when you have renamed
-	/// a persistent field.
+	/// Initializes a reference field to null.
 	/// </summary>
-	public class FromFieldInitializer : IFieldInitializer
+	public class NullInitializer : IFieldInitializer
 	{
-		private string _fieldName;
-
-		public FromFieldInitializer(XmlElement element)
+		public NullInitializer(System.Xml.XmlElement element)
 		{
-			_fieldName = element.InnerText;
 		}
 
 		public void InitializeField(MigrationContext context)
-		{			
-			FieldInfo field = context.CurrentField;
-			SerializationInfo info = context.CurrentSerializationInfo;
-
-			object value = info.GetValue(_fieldName, field.FieldType);
-			field.SetValue(context.CurrentObject, value);
+		{
+			object current = context.CurrentObject;
+			FieldInfo field = context.CurrentField;			
+			field.SetValue(current, null);
 		}
 	}
 }
