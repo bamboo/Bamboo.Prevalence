@@ -53,7 +53,7 @@ namespace Bamboo.Prevalence.Util
 		}
 
 		/// <summary>
-		/// Same as <see cref="AbstractCleanUpPolicy.GetUnnecessaryPrevalenceFiles"/>.
+		/// Same as <see cref="PrevalenceBaseUtil.GetUnnecessaryPrevalenceFiles"/>.
 		/// </summary>
 		/// <param name="engine"></param>
 		/// <returns></returns>
