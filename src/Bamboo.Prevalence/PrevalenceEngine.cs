@@ -213,13 +213,26 @@ namespace Bamboo.Prevalence
 		}
 
 		/// <summary>
-		/// The current system time.
+		/// The current system time. This is actually a more friendly
+		/// version of PrevalenceEngine.Current.Clock.Now.
 		/// </summary>
+		/// <remarks>
+		/// This property can only be accessed during
+		/// the execution of a command or query.<br />
+		/// If you need access to the current engine time outside
+		/// a command or query you must use <see cref="PrevalenceEngine.Clock"/>
+		/// instead.
+		/// </remarks>
 		public static System.DateTime Now
 		{
 			get
 			{
-				return Current.Clock.Now;
+				PrevalenceEngine current = PrevalenceEngine.Current;
+				if (null == current)
+				{
+					throw new InvalidOperationException("PrevalenceEngine.Now can only be called during the execution of a command or query!");
+				}
+				return current.Clock.Now;
 			}
 		}
 
@@ -416,9 +429,7 @@ namespace Bamboo.Prevalence
 
 		private object DoExecuteCommand(ICommand command)
 		{
-			object returnValue;			
-			
-			_commandLog.WriteCommand(ApplyCommandDecorators(command));
+			object returnValue;						
 
 			ShareCurrentObject();
 			try
@@ -426,6 +437,7 @@ namespace Bamboo.Prevalence
 				Clock.Pause();
 				try
 				{					
+					_commandLog.WriteCommand(ApplyCommandDecorators(command));
 					returnValue = command.Execute(_system);					
 				}
 				finally
