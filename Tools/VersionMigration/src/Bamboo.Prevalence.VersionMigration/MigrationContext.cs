@@ -252,13 +252,16 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private Assembly HandleResolveAssembly(object sender, ResolveEventArgs e)
 		{			
-			if (e.Name.StartsWith(_targetAssembly.GetName().Name ))
+			if (e.Name.StartsWith(_targetAssembly.GetName().Name))
 			{
 				return _targetAssembly;
 			}
-			else if (null != ResolveAssembly)
+			else
 			{
-				return ResolveAssembly(sender, e);
+				if (null != ResolveAssembly)
+				{
+					return ResolveAssembly(sender, e);
+				}
 			}
 			return null;
 		}

@@ -69,16 +69,16 @@ namespace Bamboo.Prevalence.Configuration
 	///			<engines>
 	///			
 	///				<add id="tasks"
-	///					type="Bamboo.Prevalence.Demo.TaskSystem"
+	///					type="Bamboo.Prevalence.Demo.TaskSystem, TaskAssembly"
 	///					base="c:\tasks" />
 	///					
 	///				<add id="documents"
-	///					type="Bamboo.Prevalence.Demo.DocumentSystem"
+	///					type="Bamboo.Prevalence.Demo.DocumentSystem, DocumentAssembly"
 	///					base="c:\documents"
 	///					autoVersionMigration="true" />
 	///					
 	///				<add id="intranet"
-	///					type="Bamboo.Prevalence.Demo.IntranetSystem"
+	///					type="Bamboo.Prevalence.Demo.IntranetSystem, IntranetAssembly"
 	///					base="c:\intranet"
 	///					engineType="Transparent" />
 	///					

@@ -41,7 +41,7 @@ namespace Bamboo.Prevalence.Util
 	/// Removes all files that are no longer necessary for 
 	/// the prevalent system to recover.
 	/// </summary>
-	public class CleanUpAllFilesPolicy : ICleanUpPolicy
+	public class CleanUpAllFilesPolicy : AbstractCleanUpPolicy
 	{
 		/// <summary>
 		/// The one and only CleanUpAllFilesPolicy instance.
@@ -52,39 +52,14 @@ namespace Bamboo.Prevalence.Util
 		{		
 		}
 
-		FileInfo[] ICleanUpPolicy.SelectFiles(PrevalenceEngine engine)
-		{
-			DirectoryInfo prevalenceBase = engine.PrevalenceBase;			
-			FileInfo[] all = prevalenceBase.GetFiles("*.*");
-			SortFilesByName(all);
-			int lastSnapshotIndex = FindLastSnapshot(all);
-			if (lastSnapshotIndex > 0)
-			{				
-				FileInfo[] files = new FileInfo[lastSnapshotIndex];
-				Array.Copy(all, files, lastSnapshotIndex);
-				return files;
-			}
-			else
-			{
-				return NullCleanUpPolicy.EmptyFileInfoArray;
-			}
-		}
-
-		void SortFilesByName(FileInfo[] files)
+		/// <summary>
+		/// Same as <see cref="AbstractCleanUpPolicy.GetUnnecessaryPrevalenceFiles"/>.
+		/// </summary>
+		/// <param name="engine"></param>
+		/// <returns></returns>
+		public override FileInfo[] SelectFiles(PrevalenceEngine engine)
 		{			
-			Array.Sort(files, Bamboo.Prevalence.Implementation.FileNameComparer.Default);
-		}
-
-		int FindLastSnapshot(FileInfo[] files)
-		{
-			for (int i=files.Length-1; i>-1; --i)
-			{
-				if (0 == String.Compare(files[i].Extension, ".snapshot", true))
-				{
-					return i;
-				}
-			}
-			return -1;
+			return GetUnnecessaryPrevalenceFiles(engine);			
 		}
 	}
 }

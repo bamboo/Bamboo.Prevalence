@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Util.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Util", "src\Bamboo.Prevalence.Util\Bamboo.Prevalence.Util.csproj", "{057BC383-AEA4-4A03-B1FC-9401FE42F382}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboo.Prevalence.Tests", "src\Bamboo.Prevalence.Tests\Bamboo.Prevalence.Tests.csproj", "{6D730430-8180-497D-B7F0-76B01E6ECF5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -97,6 +99,10 @@ Global
 		{057BC383-AEA4-4A03-B1FC-9401FE42F382}.Debug.Build.0 = Debug|.NET
 		{057BC383-AEA4-4A03-B1FC-9401FE42F382}.Release.ActiveCfg = Release|.NET
 		{057BC383-AEA4-4A03-B1FC-9401FE42F382}.Release.Build.0 = Release|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Debug.ActiveCfg = Debug|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Debug.Build.0 = Debug|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Release.ActiveCfg = Release|.NET
+		{6D730430-8180-497D-B7F0-76B01E6ECF5C}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

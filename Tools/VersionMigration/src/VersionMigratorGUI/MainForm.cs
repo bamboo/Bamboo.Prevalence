@@ -369,7 +369,7 @@ namespace VersionMigratorGUI
 			if (_resolvedAssemblies.ContainsKey(fname))
 			{
 				return (System.Reflection.Assembly)_resolvedAssemblies[fname];
-			}
+			}			
 
 			System.Reflection.Assembly assembly = null;
 

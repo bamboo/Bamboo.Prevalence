@@ -32,31 +32,67 @@
 #endregion
 
 using System;
+using System.IO;
 
 namespace Bamboo.Prevalence.Util
 {
 	/// <summary>
-	/// NullObject implementation for ICleanUpPolicy.
+	/// Removes unnecessary files older than <see cref="MaxAge"/>.
 	/// </summary>
-	public class NullCleanUpPolicy : ICleanUpPolicy
+	public class OldFilesCleanUpPolicy : AbstractCleanUpPolicy
 	{
-		/// <summary>
-		/// The one and only NullCleanUpPolicy instance.
-		/// </summary>
-		public static readonly ICleanUpPolicy Default = new NullCleanUpPolicy();
+		TimeSpan _maxAge;
 
 		/// <summary>
-		/// The one and only FileInfo empty array.
+		/// Creates a new policy to remove unnecessary files older
+		/// than maxAge.
 		/// </summary>
-		public static readonly System.IO.FileInfo[] EmptyFileInfoArray = new System.IO.FileInfo[0];
-		
-		private NullCleanUpPolicy()
+		/// <param name="maxAge">maximum age for files</param>
+		public OldFilesCleanUpPolicy(TimeSpan maxAge)
 		{
+			_maxAge = maxAge;
 		}
 
-		System.IO.FileInfo[] ICleanUpPolicy.SelectFiles(Bamboo.Prevalence.PrevalenceEngine ignored)
+		/// <summary>
+		/// Maximum age for files
+		/// </summary>
+		public TimeSpan MaxAge
 		{
-			return EmptyFileInfoArray;
+			get
+			{
+				return _maxAge;
+			}
+		}
+
+		/// <summary>
+		/// Returns a list with all unnecessary files older
+		/// than <see cref="MaxAge"/>.
+		/// </summary>
+		/// <param name="engine">the prevalence engine</param>
+		/// <returns></returns>
+		public override System.IO.FileInfo[] SelectFiles(Bamboo.Prevalence.PrevalenceEngine engine)
+		{
+			FileInfo[] unnecessary = GetUnnecessaryPrevalenceFiles(engine);
+			int index = FindFirstFileOlderThanPeriod(unnecessary);
+			if (index > 0)
+			{
+				return GetFileInfoRange(unnecessary, 0, index+1);
+			}
+			return NullCleanUpPolicy.EmptyFileInfoArray;
+		}
+
+		int FindFirstFileOlderThanPeriod(FileInfo[] files)
+		{
+			DateTime cutoffDate = DateTime.Now - _maxAge;
+			for (int i=files.Length-1; i>-1; --i)
+			{
+				FileInfo fi = files[i];
+				if (fi.LastWriteTime <= cutoffDate)
+				{
+					return i;
+				}
+			}
+			return -1;
 		}
 	}
 }

@@ -36,6 +36,7 @@ using System.IO;
 using System.Threading;
 using NUnit.Framework;
 using Bamboo.Prevalence;
+using Bamboo.Prevalence.Implementation;
 using Bamboo.Prevalence.Tests;
 using Bamboo.Prevalence.Util;
 
@@ -89,18 +90,18 @@ namespace Bamboo.Prevalence.Util.Tests
 			_engine.HandsOffOutputLog();
 			Add(20);
 
-			TimeSpan period = TimeSpan.FromSeconds(2);
+			TimeSpan period = TimeSpan.FromSeconds(3);
 			SnapshotTaker taker = new SnapshotTaker(_engine, period);		
 
 			// Let's wait for a snapshot to be taken
-			Thread.Sleep(period + TimeSpan.FromSeconds(1));			
+			Thread.Sleep(TimeSpan.FromSeconds(5));			
 			AssertEquals(1, _engine.PrevalenceBase.GetFiles("*.snapshot").Length);
 
 			// more log files...
 			Add(20);
 
 			// a second snapshot...
-			Thread.Sleep(period);
+			Thread.Sleep(TimeSpan.FromSeconds(2));
 
 			// ok, we're done.
 			taker.Dispose();
@@ -126,19 +127,63 @@ namespace Bamboo.Prevalence.Util.Tests
 			_engine.TakeSnapshot(); // 1st snapshot
 			Add(10); // 3rd log file
 			_engine.TakeSnapshot(); // 2nd snapshot
+			Add(20); // 4rd log file
+			
+			FileInfo[] files = CleanUpAllFilesPolicy.Default.SelectFiles(_engine);			
 
-			TimeSpan period = TimeSpan.FromMilliseconds(500);
-			SnapshotTaker taker = new SnapshotTaker(_engine, period, CleanUpAllFilesPolicy.Default);
-			Thread.Sleep(TimeSpan.FromMilliseconds(600));
+			AssertEquals(4, files.Length);
+			AssertEquals(FormatCommandLogName(1), files[0].Name);
+			AssertEquals(FormatCommandLogName(2), files[1].Name);
+			AssertEquals(FormatSnapshotName(2), files[2].Name);
+			AssertEquals(FormatCommandLogName(3), files[3].Name);
+
+			SnapshotTaker taker = new SnapshotTaker(_engine, TimeSpan.FromMilliseconds(200), CleanUpAllFilesPolicy.Default);
+			Thread.Sleep(300);
+			taker.Dispose();
+
+			// sanity check
+			CrashRecover();
+			AssertTotal(80);
+		}
+
+		[Test]
+		public void TestCleanUpOldFilesPolicy()
+		{		
+			// some log files...
+			Add(20); // 1st log file - 0001.commandlog
+			CrashRecover();
+			Add(30); // 2nd log file - 0002.commandlog			
+			_engine.TakeSnapshot(); // 1st snapshot - 0002.snapshot
+			Thread.Sleep(TimeSpan.FromMilliseconds(2500));
+			Add(10); // 3rd log file - 0003.commandlog
+			
+			// remove files older than 2 seconds...
+			ICleanUpPolicy policy = new OldFilesCleanUpPolicy(TimeSpan.FromSeconds(2));
+			SnapshotTaker taker = new SnapshotTaker(_engine, TimeSpan.FromMilliseconds(250), policy);
+			Thread.Sleep(TimeSpan.FromMilliseconds(400));
+			// 2nd snasphot taken - 0003.snapshot
 			taker.Dispose();
 
 			FileInfo[] files = _engine.PrevalenceBase.GetFiles("*.*");
-			AssertEquals(1, files.Length);
-			AssertEquals(".snapshot", files[0].Extension);
+			Array.Sort(files, FileNameComparer.Default);
+
+			AssertEquals(2, files.Length);
+			AssertEquals("3rd command log", FormatCommandLogName(3), files[0].Name);
+			AssertEquals("2nd snapshot", FormatSnapshotName(3), files[1].Name);			
 
 			// sanity check
 			CrashRecover();
 			AssertTotal(60);
+		}
+
+		static string FormatCommandLogName(int number)
+		{
+			return string.Format(NumberedFileBase.LogFileNameFormat, number);
+		}
+
+		static string FormatSnapshotName(int number)
+		{
+			return string.Format(NumberedFileBase.SnapshotFileNameFormat, number);
 		}
 	}
 }
