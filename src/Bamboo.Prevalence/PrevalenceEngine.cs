@@ -160,6 +160,8 @@ namespace Bamboo.Prevalence
 		private ICommandDecorator[] _decorators;
 
 		private static readonly System.LocalDataStoreSlot _sharedObjectSlot = Thread.AllocateDataSlot();
+
+		private bool _paused;
 		
 		/// <summary>
 		/// See <see cref="PrevalenceActivator.CreateEngine(System.Type, string)"/>
@@ -177,6 +179,7 @@ namespace Bamboo.Prevalence
 			_commandLog = reader.ToWriter();
 			_lock = new ReaderWriterLock();
 			_decorators = GetCommandDecorators(systemType);
+			_paused = false;
 		}
 
 		/// <summary>
@@ -267,9 +270,11 @@ namespace Bamboo.Prevalence
 		/// </summary>
 		/// <param name="command">serializable command object that will be executed</param>
 		/// <returns>the ICommand.Execute return value</returns>
+		/// <exception cref="PausedEngineException">when the engine <see cref="IsPaused"/></exception>
 		public object ExecuteCommand(ICommand command)
-		{				
-			Assertion.AssertParameterNotNull("command", command);		
+		{	
+			AssertNotPaused();
+			Assertion.AssertParameterNotNull("command", command);
 
 			AcquireWriterLock();
 			try
@@ -337,6 +342,50 @@ namespace Bamboo.Prevalence
 			finally
 			{
 				ReleaseReaderLock();
+			}
+		}
+
+		/// <summary>
+		/// Pauses the engine. When paused the engine will not
+		/// accept any commands (<see cref="ExecuteCommand"/>
+		/// will throw <see cref="PausedEngineException"/> instead).
+		/// 
+		/// The engine never stops accepting queries.
+		/// 
+		/// The engine will accept commands again after <see cref="Resume"/>.
+		/// </summary>
+		public void Pause()
+		{
+			if (_paused)
+			{
+				return;
+			}
+
+			_clock.Pause();
+			_paused = true;
+		}
+
+		/// <summary>
+		/// Resumes the normal operations of the engine.
+		/// </summary>
+		public void Resume()
+		{
+			if (_paused)
+			{
+				_clock.Resume();
+				_paused = false;
+			}
+		}
+
+		/// <summary>
+		/// Returns true if the engine is paused and will not
+		/// accept any commands.
+		/// </summary>
+		public bool IsPaused
+		{
+			get
+			{
+				return _paused;
 			}
 		}
 
@@ -504,6 +553,14 @@ namespace Bamboo.Prevalence
 				command = decorator.Decorate(command);
 			}
 			return new ContextRecoveryCommand(command, Clock.Now);
+		}
+
+		void AssertNotPaused()
+		{
+			if (_paused)
+			{
+				throw new PausedEngineException(PrevalenceBase.FullName, "The engine is currently paused and cannot accept commands.");
+			}
 		}
 	}
 }

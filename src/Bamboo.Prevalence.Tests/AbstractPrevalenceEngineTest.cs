@@ -175,6 +175,34 @@ namespace Bamboo.Prevalence.Tests
 			CrashRecover();
 			AssertTotal(35);
 		}
+
+		[Test]
+		public void TestPausedState()
+		{
+			CrashRecover();
+			ExecuteCommand(new AddCommand(10));
+			AssertTotal(10);
+
+			_engine.Pause();
+			Assert(_engine.IsPaused);
+
+			try
+			{
+				ExecuteCommand(new AddCommand(5));
+				Fail("PausedEngineException expected!");
+			}
+			catch (PausedEngineException)
+			{
+			}
+
+			AssertTotal(10);
+
+			_engine.Resume();
+			Assert(!_engine.IsPaused);
+
+			ExecuteCommand(new AddCommand(5));
+			AssertTotal(15);
+		}
 	}
 }
 

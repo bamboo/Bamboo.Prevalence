@@ -107,6 +107,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "PausedEngineException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PrevalenceActivator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -79,13 +79,11 @@ namespace Bamboo.Prevalence
 		/// </remarks>
 		public void Pause()
 		{
-			if (_paused)
-			{
-				throw new InvalidOperationException("AlarmClock is already paused!");
+			if (!_paused)
+			{	
+				_paused = true;
+				_now = DateTime.Now;
 			}
-
-			_paused = true;
-			_now = DateTime.Now;
 		}
 
 		/// <summary>
@@ -138,7 +136,7 @@ namespace Bamboo.Prevalence
 		/// to be used in test cases only.
 		/// </remarks>
 		/// <param name="date">the specific date/time value the clock should be set to,
-		/// this weill be the value returned by <see cref="Now" /></param>
+		/// this will be the value returned by <see cref="Now" /></param>
 		public void PauseAt(DateTime date)
 		{
 			_paused = true;
