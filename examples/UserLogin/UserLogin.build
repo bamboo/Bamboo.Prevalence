@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project name="UserLogin" default="all">
+	<target name="all" depends="web">
+	</target>
+	
+	<target name="cassini" depends="all">
+		<exec program="cassiniwebserver">
+			<arg file="output" />
+		</exec>
+	</target>
+	
+	<target name="Bamboo.Prevalence.Examples.UserLogin" depends="init">
+		<csc output="output/bin/Bamboo.Prevalence.Examples.UserLogin.dll"
+			target="library"
+			debug="true">
+			
+			<sources basedir="src/Bamboo.Prevalence.Examples.UserLogin">
+				<includes name="**/*.cs" />
+			</sources>
+			
+			<references>
+				<includes name="System.Web.dll" />
+				<includes name="output/bin/Bamboo.Prevalence.dll" />
+			</references>
+		</csc>		
+	</target>
+	
+	<target name="web" depends="Bamboo.Prevalence.Examples.UserLogin">
+		<copy todir="output">
+			<fileset basedir="web">
+				<includes name="**/*.aspx" />
+				<includes name="**/*.config" />
+				<includes name="global.asax" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="output" />
+		<mkdir dir="output/bin" />
+		<copy todir="output/bin" file="../../bin/Bamboo.Prevalence.dll" />		
+	</target>
+</project>
