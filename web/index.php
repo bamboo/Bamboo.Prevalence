@@ -85,7 +85,7 @@ something good to demo
 <p>If you want to build Bamboo.Prevalence you are going to need:</p>
 <ul>
   <li><a href="http://nant.sourceforge.net/">NAnt</a></li>
-  <li><a href="http://nunit.sourceforget.net/">NUnit</a></li>
+  <li><a href="http://nunit.sourceforge.net/">NUnit</a></li>
 </ul>
 <h2>Getting Started</h2>
 <ol>
