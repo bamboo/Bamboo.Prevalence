@@ -45,7 +45,7 @@ namespace TestData20
 	/// </summary>
 	class App : Assertion
 	{
-		private static readonly CultureInfo BrazilianPortuguese = CultureInfo.CreateSpecificCulture("pt-br");
+		private static readonly CultureInfo PortugueseCulture = CultureInfo.CreateSpecificCulture("pt");
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -96,7 +96,7 @@ namespace TestData20
 
 		private static DateTime ToDateTime(string date)
 		{
-			return DateTime.Parse(date, BrazilianPortuguese);
+			return DateTime.Parse(date, PortugueseCulture);
 		}
 	}
 }

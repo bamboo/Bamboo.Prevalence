@@ -2,7 +2,7 @@
 	xml:lang attribute controls how
 	const values are interpreted
 -->
-<migrationPlan xml:lang="pt-br">	
+<migrationPlan xml:lang="pt">	
 
 	<typeMapping type="SamplePrevalentSystem.LibrarySystem">
 		<alias>SamplePrevalentSystem.Library</alias>

@@ -2,23 +2,25 @@
 
 	<property name='ndocconsole' value='\dotnet\ndoc\bin\.net-1.1\NDocConsole' />
 	<property name='nunit.framework.dll' value='${nant.location}/nunit.framework.dll' />
-	<property name='version' value='1.4.1' />
-	<property name='build.defines' value='DUMMY' />
+	<property name='version' value='1.4.2' />
+	<property name='build.defines' value='JUST_A_PLACEHOLDER' />
 
 	<target name='doc' depends='debug'>
 		<exec program='${ndocconsole}' commandline='-project=Bamboo.Prevalence.ndoc' />
 	</target>
 
-	<target name='debug' depends='setDebugProperties,test' />
+	<target name='debug' depends='set-debug-properties,test' description='incremental debug build' />
 
-	<target name='release' depends='clean,setReleaseProperties,test' />
+	<target name='release' depends='clean,set-release-properties,test' description='release build' />
+	
+	<target name='rebuild' depends='clean, debug' description='full debug build' />
 
-	<target name='setDebugProperties' depends='set-runtime-configuration'>
+	<target name='set-debug-properties' depends='set-runtime-configuration'>
 		<property name='debug' value='true' />
 		<property name='optimize' value='false' />
 	</target>
 
-	<target name='setReleaseProperties' depends='set-runtime-configuration'>
+	<target name='set-release-properties' depends='set-runtime-configuration'>
 		<property name='debug' value='false' />
 		<property name='optimize' value='true' />
 	</target>
@@ -31,7 +33,6 @@
 	</target>
 
 	<target name='set-mono-1.0-linux-runtime-configuration'>
-		<echo message='mono build' />
 		<property name='build.defines' value='MONO' />
 	</target>
 
@@ -61,7 +62,7 @@
 		</nunit2>
 	</target>
 
-	<target name="distribution" depends="release">
+	<target name="distribution" depends="release" description='creates a zip file with a release version for distribution'>
 
 		<zip zipfile="Bamboo.Prevalence.${version}.zip">
 			<fileset>
@@ -118,15 +119,15 @@
 
 	<target name='Bamboo.Prevalence.Tests' depends='Bamboo.Prevalence'>
 
-		<csc target='library' output='bin\Bamboo.Prevalence.Tests.dll' debug='true'>
+		<csc target='library' output='bin/Bamboo.Prevalence.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src\Bamboo.Prevalence.Tests\*.cs' />
+				<includes name='src/Bamboo.Prevalence.Tests/*.cs' />
 			</sources>
 
 			<references>
 				<includes name='${nunit.framework.dll}' />
-				<includes name='bin\Bamboo.Prevalence.dll' />
+				<includes name='bin/Bamboo.Prevalence.dll' />
 			</references>
 
 		</csc>
@@ -136,9 +137,9 @@
 	<target name='Bamboo.Prevalence' depends='init'>
 
 		<csc
-			doc='bin\Bamboo.Prevalence.xml'
+			doc='bin/Bamboo.Prevalence.xml'
 			target='library'
-			output='bin\Bamboo.Prevalence.dll'
+			output='bin/Bamboo.Prevalence.dll'
 			debug='${debug}'
 			optimize='${optimize}'
 			define='${build.defines}'>
@@ -153,15 +154,15 @@
 
 	<target name='Bamboo.Prevalence.Indexing.Tests' depends='Bamboo.Prevalence.Indexing'>
 
-		<csc target='library' output='bin\Bamboo.Prevalence.Indexing.Tests.dll' debug='true'>
+		<csc target='library' output='bin/Bamboo.Prevalence.Indexing.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src\Bamboo.Prevalence.Indexing.Tests\*.cs' />
+				<includes name='src/Bamboo.Prevalence.Indexing.Tests/*.cs' />
 			</sources>
 
 			<references>
 				<includes name='${nunit.framework.dll}' />
-				<includes name='bin\Bamboo.Prevalence.Indexing.dll' />
+				<includes name='bin/Bamboo.Prevalence.Indexing.dll' />
 			</references>
 
 		</csc>
@@ -171,9 +172,9 @@
 	<target name='Bamboo.Prevalence.Indexing' depends='init'>
 
 		<csc
-			doc='bin\Bamboo.Prevalence.Indexing.xml'
+			doc='bin/Bamboo.Prevalence.Indexing.xml'
 			target='library'
-			output='bin\Bamboo.Prevalence.Indexing.dll'
+			output='bin/Bamboo.Prevalence.Indexing.dll'
 			debug='${debug}'
 			optimize='${optimize}'>
 
@@ -186,15 +187,15 @@
 
 	<target name='Bamboo.Prevalence.XPath.Tests' depends='Bamboo.Prevalence.XPath'>
 
-		<csc target='library' output='bin\Bamboo.Prevalence.XPath.Tests.dll' debug='true'>
+		<csc target='library' output='bin/Bamboo.Prevalence.XPath.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src\Bamboo.Prevalence.XPath.Tests\*.cs' />
+				<includes name='src/Bamboo.Prevalence.XPath.Tests/*.cs' />
 			</sources>
 
 			<references>
 				<includes name='${nunit.framework.dll}' />
-				<includes name='bin\Bamboo.Prevalence.XPath.dll' />
+				<includes name='bin/Bamboo.Prevalence.XPath.dll' />
 			</references>
 
 		</csc>
@@ -204,9 +205,9 @@
 	<target name='Bamboo.Prevalence.XPath' depends='init'>
 
 		<csc
-			doc='bin\Bamboo.Prevalence.XPath.xml'
+			doc='bin/Bamboo.Prevalence.XPath.xml'
 			target='library'
-			output='bin\Bamboo.Prevalence.XPath.dll'
+			output='bin/Bamboo.Prevalence.XPath.dll'
 			debug='${debug}'
 			optimize='${optimize}'>
 
@@ -219,15 +220,15 @@
 
 	<target name='Bamboo.Prevalence.Collections.Tests' depends='Bamboo.Prevalence.Collections'>
 
-		<csc target='library' output='bin\Bamboo.Prevalence.Collections.Tests.dll' debug='true'>
+		<csc target='library' output='bin/Bamboo.Prevalence.Collections.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src\Bamboo.Prevalence.Collections.Tests\*.cs' />
+				<includes name='src/Bamboo.Prevalence.Collections.Tests/*.cs' />
 			</sources>
 
 			<references>
 				<includes name='${nunit.framework.dll}' />
-				<includes name='bin\Bamboo.Prevalence.Collections.dll' />
+				<includes name='bin/Bamboo.Prevalence.Collections.dll' />
 			</references>
 
 		</csc>
@@ -237,9 +238,9 @@
 	<target name='Bamboo.Prevalence.Collections' depends='init'>
 
 		<csc
-			doc='bin\Bamboo.Prevalence.Collections.xml'
+			doc='bin/Bamboo.Prevalence.Collections.xml'
 			target='library'
-			output='bin\Bamboo.Prevalence.Collections.dll'
+			output='bin/Bamboo.Prevalence.Collections.dll'
 			debug='${debug}'
 			optimize='${optimize}'>
 
@@ -252,17 +253,17 @@
 
 	<target name='Bamboo.Prevalence.Util.Tests' depends='Bamboo.Prevalence.Util, Bamboo.Prevalence'>
 
-		<csc target='library' output='bin\Bamboo.Prevalence.Util.Tests.dll' debug='true'>
+		<csc target='library' output='bin/Bamboo.Prevalence.Util.Tests.dll' debug='true'>
 
 			<sources>
-				<includes name='src\Bamboo.Prevalence.Util.Tests\*.cs' />
+				<includes name='src/Bamboo.Prevalence.Util.Tests/*.cs' />
 			</sources>
 
 			<references>
 				<includes name='${nunit.framework.dll}' />
-				<includes name='bin\Bamboo.Prevalence.Util.dll' />
-				<includes name='bin\Bamboo.Prevalence.Tests.dll' />
-				<includes name='bin\Bamboo.Prevalence.dll' />
+				<includes name='bin/Bamboo.Prevalence.Util.dll' />
+				<includes name='bin/Bamboo.Prevalence.Tests.dll' />
+				<includes name='bin/Bamboo.Prevalence.dll' />
 			</references>
 
 		</csc>
@@ -272,9 +273,9 @@
 	<target name='Bamboo.Prevalence.Util' depends='Bamboo.Prevalence'>
 
 		<csc
-			doc='bin\Bamboo.Prevalence.Util.xml'
+			doc='bin/Bamboo.Prevalence.Util.xml'
 			target='library'
-			output='bin\Bamboo.Prevalence.Util.dll'
+			output='bin/Bamboo.Prevalence.Util.dll'
 			debug='${debug}'
 			optimize='${optimize}'>
 
