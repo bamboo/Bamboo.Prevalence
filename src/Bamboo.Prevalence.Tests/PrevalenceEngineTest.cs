@@ -31,7 +31,7 @@
 
 using System;
 using System.IO;
-using Nunit.Framework;
+using NUnit.Framework;
 using Bamboo.Prevalence;
 
 namespace Bamboo.Prevalence.Tests

@@ -30,14 +30,14 @@
 // mailto:rodrigobamboo@users.sourceforge.net
 
 using System;
-using Nunit.Framework;
+using NUnit.Framework;
 
 namespace Bamboo.Prevalence.Tests
 {
 	/// <summary>
 	/// Summary description for PrevalenceTestBase.
 	/// </summary>
-	public abstract class PrevalenceTestBase : Nunit.Framework.Assertion
+	public abstract class PrevalenceTestBase : Assertion
 	{
 		protected string _PrevalenceBase;
 
