@@ -97,6 +97,15 @@ namespace Bamboo.Prevalence.Collections.Tests
 		{
 			AssertEquals(0, new ReaderWriterList().Count);
 		}
+		
+		[Test]
+		public void TestReverse()
+		{
+			List reversed = _list.Reverse();
+			AssertEquals(2, reversed.Count);
+			AssertSame(_customer2, reversed[0]);
+			AssertSame(_customer1, reversed[1]);
+		}
 
 		[Test]
 		public void TestPopAny()

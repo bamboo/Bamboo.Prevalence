@@ -73,7 +73,11 @@ namespace Bamboo.Prevalence.Collections
 		#region protected fields
 		protected ArrayList _list;
 		#endregion
-
+		public List(int initialCapacity)
+		{
+			_list = new ArrayList(initialCapacity);
+		}
+		
 		public List()
 		{
 			_list = new ArrayList();
@@ -200,6 +204,21 @@ namespace Bamboo.Prevalence.Collections
 				target[i] = copy.PopAny();
 			}
 			return target;
+		}
+		
+		public List Reverse()
+		{
+			AcquireReaderLock();
+			try
+			{				
+				List reversed = new List(_list);
+				reversed._list.Reverse();
+				return reversed;
+			}
+			finally
+			{
+				ReleaseReaderLock();
+			}
 		}
 
 		/// <summary>

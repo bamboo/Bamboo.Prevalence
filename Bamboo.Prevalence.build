@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name='Bamboo.Prevalence' default='debug'>
 		
-	<property name='version' value='1.4.4.0' />	
+	<property name='version' value='1.4.4.1' />	
 
 	<include buildfile="common.inc" />	
 

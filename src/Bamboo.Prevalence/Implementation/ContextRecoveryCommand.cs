@@ -78,7 +78,7 @@ namespace Bamboo.Prevalence.Implementation
 		/// <returns>inner command's string representation</returns>
 		public override string ToString()
 		{
-			return _command.ToString();
+			return string.Format("{0}: {1}", _dateTime, _command);
 		}
 	}
 }
