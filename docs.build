@@ -6,12 +6,12 @@
 			<assemblies basedir="bin">
 				<includes name="Bamboo.Prevalence.dll" />
 				<includes name="Bamboo.Prevalence.Collections.dll" />
+				<includes name="Bamboo.Prevalence.Indexing.dll" />
 				<includes name="Bamboo.Prevalence.Util.dll" />
 				<includes name="Bamboo.Prevalence.XPath.dll" />
 			</assemblies>				
 			<documenters>				
 				<documenter name="MSDN">
-					<property name="HtmlHelpCompilerFilename" value="hhc.exe" />
 					<property name="OutputDirectory" value=".\docs\MSDN" />
 					<property name="HtmlHelpName" value="Bamboo.Prevalence" />
 					<property name="IncludeFavorites" value="True" />
@@ -27,7 +27,7 @@
 					<property name="FooterHtml" value="" />
 					<property name="FilesToInclude" value="" />
 					<property name="ShowMissingSummaries" value="True" />
-					<property name="ShowMissingRemarks" value="True" />
+					<property name="ShowMissingRemarks" value="False" />
 					<property name="ShowMissingParams" value="True" />
 					<property name="ShowMissingReturns" value="False" />
 					<property name="ShowMissingValues" value="False" />
@@ -35,9 +35,9 @@
 					<property name="DocumentProtected" value="True" />
 					<property name="DocumentPrivates" value="False" />
 					<property name="DocumentProtectedInternalAsProtected" value="True" />
-					<property name="DocumentEmptyNamespaces" value="True" />
+					<property name="DocumentEmptyNamespaces" value="False" />
 					<property name="IncludeAssemblyVersion" value="True" />
-					<property name="CopyrightText" value="Copyright (C) 2002 Rodrigo B. de Oliveira" />
+					<property name="CopyrightText" value="Copyright (C) 2003 Rodrigo B. de Oliveira" />
 					<property name="CopyrightHref" value="" />
 					<property name="ReferencesPath" value="" />
 					<property name="SkipNamespacesWithoutSummaries" value="False" />
