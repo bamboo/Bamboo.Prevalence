@@ -33,100 +33,28 @@
 
 using System;
 using System.Collections;
-using System.Threading;
-using System.Runtime.Serialization;
 
 namespace Bamboo.Prevalence.Collections
 {
 	/// <summary>
-	/// Collection implementation synchronized by a <see cref="ReaderWriterLock"/>
+	/// Collection implementation synchronized by a <see cref="SerializableReaderWriterLock"/>
 	/// object.
 	/// All the methods in the collection can be safely used by multiple threads.
 	/// </summary>
 	[Serializable]
-	public class ReaderWriterList : List, IDeserializationCallback
-	{
-		#region public helper classes
-		/// <summary>
-		/// Helper class to acquire/release a writer lock on a
-		/// ReaderWriterList.
-		/// </summary>
-		public class WriterLockDisposer : IDisposable
-		{
-			protected ReaderWriterList _list;
-
-			/// <summary>
-			/// Acquires a writer lock on the list passed
-			/// as argument.
-			/// </summary>
-			/// <param name="list"></param>
-			public WriterLockDisposer(ReaderWriterList list)
-			{
-				if (null == list)
-				{
-					throw new ArgumentNullException("list");
-				}				
-
-				list.AcquireWriterLock();
-				_list = list;
-			}
-
-			/// <summary>
-			/// Releases the writer lock on the list.
-			/// </summary>
-			public void Dispose()
-			{
-				if (null != _list)
-				{
-					_list.ReleaseWriterLock();
-					_list = null;
-				}
-			}
-		}
-
-		public class ReaderLockDisposer : IDisposable
-		{
-			protected ReaderWriterList _list;
-
-			public ReaderLockDisposer(ReaderWriterList list)
-			{
-				if (null == list)
-				{
-					throw new ArgumentNullException("list");
-				}
-				list.AcquireReaderLock();
-				_list = list;
-			}
-
-			public void Dispose()
-			{
-				if (null != _list)
-				{
-					_list.ReleaseReaderLock();
-					_list = null;
-				}
-			}
-		}
-		#endregion
-
-		#region public static fields
-		public static TimeSpan LockTimeout = TimeSpan.FromSeconds(3);
-		#endregion
-
-		#region protected fields
-		[NonSerialized]
-		protected ReaderWriterLock _lock;
-		#endregion
+	public class ReaderWriterList : List
+	{		
+		protected SerializableReaderWriterLock _lock;
 
 		#region public constructors
 		public ReaderWriterList()
 		{				
-			_lock = new ReaderWriterLock();
+			_lock = new SerializableReaderWriterLock();
 		}
 
 		public ReaderWriterList(ICollection collection) : base(collection)
 		{			
-			_lock = new ReaderWriterLock();
+			_lock = new SerializableReaderWriterLock();
 		}		
 
 		#endregion
@@ -134,7 +62,7 @@ namespace Bamboo.Prevalence.Collections
 		#region locking methods
 		public override void AcquireReaderLock()
 		{
-			_lock.AcquireReaderLock(LockTimeout);
+			_lock.AcquireReaderLock();
 		}
 
 		public override void ReleaseReaderLock()
@@ -144,7 +72,7 @@ namespace Bamboo.Prevalence.Collections
 
 		public override void AcquireWriterLock()
 		{
-			_lock.AcquireWriterLock(LockTimeout);
+			_lock.AcquireWriterLock();
 		}
 
 		public override void ReleaseWriterLock()
@@ -167,7 +95,7 @@ namespace Bamboo.Prevalence.Collections
 		{
 			get
 			{
-				return new WriterLockDisposer(this);
+				return _lock.WriterLock;
 			}
 		}
 
@@ -183,7 +111,7 @@ namespace Bamboo.Prevalence.Collections
 		{
 			get
 			{
-				return new ReaderLockDisposer(this);
+				return _lock.ReaderLock;
 			}
 		}
 
@@ -198,13 +126,5 @@ namespace Bamboo.Prevalence.Collections
 			}
 		}
 		#endregion
-		
-		#region Implementation of IDeserializationCallback
-		public void OnDeserialization(object sender)
-		{
-			_lock = new ReaderWriterLock();
-		}
-		#endregion
-
 	}
 }
