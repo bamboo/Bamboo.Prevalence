@@ -34,6 +34,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Configuration;
 
 namespace Bamboo.Prevalence.Implementation
 {
@@ -46,12 +47,12 @@ namespace Bamboo.Prevalence.Implementation
 
 		private BinaryFormatter _formatter;
 
-		private NumberedFileCreator _fileCreator;		
+		private NumberedFileCreator _fileCreator;
 
 		public CommandLogWriter(NumberedFileCreator creator, BinaryFormatter formatter)
 		{
 			_fileCreator = creator;
-			_formatter = formatter;			
+			_formatter = formatter;
 		}
 
 		/// <summary>
@@ -136,8 +137,11 @@ namespace Bamboo.Prevalence.Implementation
 
 		private static void Flush(System.IO.FileStream stream)
 		{
-			stream.Flush();
-			FlushFileBuffers(stream);			
+			if (Bamboo.Prevalence.Configuration.PrevalenceSettings.FlushAfterCommand)
+			{
+				stream.Flush();
+				FlushFileBuffers(stream);
+			}
 		}
 
 		[System.Security.SuppressUnmanagedCodeSecurity] // optimization...

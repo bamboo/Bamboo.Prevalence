@@ -126,7 +126,8 @@ namespace Bamboo.Prevalence.Tests
 
 		[SetUp]
 		public virtual void SetUp()
-		{
+		{			
+			Bamboo.Prevalence.Configuration.PrevalenceSettings.FlushAfterCommand = false; // let's speed things up a little
 			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
 		}
 

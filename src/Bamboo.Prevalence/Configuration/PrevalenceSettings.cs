@@ -103,7 +103,12 @@ namespace Bamboo.Prevalence.Configuration
 	///	</code>
 	/// </example>
 	public class PrevalenceSettings : System.Configuration.IConfigurationSectionHandler
-	{			
+	{	
+		/// <summary>
+		/// Should the engines flush data to disk after every command?
+		/// </summary>
+		public static bool FlushAfterCommand = true;
+
 		/// <summary>
 		/// Type of engine to be configured.
 		/// </summary>

@@ -159,6 +159,26 @@ namespace Bamboo.Prevalence.Collections.Tests
 		}
 
 		[Test]
+		public void TestCollect()
+		{
+			object[] items = _list.Collect(new Predicate(NameStartsWithX));
+			AssertNotNull(items);
+			AssertEquals(0, items.Length);
+
+			items = _list.Collect(new Predicate(NameStartsWithP));
+			AssertNotNull(items);
+			AssertEquals(1, items.Length);
+			AssertSame(_customer2, items[0]);		
+		}
+
+		[Test]
+		public void TestFind()
+		{
+			AssertNull(_list.Find(new Predicate(NameStartsWithX)));
+			AssertSame(_customer2, _list.Find(new Predicate(NameStartsWithP)));
+		}
+
+		[Test]
 		public void TestAny()
 		{
 			Assert(!_list.Any(new Predicate(NameStartsWithX)));
