@@ -98,6 +98,8 @@ namespace Bamboo.Prevalence
 
 		private AlarmClock _clock;
 
+		private ICommandDecorator[] _decorators;
+
 		private static readonly System.LocalDataStoreSlot _sharedObjectSlot = Thread.AllocateDataSlot();
 		
 		/// <summary>
@@ -113,7 +115,8 @@ namespace Bamboo.Prevalence
 			CommandLogReader reader = new CommandLogReader(CheckPrevalenceBase(prevalenceBase), formatter);
 			RecoverSystem(systemType, reader);
 			_commandLog = reader.ToWriter();
-			_lock = new ReaderWriterLock();			
+			_lock = new ReaderWriterLock();
+			_decorators = GetCommandDecorators(systemType);
 		}
 
 		/// <summary>
@@ -303,7 +306,7 @@ namespace Bamboo.Prevalence
 			object returnValue;
 			
 			Clock.Pause();
-			_commandLog.WriteCommand(new ContextRecoveryCommand(command, Clock.Now));
+			_commandLog.WriteCommand(ApplyCommandDecorators(command));
 			try
 			{		
 				ShareCurrentObject();
@@ -351,6 +354,29 @@ namespace Bamboo.Prevalence
 		private void UnshareCurrentObject()
 		{
 			Thread.SetData(_sharedObjectSlot, null);
+		}
+
+		private ICommandDecorator[] GetCommandDecorators(System.Type systemType)
+		{
+			System.Collections.ArrayList decorators = new System.Collections.ArrayList();
+
+			foreach (Attribute attribute in Attribute.GetCustomAttributes(systemType))
+			{
+				if (attribute is ICommandDecorator)
+				{
+					decorators.Add(attribute);
+				}
+			}			
+			return decorators.ToArray(typeof(ICommandDecorator)) as ICommandDecorator[];			
+		}
+
+		private ICommand ApplyCommandDecorators(ICommand command)
+		{			
+			foreach (ICommandDecorator decorator in _decorators)
+			{
+				command = decorator.Decorate(command);
+			}
+			return new ContextRecoveryCommand(command, Clock.Now);
 		}
 	}
 }

@@ -132,6 +132,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "PrincipalSensitiveAddingSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PrincipalSensitivePrevalenceEngineTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "QueryTotal.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

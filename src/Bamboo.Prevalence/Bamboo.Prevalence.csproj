@@ -92,6 +92,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ICommandDecorator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "IPrevalentSystem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -123,6 +128,11 @@
                 />
                 <File
                     RelPath = "Attributes\PassThroughAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\PrincipalSensitiveAttribute.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
