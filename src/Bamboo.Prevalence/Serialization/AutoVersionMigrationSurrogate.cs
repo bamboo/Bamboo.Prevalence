@@ -62,7 +62,7 @@ namespace Bamboo.Prevalence.Serialization
 		#region Implementation of ISerializationSurrogate
 		void System.Runtime.Serialization.ISerializationSurrogate.GetObjectData(object obj, System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
 		{		
-			Type objectType  = obj.GetType();
+			Type objectType = obj.GetType();
 			foreach (FieldInfo member in objectType.FindMembers(MemberTypes.Field, BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.Public, null, null))
 			{
 				if (member.IsDefined(typeof(NonSerializedAttribute), false))
@@ -72,32 +72,99 @@ namespace Bamboo.Prevalence.Serialization
 				
 				info.AddValue(member.Name, member.GetValue(obj));
 			}
+			
+			/* FIX: Rutger M. Dijkstra (rutger.dijkstra@hetnet.nl)
+			* Add the private fields of ancestor classes
+			* 
+			* Note 1: The potentially ambiguous naming strategy below is the same
+			* as used by the standard (non-surrogate) binary serialization.
+			* 
+			* Note 2: Even so, we are not compatible with the standard serialization
+			* since the latter emits inherited *protected* fields multiple times.
+			* Consequently, snapshots created with auto version-migration 'on'
+			* need not correctly deserialize with version-migration 'off'
+			* 
+			* Afterthought:
+			* Maybe, 'auto version-migration' should affect only the process of 
+			* DEserialization, not the serialization as well. On the other hand,
+			* we might not want tie ourselves too tightly to the details of the
+			* standard implementation.
+			*/
+			for (objectType = objectType.BaseType; objectType != null; objectType = objectType.BaseType)
+			{
+			  foreach (FieldInfo member in objectType.FindMembers(MemberTypes.Field, BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.DeclaredOnly, null, null))
+			  {
+				  if (member.IsPrivate && !member.IsNotSerialized)
+				  {
+					  info.AddValue(objectType.Name + "+" + member.Name, member.GetValue(obj));
+				  }
+			  }
+			}
 		}
 
-		object System.Runtime.Serialization.ISerializationSurrogate.SetObjectData(object obj, System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context, System.Runtime.Serialization.ISurrogateSelector selector)
+ 		object System.Runtime.Serialization.ISerializationSurrogate.SetObjectData(object obj, System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context, System.Runtime.Serialization.ISurrogateSelector selector)
 		{
 			Type objectType = obj.GetType();			
 			
 			foreach (SerializationEntry entry in info)
-			{					
-				MemberInfo[] members = objectType.GetMember(entry.Name, MemberTypes.Field, BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance);
-				if (members.Length > 0)
+			{				
+				/* FIX: Rutger M. Dijkstra (rutger.dijkstra@hetnet.nl)
+				 * Search ancestor classes for qualified entries so don't
+				 * miss out on inherited private fields.
+				 */
+				FieldInfo field = FindField(objectType,entry.Name);
+				if (field == null)
 				{
-					FieldInfo field = (FieldInfo)members[0];
-					object value = entry.Value;
-					if (null != value)
-					{
-						if (!field.FieldType.IsInstanceOfType(value))
-						{
-							value = Convert.ChangeType(value, field.FieldType);
-						}
-					}
-					field.SetValue(obj, value);
+					continue;
 				}
+				
+				object value = entry.Value;
+				if (null != value)
+				{
+					if (!field.FieldType.IsInstanceOfType(value))
+					{
+						value = Convert.ChangeType(value, field.FieldType);
+					}
+				}
+				field.SetValue(obj, value);
 			}
 			return null;
 		}	
 		#endregion
+		
+		private FieldInfo FindField(Type t, string name)
+		{
+		  /* Rutger M. Dijkstra (rutger.dijkstra@hetnet.nl)
+		   * Search for the field in t or its ancestors. Having adopted
+		   * the same naming strategy as standard serialization, data
+		   * that has been serialized with auto version-migration 'off'
+		   * will deserialize error-free if we turn auto version-migration 'on'.
+		   */
+		  int plus = name.IndexOf('+');
+		  if (0 <= plus)
+		  {
+			  //name is qualified with an ancestor class
+			  string className = name.Substring(0, plus);
+			  name = name.Substring(plus+1);
+			  do
+			  {
+				  //scan upward for the correct ancestor type
+				  t = t.BaseType;
+			  }
+			  while(t != null && t.Name != className);
+		  }
+		  if (t == null)
+		  {
+			  return null; // vanished? renamed?
+		  }
+		  MemberInfo[] members = t.GetMember(name, MemberTypes.Field, BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance);
+		  if (0 == members.Length)
+		  {
+			  return null; //vanished? moved?
+		  }
+		  return (FieldInfo)members[0];
+		}
+
 
 		#region Implementation of ISurrogateSelector
 		System.Runtime.Serialization.ISurrogateSelector ISurrogateSelector.GetNextSelector()
@@ -107,7 +174,11 @@ namespace Bamboo.Prevalence.Serialization
 
 		System.Runtime.Serialization.ISerializationSurrogate ISurrogateSelector.GetSurrogate(System.Type type, System.Runtime.Serialization.StreamingContext context, out System.Runtime.Serialization.ISurrogateSelector selector)
 		{
-			if (type.Assembly == _assemblyToMigrate)
+			/* FIX: Rutger M. Dijkstra (rutger.dijkstra@hetnet.nl)
+			* typeof(foo[]).Assembly == typeof(foo).Assembly
+			* Obviously nonsense, but that's how it is.
+			*/
+			if (!type.IsArray && type.Assembly == _assemblyToMigrate)
 			{
 				selector = this;
 				return this;

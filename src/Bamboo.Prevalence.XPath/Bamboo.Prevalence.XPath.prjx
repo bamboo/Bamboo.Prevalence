@@ -15,18 +15,18 @@
   <Configuration runwithwarnings="False" name="Debug">
     <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
     <Execution commandlineparameters="" consolepause="False" />
-    <Output directory="..\..\build\" assembly="Bamboo.Prevalence.XPath" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+    <Output directory="..\..\build\" assembly="Bamboo.Prevalence.XPath" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
   </Configuration>
   <Configurations active="Debug">
     <Configuration runwithwarnings="False" name="Debug">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
       <Execution commandlineparameters="" consolepause="False" />
-      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.XPath" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.XPath" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="Release">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
       <Execution commandlineparameters="" consolepause="False" />
-      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.XPath" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
+      <Output directory="..\..\build\" assembly="Bamboo.Prevalence.XPath" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
   </Configurations>
 </Project>
