@@ -357,26 +357,30 @@ namespace Bamboo.Prevalence
 			try
 			{
 				Clock.Pause();
-
-				foreach (ICommand command in reader)
+				try
 				{
-					try
+					foreach (ICommand command in reader)
 					{
-						command.Execute(_system);
+						try
+						{
+							command.Execute(_system);
+						}
+						catch (System.Exception x)
+						{
+							// commands are allowed to throw exceptions
+							// it is up to the client to decide what to
+							// do with them
+							OnExceptionDuringRecovery(handler, command, x);
+						}
 					}
-					catch (System.Exception x)
-					{
-						// commands are allowed to throw exceptions
-						// it is up to the client to decide what to
-						// do with them
-						OnExceptionDuringRecovery(handler, command, x);
-					}
-				}		
-                
-				Clock.Resume();
+				}
+				finally
+				{
+					Clock.Resume();
+				}
 			}
 			finally
-			{
+			{				
 				UnshareCurrentObject();
 			}
 		}
@@ -401,19 +405,26 @@ namespace Bamboo.Prevalence
 
 		private object DoExecuteCommand(ICommand command)
 		{
-			object returnValue;
+			object returnValue;			
 			
-			Clock.Pause();
 			_commandLog.WriteCommand(ApplyCommandDecorators(command));
+
+			ShareCurrentObject();
 			try
-			{		
-				ShareCurrentObject();
-				returnValue = command.Execute(_system);					
+			{	
+				Clock.Pause();
+				try
+				{					
+					returnValue = command.Execute(_system);					
+				}
+				finally
+				{
+					Clock.Resume();
+				}
 			}			
 			finally
 			{
-				UnshareCurrentObject();
-				Clock.Resume();
+				UnshareCurrentObject();				
 			}
 
 			return returnValue;

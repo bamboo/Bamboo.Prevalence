@@ -49,6 +49,7 @@ namespace Bamboo.Prevalence
 		/// </summary>
 		public AlarmClock()
 		{
+			_paused = false;
 		}
 
 		/// <summary>
