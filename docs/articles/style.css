@@ -1,0 +1,19 @@
+body
+{
+	font-size: 10pt;
+	font-family: verdana, tahoma;
+}
+
+pre
+{
+	font-family: lucida-console;
+	margin: 10px;
+	background-color: #eeeeee;
+}
+
+a
+{
+	font-family: verdana, tahoma;
+	color: blue;
+	font-weight: bold;
+}

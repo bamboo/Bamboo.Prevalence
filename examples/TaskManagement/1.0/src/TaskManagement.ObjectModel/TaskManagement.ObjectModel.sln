@@ -1,0 +1,33 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.ObjectModel", "TaskManagement.ObjectModel.csproj", "{9CD36B41-8D82-4B21-BE4B-7C108B05C655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.GUI", "..\TaskManagement.GUI\TaskManagement.GUI.csproj", "{F44200EF-05BA-4AFC-9339-F4B937030CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.ObjectModel.Tests", "..\TaskManagement.ObjectModel.Tests\TaskManagement.ObjectModel.Tests.csproj", "{20D4EC2B-9222-4230-9A0B-3DEB0D397E90}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{9CD36B41-8D82-4B21-BE4B-7C108B05C655}.Debug.ActiveCfg = Debug|.NET
+		{9CD36B41-8D82-4B21-BE4B-7C108B05C655}.Debug.Build.0 = Debug|.NET
+		{9CD36B41-8D82-4B21-BE4B-7C108B05C655}.Release.ActiveCfg = Release|.NET
+		{9CD36B41-8D82-4B21-BE4B-7C108B05C655}.Release.Build.0 = Release|.NET
+		{F44200EF-05BA-4AFC-9339-F4B937030CF7}.Debug.ActiveCfg = Debug|.NET
+		{F44200EF-05BA-4AFC-9339-F4B937030CF7}.Debug.Build.0 = Debug|.NET
+		{F44200EF-05BA-4AFC-9339-F4B937030CF7}.Release.ActiveCfg = Release|.NET
+		{F44200EF-05BA-4AFC-9339-F4B937030CF7}.Release.Build.0 = Release|.NET
+		{20D4EC2B-9222-4230-9A0B-3DEB0D397E90}.Debug.ActiveCfg = Debug|.NET
+		{20D4EC2B-9222-4230-9A0B-3DEB0D397E90}.Debug.Build.0 = Debug|.NET
+		{20D4EC2B-9222-4230-9A0B-3DEB0D397E90}.Release.ActiveCfg = Release|.NET
+		{20D4EC2B-9222-4230-9A0B-3DEB0D397E90}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

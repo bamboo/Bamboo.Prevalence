@@ -1,0 +1,58 @@
+<project name="TaskManagement" default="all">
+
+	<property name="Bamboo.Prevalence.dll" value="..\..\..\bin\Bamboo.Prevalence.dll" />
+	
+	<property name="nunit.home" value="\dotnet\nunit" />
+	<property name="nunit.framework.dll" value="${nunit.home}\bin\nunit.framework.dll" />
+	<property name="nunit-console" value="${nunit.home}\bin\nunit-console.exe" />
+
+	<target name="all" depends="test" />
+	
+	<target name="test" depends="TaskManagement.ObjectModel.Tests">
+		<copy todir="build" file="${nunit.framework.dll}" />
+		<copy todir="build" file="${Bamboo.Prevalence.dll}" />
+		
+		<exec program='${nunit-console}' basedir='build' commandline='TaskManagement.ObjectModel.Tests.dll' />
+	</target>
+	
+	<target name='TaskManagement.ObjectModel.Tests' depends='TaskManagement.ObjectModel'>
+
+		<csc target='library' output='build\TaskManagement.ObjectModel.Tests.dll' debug='true'>
+
+			<sources>
+				<includes name='src\TaskManagement.ObjectModel.Tests\*.cs' />
+			</sources>
+
+			<references>
+				<includes name='${nunit.framework.dll}' />
+				<includes name='${Bamboo.Prevalence.dll}' />
+				<includes name='build\TaskManagement.ObjectModel.dll' />
+			</references>
+
+		</csc>
+
+	</target>
+
+	<target name='TaskManagement.ObjectModel' depends='init'>
+
+		<csc
+			target='library'
+			output='build\TaskManagement.ObjectModel.dll'
+			debug='true'>
+
+			<sources>
+				<includes name='src/TaskManagement.ObjectModel/**.cs' />
+			</sources>
+			
+			<references>
+				<includes name='${Bamboo.Prevalence.dll}' />
+			</references>
+		</csc>	
+		
+	</target>
+	
+	<target name="init">
+		<mkdir dir="build" />
+	</target>
+	
+</project>

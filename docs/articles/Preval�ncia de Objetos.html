@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="Docutils 0.3.0: http://docutils.sourceforge.net/" />
+<title>Prevalência de Objetos e Testabilidade</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="preval-ncia-de-objetos-e-testabilidade">
+<h1 class="title">Prevalência de Objetos e Testabilidade</h1>
+<div class="section" id="introdu-o">
+<h1><a name="introdu-o">Introdução</a></h1>
+<p>Há algum tempo atrás &quot;640K deveria ser suficiente para qualquer um&quot;<a class="footnote-reference" href="#id22" id="id1" name="id1"><sup>1</sup></a>. Hoje,
+estações de trabalho equipadas com 1GB de RAM ou mais estão por toda a parte
+e já podemos contar com servidores de tecnologia Intel <a class="footnote-reference" href="#id23" id="id2" name="id2"><sup>2</sup></a> ou SUN <a class="footnote-reference" href="#id24" id="id3" name="id3"><sup>3</sup></a> capazes de
+endereçar 64GB de RAM. Todos esses avanços <a class="footnote-reference" href="#id25" id="id4" name="id4"><sup>4</sup></a> devem ter um impacto significativo
+no modo como praticamos nossa arte <a class="footnote-reference" href="#id26" id="id5" name="id5"><sup>5</sup></a>. Um grupo de pioneiros <a class="footnote-reference" href="#id27" id="id6" name="id6"><sup>6</sup></a> liderados
+originalmente por Klaus Wuestefeld <a class="footnote-reference" href="#id28" id="id7" name="id7"><sup>7</sup></a> resolveu explorar as consequências
+desses avanços através da hipótese de RAM ilimitada <a class="footnote-reference" href="#id29" id="id8" name="id8"><sup>8</sup></a>: <em>como você desenvolveria
+um sistema se houvesse RAM suficiente para manter todos os seus objetos de negócio?</em></p>
+<p>Uma possível resposta à essa pergunta é o tópico deste artigo, divido em 
+duas partes: uma apresentação de conceitos e uma demonstração prática em
+estilo tutorial.</p>
+<div class="section" id="objetos-objetos-e-objetos">
+<h2><a name="objetos-objetos-e-objetos">Objetos, Objetos e Objetos</a></h2>
+<p>Um parte importante da resposta (já codificada na pergunta) é a utilização
+da programação orientada a objetos. Veremos adiante como a 
+prevalência de objetos permite que a POO seja realizada em todo o seu potencial
+em sistemas que até então eram desenvolvidos sobre um misto de modelos relacional,
+procedural e orientado a objetos.</p>
+<p>Constataremos que as questões relacionadas a desenvolver sistemas utilizando prevalência
+de objetos são, na verdade, questões sobre como desenvolver sistemas orientados
+a objetos.</p>
+</div>
+<div class="section" id="quem-se-importa">
+<h2><a name="quem-se-importa">Quem se importa?</a></h2>
+<p>A prevalência de objetos torna o processo de desenvolvimento mais simples
+pois elimina toda a complexidade adicional comumente associada
+à utilização de um banco de dados:</p>
+<blockquote>
+<ul class="simple">
+<li>esquemas de dados e blocos de código SQL que devem ser mantidos em sincronia com o modelo de objetos;</li>
+<li>camadas de mapeamento objeto-relacional;</li>
+<li>baixa testabilidade que inevitavelmente cria um clima de aversão a testes em todo o time de desenvolvimento;</li>
+<li>dificuldade de instalação e atualização de sistemas em produção;</li>
+<li>dilemas &quot;to stored procedure or not to stored procedure&quot;;</li>
+<li>SQL;</li>
+</ul>
+</blockquote>
+<p>A prevalência de objetos permite que nos expressemos sem limites artificiais,
+sem barreiras conceituais a não ser aquelas impostas pela orientação
+a objetos e nossa linguagem de programação preferida. A transição dos
+modelos mentais a código que funciona é mais rápida. O exercício de
+nossa arte se torna novamente divertido. Tudo isso contribui para mais
+redução no tempo de desenvolvimento.</p>
+<p>A utilização de objetos sempre em memória assegura uma performance
+satisfatória, sem esforço, ainda que sob condições extremas. E quando, e se,
+o momento de otimização chegar, os testes e expressividade adicionais
+garantirão uma empreitada tranquila.</p>
+<p>Em suma, sistemas mais confiáveis com ótima performance desenvolvidos
+em menos tempo.</p>
+<p>É, quem se importa?</p>
+</div>
+</div>
+<div class="section" id="prevalecer-continuar-a-existir">
+<h1><a name="prevalecer-continuar-a-existir">Prevalecer: continuar a existir</a></h1>
+<p>Quando todos os objetos são mantidos em RAM a primeiras pergunta é: o
+quê acontece quando o sistema é reiniciado?</p>
+<p>Ou, como os objetos prevalecem?</p>
+<p>Utilizando o mecanismo de serialização de objetos embutido na plataforma
+mais o design pattern <a class="footnote-reference" href="#id30" id="id9" name="id9"><sup>9</sup></a> Command <a class="footnote-reference" href="#id31" id="id10" name="id10"><sup>10</sup></a> é possível criar a ilusão de
+um sistema sempre em memória onde nenhuma alteração é jamais perdida. Esse
+efeito pode ser obtido através de um algoritmo simples: cada comando aplicado
+ao sistema deve ser armazenado em um arquivo de forma sequencial, isso permite
+que durante o reinício do
+sistema, cada comando encontrado no arquivo seja reexecutado, levando o modelo
+de objetos para exatamente o mesmo estado em que se encontrava anteriormente.
+É isso justamente o que fazem o Prevayler <a class="footnote-reference" href="#id32" id="id11" name="id11"><sup>11</sup></a> (para a plataforma java) e o
+Bamboo.Prevalence <a class="footnote-reference" href="#id33" id="id12" name="id12"><sup>12</sup></a>, a implementação que investigaremos neste
+artigo, para a plataforma .net. Ambas são software livre de código aberto.</p>
+<p>Para criar sistemas prevalecentes com qualquer uma das implementações indicadas,
+apenas três regras básicas devem ser seguidas:</p>
+<blockquote>
+<ul class="simple">
+<li>todos os objetos envolvidos devem ser serializáveis;</li>
+<li>todas as alterações ao modelo de objetos devem ser representadas por comandos (aqui entra o design pattern) também serializáveis;</li>
+<li>o sistema deve ser determinístico, em outras palavras, o sistema deve sempre chegar ao mesmo estado quando exposto ao mesmo conjunto de comandos;</li>
+</ul>
+</blockquote>
+<p>Veremos como tudo isso funciona durante a implementação de nosso sistema.</p>
+</div>
+<div class="section" id="pragmaticamente">
+<h1><a name="pragmaticamente">Pragmaticamente</a></h1>
+<p>Para encurtar o caminho da discussão à prática, implementaremos um sistema
+simples de gerenciamento do tempo gasto com tarefas em vários projetos.
+O sistema irá permitir:</p>
+<blockquote>
+<ul class="simple">
+<li>o cadastro de projetos nos quais estamos trabalhando, cada projeto tem um nome e uma lista de tarefas associadas;</li>
+<li>o cadastro de tarefas em qualquer um dos projetos, cada tarefa tem um nome, uma descrição e um registro de horas trabalhadas;</li>
+<li>o registro de um conjunto de horas trabalhadas em uma determinada tarefa, cada registro tem uma data-hora de início e uma data-hora de fim;</li>
+</ul>
+</blockquote>
+<p>Tudo começa com a definição de nosso modelos de objetos e seu comportamento.
+Em um modelo de objetos prevalecente, o objeto raíz do modelo é chamado de
+sistema e sua principal responsabilidade é abrigar os outros objetos de
+negócio que, pela descrição apresentada, podemos imaginar como sendo:
+projeto, tarefa e registro de horas trabalhadas.</p>
+<p><img alt="ObjectModel.gif" src="ObjectModel.gif" /></p>
+<p>Um diagrama de classes simples para nosso modelo de objetos</p>
+<div class="section" id="teste-um-pouco">
+<h2><a name="teste-um-pouco">Teste Um Pouco</a></h2>
+<p>O modelo parece adequado mas a única forma de assegurarmos que 
+atende a todas as expectativas de seus usuários é testando-o. Esse é um
+dos pontos onde a prevalência de objetos brilha. Ao permitir-nos a criação
+de testes automatizados de forma muito simples. Seguindo a recomendação do
+artigo &quot;Test Infected&quot;<a class="footnote-reference" href="#id34" id="id13" name="id13"><sup>13</sup></a>, vamos implementar nosso sistema em pequenos
+ciclos &quot;testar um pouco, codificar um pouco&quot;. Utilizaremos a ferramenta
+NUnit <a class="footnote-reference" href="#id35" id="id14" name="id14"><sup>14</sup></a> para a criação dos testes .Net.</p>
+<p>Vamos começar assegurando o comportamento básico de nossas classes, o que
+servirá também como exercício de arquitetura:</p>
+<pre class="literal-block">
+using System;
+using NUnit.Framework;
+using TaskManagement.ObjectModel;
+
+namespace TaskManagement.ObjectModel.Tests
+{
+        /// &lt;summary&gt;
+        /// Testes para a classe TaskManagementSystem.
+        /// &lt;/summary&gt;
+        [TestFixture]
+        public class TaskManagementSystemTestCase : Assertion
+        {
+                protected TaskManagementSystem _system;
+
+                [SetUp]
+                public void SetUp()
+                {
+                        _system = new TaskManagementSystem();
+                }
+
+                [Test]
+                public void TestConstruct()
+                {
+                        AssertNotNull(&quot;A coleção de projetos não pode ser nula!&quot;, _system.Projects);
+                        AssertEquals(&quot;A coleção de projetos deve estar vazia!&quot;, 0, _system.Projects.Count);
+                }
+        }
+}
+</pre>
+<div class="note">
+<p class="admonition-title">Note</p>
+O método <em>SetUp</em> é executado antes de cada teste
+(o atributo <em>SetUp</em> garante isso). Cada método público
+marcado com o atributo <em>Test</em> representa um teste.</div>
+<p>Esse teste assegura que todas nossas expectativas sobre a classe
+TaskManagementSystem, nosso sistema prevalecente, sejam cumpridas:</p>
+<blockquote>
+<ul class="simple">
+<li>O sistema armazena uma coleção de projetos;</li>
+<li>No início, a coleção de projetos está vazia;</li>
+</ul>
+</blockquote>
+<p>E sobre o projeto? (A partir de agora apenas o corpo das classes
+será incluído).</p>
+<pre class="literal-block">
+Project _project;
+
+[SetUp]
+public void SetUp()
+{
+        _project = new Project(&quot;Artigos&quot;);
+}
+
+[Test]
+public void TestConstruct()
+{
+        AssertEquals(&quot;O projeto deve armazenar seu nome!&quot;, &quot;Artigos&quot;, _project.Name);
+        AssertNotNull(&quot;Lista de tarefas não pode ser nula!&quot;, _project.Tasks);
+        AssertEquals(&quot;Lista de tarefas deve estar vazia&quot;, 0, _project.Tasks.Count);
+}
+</pre>
+<p>Sobre tarefa:</p>
+<pre class="literal-block">
+protected Task _task;
+
+[SetUp]
+public void SetUp()
+{
+        _task = new Task(&quot;Prevalência de Objetos&quot;);
+}
+
+[Test]
+public void TestConstruct()
+{
+        AssertEquals(&quot;Tarefa deve armazenar seu nome!&quot;, &quot;Prevalência de Objetos&quot;, _task.Name);
+        AssertNotNull(&quot;Log de trabalho não pode ser nulo!&quot;, _task.WorkRecords);
+        AssertEquals(&quot;Log de trabalho deve estar vazio!&quot;, 0, _task.WorkRecords.Count);
+}
+</pre>
+<p>O registro de horas:</p>
+<pre class="literal-block">
+protected DateTime _startTime = new DateTime(2003, 6, 29, 14, 30, 0);
+
+protected DateTime _endTime = new DateTime(2003, 6, 29, 18, 56, 0);
+
+protected WorkRecord _record;
+
+[SetUp]
+public void SetUp()
+{
+        _record = new WorkRecord(_startTime, _endTime);
+}
+
+[Test]
+public void TestConstruct()
+{
+        AssertEquals(&quot;StartTime&quot;, _startTime, _record.StartTime);
+        AssertEquals(&quot;EndTime&quot;, _endTime, _record.EndTime);
+}
+
+/// &lt;summary&gt;
+/// Assegura que WorkRecord não aceite argumentos
+/// inválidos para a hora de início e fim.
+/// &lt;/summary&gt;
+[Test]
+[ExpectedException(typeof(ArgumentException))]
+public void TestRejectInvalidArguments()
+{
+        new WorkRecord(_endTime, _startTime);
+}
+</pre>
+<p>Hora de codificação de nosso modelo de objetos.</p>
+</div>
+<div class="section" id="codifique-um-pouco">
+<h2><a name="codifique-um-pouco">Codifique Um Pouco</a></h2>
+<p>Nosso objetivo agora é assegurar que as classes em nosso modelo sejam
+capazes de passar os testes especificados.</p>
+<p>O sistema:</p>
+<pre class="literal-block">
+namespace TaskManagement.ObjectModel
+{
+        /// &lt;summary&gt;
+        /// Um sistema para gerenciamento de tarefas.
+        /// &lt;/summary&gt;
+        public class TaskManagementSystem
+        {
+                protected ProjectCollection _projects;
+
+                /// &lt;summary&gt;
+                /// Cria um novo sistema para gerenciamento
+                /// de tarefas.
+                /// &lt;/summary&gt;
+                public TaskManagementSystem()
+                {
+                        _projects = new ProjectCollection();
+                }
+
+                /// &lt;summary&gt;
+                /// Cadastro de projetos.
+                /// &lt;/summary&gt;
+                public ProjectCollection Projects
+                {
+                        get
+                        {
+                                return _projects;
+                        }
+                }
+        }
+}
+</pre>
+<p>O projeto:</p>
+<pre class="literal-block">
+/// &lt;summary&gt;
+/// Um projeto.
+/// &lt;/summary&gt;
+public class Project
+{
+        protected string _name;
+
+        protected TaskCollection _tasks;
+
+        /// &lt;summary&gt;
+        /// Cria um novo projeto com o nome
+        /// especificado.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;name&quot;&gt;&lt;/param&gt;
+        public Project(string name)
+        {
+                _name = name;
+                _tasks = new TaskCollection();
+        }
+
+        /// &lt;summary&gt;
+        /// Nome deste projeto.
+        /// &lt;/summary&gt;
+        public string Name
+        {
+                get
+                {
+                        return _name;
+                }
+        }
+
+        /// &lt;summary&gt;
+        /// Tarefas que compõem este projeto.
+        /// &lt;/summary&gt;
+        public TaskCollection Tasks
+        {
+                get
+                {
+                        return _tasks;
+                }
+        }
+}
+</pre>
+<p>A tarefa:</p>
+<pre class="literal-block">
+/// &lt;summary&gt;
+/// Uma tarefa.
+/// &lt;/summary&gt;
+public class Task
+{
+        protected string _name;
+
+        protected WorkRecordCollection _workRecords;
+
+        /// &lt;summary&gt;
+        /// Cria uma nova tarefa com o nome
+        /// especificado.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;name&quot;&gt;&lt;/param&gt;
+        public Task(string name)
+        {
+                _name = name;
+                _workRecords = new WorkRecordCollection();
+        }
+
+        /// &lt;summary&gt;
+        /// Nome desta tarefa.
+        /// &lt;/summary&gt;
+        public string Name
+        {
+                get
+                {
+                        return _name;
+                }
+        }
+
+        /// &lt;summary&gt;
+        /// Registros de horas trabalhadas nesta
+        /// tarefa.
+        /// &lt;/summary&gt;
+        public WorkRecordCollection WorkRecords
+        {
+                get
+                {
+                        return _workRecords;
+                }
+        }
+}
+</pre>
+<p>O registro de horas trabalhadas:</p>
+<pre class="literal-block">
+/// &lt;summary&gt;
+/// Um registro de horas trabalhadas.
+/// &lt;/summary&gt;
+public class WorkRecord
+{               
+        protected DateTime _startTime;
+
+        protected DateTime _endTime;
+
+        /// &lt;summary&gt;
+        /// Cria um novo registro para o período indicado.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;startTime&quot;&gt;início do período&lt;/param&gt;
+        /// &lt;param name=&quot;endTime&quot;&gt;fim do período&lt;/param&gt;
+        public WorkRecord(DateTime startTime, DateTime endTime)
+        {
+                if (endTime &lt; startTime)
+                {
+                        throw new ArgumentException(&quot;A hora de fim deve ser maior que a hora de início!&quot;, &quot;endTime&quot;);
+                }
+
+                _startTime = startTime;
+                _endTime = endTime;
+        }
+
+        /// &lt;summary&gt;
+        /// Início do período trabalhado.
+        /// &lt;/summary&gt;
+        public DateTime StartTime
+        {
+                get
+                {
+                        return _startTime;
+                }
+        }
+
+        /// &lt;summary&gt;
+        /// Fim do período trabalhado.
+        /// &lt;/summary&gt;
+        public DateTime EndTime
+        {
+                get
+                {
+                        return _endTime;
+                }
+        }
+}
+</pre>
+<p>As classes acima fazem menção a outras não apresentadas como
+<strong>ProjectCollection</strong>, <strong>TaskCollection</strong>, <strong>WorkRecordCollection</strong>,
+essas classes foram deixadas de fora do artigo por questão de legibilidade
+apenas. O código integral deste projeto encontra-se na distribuição do
+Bamboo.Prevalence que pode ser obtida em
+<a class="reference" href="http://www.sourceforge.net/projects/bbooprevalence/">http://www.sourceforge.net/projects/bbooprevalence/</a>.</p>
+<p>É interessante notar que, até o momento, nenhum esforço foi feito na
+tentativa de garantir que nosso modelo de objetos atenda aos requisitos
+de um sistema prevalecente. Isso mostra como a utilização da
+prevalência de objetos é praticamente transparente (translúcida).</p>
+</div>
+<div class="section" id="adicionando-preval-ncia">
+<h2><a name="adicionando-preval-ncia">Adicionando Prevalência</a></h2>
+<div class="section" id="todo-objeto-deve-ser-serializ-vel">
+<h3><a name="todo-objeto-deve-ser-serializ-vel">Todo objeto deve ser serializável</a></h3>
+<p>Basta marcar cada uma de nossas classes como serializável. Em .net isso
+é feito com o atributo <em>System.SerializableAttribute</em> <a class="footnote-reference" href="#id36" id="id15" name="id15"><sup>15</sup></a>.</p>
+<p>Exemplo:</p>
+<pre class="literal-block">
+[Serializable]
+public class TaskManagementSystem
+</pre>
+<p>Em java, através da interface <em>java.io.Serializable</em> <a class="footnote-reference" href="#id37" id="id16" name="id16"><sup>16</sup></a>.</p>
+<p>Exemplo:</p>
+<pre class="literal-block">
+public class TaskManagementSystem implements java.io.Serializable
+</pre>
+<p>Testar ou não estar? Eu decidi por não incluir testes assegurando que
+cada uma de nossas classes é serializável e que a serialização se dá de
+forma correta por economia de espaço e tempo já que o projeto
+é pequeno, de curto prazo e com classes extremamente simples.</p>
+</div>
+<div class="section" id="altera-es-devem-ser-representadas-por-comandos">
+<h3><a name="altera-es-devem-ser-representadas-por-comandos">Alterações devem ser representadas por comandos</a></h3>
+<p>Segundo nosso roteiro de funcionalidades iremos precisar de comandos para:</p>
+<blockquote>
+<ul class="simple">
+<li>adicionar um projeto ao sistema;</li>
+<li>adicionar uma tarefa a um projeto;</li>
+<li>adicionar um registro de horas trabalhadas;</li>
+</ul>
+</blockquote>
+<p>E o que são comandos? Comandos são objetos serializáveis que implementam
+a interface Bamboo.Prevalence.ICommand <a class="footnote-reference" href="#id38" id="id17" name="id17"><sup>17</sup></a> de um único método:</p>
+<pre class="literal-block">
+object Execute(object system);
+</pre>
+<p>O método recebe como parâmetro a instância do sistema prevalecente sobre
+a qual deve agir. É importante que o comando acesse o sistema através
+dessa referência apenas e nunca por qualquer outro mecanismo.
+Isso porque as referências podem e devem ser diferentes
+após o reinício do sistema.</p>
+<div class="section" id="testando-comandos">
+<h4><a name="testando-comandos">Testando Comandos</a></h4>
+<p>Os comandos também podem e devem ser testados. Para testá-los, no entanto,
+precisaremos de uma instância da classe Bamboo.Prevalence.PrevalenceEngine.
+A classe PrevalenceEngine é o mediador da interação entre comandos e
+sistema de forma a assegurar a ilusão de um sistema sempre em
+execução onde nenhuma alteração é perdida.</p>
+<p>Para conseguir um objeto PrevalenceEngine invocamos o método
+PrevalenceActivator.CreateEngine passando o tipo do sistema
+(typeof(TaskManagementSystem)) e o caminho completo
+para o diretório onde devem ser armazenados os arquivos de log:</p>
+<pre class="literal-block">
+string prevalenceBase = &quot;c:\\tasks&quot;;
+PrevalenceEngine engine = PrevalenceActivator.CreateEngine(typeof(TaskManagementSystem), prevalenceBase);
+</pre>
+<p>O sistema gerenciado pelo PrevalenceEngine pode ser obtido a
+qualquer momento da seguinte forma:</p>
+<pre class="literal-block">
+TaskManagement system = engine.PrevalentSystem as TaskManagementSystem;
+</pre>
+<p>E com um PrevalenceEngine em mãos podemos executar comandos:</p>
+<pre class="literal-block">
+engine.ExecuteCommand(new AddProjectCommand(project));
+</pre>
+<p>Com algumas alterações à classe TaskManagementSystemTestCase poderemos
+iniciar a criação dos testes de nossos comandos. Após a inclusão do
+suporte a PrevalenceEngine, a classe fica assim:</p>
+<pre class="literal-block">
+namespace TaskManagement.ObjectModel.Tests
+{
+        /// &lt;summary&gt;
+        /// Testes para a classe TaskManagementSystem.
+        /// &lt;/summary&gt;
+        [TestFixture]
+        public class TaskManagementSystemTestCase : Assertion
+        {
+                protected PrevalenceEngine _engine;
+
+                protected TaskManagementSystem _system;
+
+                [SetUp]
+                public void SetUp()
+                {
+                        // O primeiro passo é limpar qualquer resquício de
+                        // testes anteriores para começar com uma &quot;base&quot; limpa
+                        ClearPrevalenceBase();
+
+                        _engine = PrevalenceActivator.CreateEngine(typeof(TaskManagementSystem), PrevalenceBase);
+                        _system = _engine.PrevalentSystem as TaskManagementSystem;
+                }
+
+                [TearDown]
+                public void TearDown()
+                {
+                        // Caso exista um PrevalenceEngine
+                        // assegura que ele &quot;tire suas mãos do log&quot;
+                        // para permitir a limpeza da base
+                        if (null != _engine)
+                        {
+                                _engine.HandsOffOutputLog();
+                        }
+                }
+
+                [Test]
+                public void TestConstruct()
+                {
+                        AssertNotNull(&quot;A coleção de projetos não deve ser nula!&quot;, _system.Projects);
+                        AssertEquals(&quot;A coleção de projetos deve estar vazia!&quot;, 0, _system.Projects.Count);
+                }
+                
+                /// &lt;summary&gt;
+                /// Executa um comando.
+                /// &lt;/summary&gt;
+                /// &lt;param name=&quot;command&quot;&gt;&lt;/param&gt;
+                /// &lt;returns&gt;&lt;/returns&gt;
+                protected object ExecuteCommand(ICommand command)
+                {
+                        return _engine.ExecuteCommand(command);
+                }
+
+                /// &lt;summary&gt;
+                /// Caminho completo para o diretório onde serão
+                /// armazenados arquivos de log Bamboo.Prevalence.
+                /// &lt;/summary&gt;
+                protected string PrevalenceBase
+                {
+                        get
+                        {
+                                // calcula um caminho abaixo da pasta
+                                // de arquivos temporários
+                                return Path.Combine(Path.GetTempPath(), &quot;TaskManagementSystem&quot;);
+                        }
+                }
+
+                /// &lt;summary&gt;
+                /// Remove o diretório PrevalenceBase caso ele exista.
+                /// &lt;/summary&gt;
+                protected void ClearPrevalenceBase()
+                {
+                        if (Directory.Exists(PrevalenceBase))
+                        {
+                                Directory.Delete(PrevalenceBase, true);
+                        }
+                }
+        }
+}
+</pre>
+</div>
+<div class="section" id="adicionar-um-projeto">
+<h4><a name="adicionar-um-projeto">Adicionar um Projeto</a></h4>
+<div class="section" id="id18">
+<h5><a name="id18">Teste um Pouco</a></h5>
+<pre class="literal-block">
+[Test]
+public void TestAddProject()
+{
+        Project project = new Project(&quot;Artigos&quot;);
+        ExecuteCommand(new AddProjectCommand(project));
+
+        AssertEquals(1, _system.Projects.Count);
+        AssertSame(project, _system.Projects[0]);
+}
+</pre>
+</div>
+<div class="section" id="id19">
+<h5><a name="id19">Codifique um Pouco</a></h5>
+<p>Este é o comando mais simples que iremos implementar:</p>
+<pre class="literal-block">
+using System;
+using Bamboo.Prevalence;
+using TaskManagement.ObjectModel;
+
+namespace TaskManagement.ObjectModel.Commands
+{
+        /// &lt;summary&gt;
+        /// Adiciona um projeto ao sistema.
+        /// &lt;/summary&gt;
+        [Serializable]
+        public class AddProjectCommand : ICommand
+        {
+                protected Project _project;
+
+                public AddProjectCommand(Project project)
+                {
+                        if (null == project)
+                        {
+                                throw new ArgumentNullException(&quot;project&quot;);
+                        }
+                        _project = project;
+                }
+
+                public object Execute(object system)
+                {
+                        TaskManagementSystem tasksystem = (TaskManagementSystem)system;
+                        tasksystem.Projects.Add(_project);
+                        return null;
+                }
+        }
+}
+</pre>
+<p>Simples assim.</p>
+</div>
+</div>
+<div class="section" id="adicionar-uma-tarefa">
+<h4><a name="adicionar-uma-tarefa">Adicionar uma Tarefa</a></h4>
+<p>Aqui as coisas se tornam apenas um pouco mais complicadas. Nosso comando
+deve agora adicionar uma tarefa a um projeto específico. Nosso problema é
+como indicar qual projeto deve ser dono da nova tarefa de forma que o comando
+possa encontrá-lo durante sua execução. Importante ressaltar: os comandos
+devem ser capazes de <em>encontrar</em> os objetos sobre os quais devem agir ao 
+contrário de manter referências diretas (após a serialização/deserialização
+do comando as referências apontarão para objetos distintos).</p>
+<p>Como encontrar um projeto? Poderíamos utilizar seu nome, mas para isso
+deveríamos assegurar que não seja possível cadastrar dois projetos
+de mesmo nome.</p>
+<p>Uma outra solução mais genericamente aplicável é utilizarmos um ID
+automaticamente gerado. O algoritmo de geração do ID deve apenas
+nos garantir que cada ID criado é único. O tipo <em>System.Guid</em> é perfeito
+para situações como essa. Alteremos nossa classe <em>Project</em> de acordo:</p>
+<pre class="literal-block">
+public class Project
+{
+        protected Guid _id;
+
+        protected string _name;
+
+        protected TaskCollection _tasks;
+
+        /// &lt;summary&gt;
+        /// Cria um novo projeto com o nome
+        /// especificado.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;name&quot;&gt;&lt;/param&gt;
+        public Project(string name)
+        {
+                _id = Guid.NewGuid();
+                _name = name;
+                _tasks = new TaskCollection();
+        }
+
+        /// &lt;summary&gt;
+        /// Identificador único deste objeto.
+        /// &lt;/summary&gt;
+        public Guid ID
+        {
+                get
+                {
+                        return _id;
+                }
+        }
+</pre>
+<p>O constructor da classe assegura que o objeto possua um identificador único
+através da chamada <em>Guid.NewGuid</em>.</p>
+<p>Estamos prontos para escrever nosso teste.</p>
+<div class="section" id="id20">
+<h5><a name="id20">Teste um Pouco</a></h5>
+<pre class="literal-block">
+[Test]
+public void TestAddTask()
+{
+        Project project = new Project(&quot;Artigos&quot;);
+        ExecuteCommand(new AddProjectCommand(project));
+
+        Task task = new Task(&quot;Prevalência de Objetos&quot;);
+        ExecuteCommand(new AddTaskCommand(project.ID, task));
+
+        AssertEquals(1, project.Tasks.Count);
+        AssertSame(task, project.Tasks[0]);
+}
+</pre>
+<p>O comando <em>AddTaskCommand</em> exige como primeiro parâmetro, o ID do projeto
+que deve receber a nova tarefa.</p>
+</div>
+<div class="section" id="id21">
+<h5><a name="id21">Codifique um Pouco</a></h5>
+<p>A codificação do comando é trivial:</p>
+<pre class="literal-block">
+public object Execute(object system)
+{
+        TaskManagementSystem tasksystem = (TaskManagementSystem)system;
+        Project project = tasksystem.Projects[_projectID];
+        project.Tasks.Add(_task);
+        return null;
+}
+</pre>
+<p>O código acima não seria tão simples sem uma pequena ajuda da classe
+<em>ProjectCollection</em>, a possibilidade de indexar a coleção através
+do identificador de projeto:</p>
+<pre class="literal-block">
+/// &lt;summary&gt;
+/// Retorna o projeto de identificador
+/// indicado.
+/// &lt;/summary&gt;
+/// &lt;exception cref=&quot;ObjectNotFoundException&quot;&gt;
+/// caso não exista projeto algum de identificador
+/// igual ao indicado
+/// &lt;/exception&gt;
+public Project this[Guid id]
+{
+        get
+        {
+                foreach (Project project in InnerList)
+                {
+                        if (id == project.ID)
+                        {
+                                return project;
+                        }
+                }
+                throw new ObjectNotFoundException(string.Format(&quot;O projeto de ID {0} não foi encontrado!&quot;, id));
+        }
+}
+</pre>
+</div>
+</div>
+<div class="section" id="o-resto">
+<h4><a name="o-resto">O Resto</a></h4>
+<p>Está disponível online. Leia, estude, comente, tente,
+inspire, expire.</p>
+</div>
+</div>
+<div class="section" id="o-sistema-deve-ser-determin-stico">
+<h3><a name="o-sistema-deve-ser-determin-stico">O sistema deve ser determinístico</a></h3>
+<p>Um sistema prevalecente deve ser fechado. Completamente
+independente de agentes ou recursos externos. Arquivos, relógios, 
+conexões de rede, etc, não devem ser utilizados diretamente por
+comandos pois anulariam a possibilidade de restaurar o sistema
+para exatamente o mesmo estado (o que aconteceria por exemplo, se
+um arquivo opcional não fosse encontrado durante o reinício do
+sistema mas estivesse lá quando o comando foi executado pela primeira
+vez?).</p>
+<p>Isso não significa que todos esses recursos não possam ser utilizados,
+mas apenas que devem ser de forma externa ao sistema prevalecente. No
+exemplo apresentado, o método <em>Guid.NewGuid</em> não poderia ser utilizado
+dentro do sistema em resposta a um comando. O algoritmo de geração
+de guids depende, dentre outras coisas, do clock. Como foi utilizado, 
+externamente aos comandos, não representa problema algum.</p>
+</div>
+</div>
+</div>
+<div class="section" id="desafios">
+<h1><a name="desafios">Desafios</a></h1>
+<div class="section" id="maestria">
+<h2><a name="maestria">Maestria</a></h2>
+<p>Assim como o músico que sente dificuldade em se expressar com seu
+instrumento após algumas semanas sem ele, os praticantes de nossa
+arte ainda se expressam com dificuldade sob o paradigma da orientação
+a objetos. Os anos de exposição e prática da arquitetura de 3 camadas
+lógicas que dissocia dados e comportamento contribuiram, sem sombra de
+dúvida, para esse estado de quase alienação. Não
+nos resta opção senão readquirir a maestria através da prática constante.</p>
+</div>
+<div class="section" id="expressividade">
+<h2><a name="expressividade">Expressividade</a></h2>
+<p>Nossas bibliotecas e linguagens de programação ainda não são expressivas
+o suficiente. Muita verbosidade ainda é requeridade na 
+expressão de algoritmos simples.</p>
+<p>Exemplo: encontre o elemento p tal que o id de p seja igual ao
+id procurado.</p>
+<p>Compare o código C#:</p>
+<pre class="literal-block">
+foreach (Project p in projects)
+{
+  if (id == p.ID)
+  {
+    return p;
+  }
+}
+</pre>
+<p>Com o equivalente ruby, por exemplo:</p>
+<pre class="literal-block">
+projects.find { |p| id == p.ID }
+</pre>
+<p>Esse é um campo que, definitivamente, merece atenção.</p>
+</div>
+<div class="section" id="medo">
+<h2><a name="medo">Medo</a></h2>
+<p>Medo de tentar algo diferente, medo de passar por tolo.</p>
+<p>Bem, o medo é o caminho para o lado escuro, não é?</p>
+<table class="footnote" frame="void" id="id22" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1" name="id22">[1]</a></td><td><a class="reference" href="http://www.brainyquote.com/quotes/quotes/b/q103747.html">http://www.brainyquote.com/quotes/quotes/b/q103747.html</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id23" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2" name="id23">[2]</a></td><td><a class="reference" href="http://www.intel.com/eBusiness/products/itanium/">http://www.intel.com/eBusiness/products/itanium/</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id24" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3" name="id24">[3]</a></td><td><a class="reference" href="http://www.sun.com/processors/UltraSPARC-III/">http://www.sun.com/processors/UltraSPARC-III/</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id25" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4" name="id25">[4]</a></td><td><a class="reference" href="http://www.prevayler.org/wiki.jsp?topic=BreakthroughsInMemoryTechnology">http://www.prevayler.org/wiki.jsp?topic=BreakthroughsInMemoryTechnology</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id26" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5" name="id26">[5]</a></td><td><a class="reference" href="http://groups.yahoo.com/group/pragprog/message/1588">http://groups.yahoo.com/group/pragprog/message/1588</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id27" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6" name="id27">[6]</a></td><td><a class="reference" href="http://www.prevayler.org/wiki.jsp?topic=PrevaylerPioneers">http://www.prevayler.org/wiki.jsp?topic=PrevaylerPioneers</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id28" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7" name="id28">[7]</a></td><td><a class="reference" href="http://www.prevayler.org/wiki.jsp?topic=KlausWuestefeld">http://www.prevayler.org/wiki.jsp?topic=KlausWuestefeld</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id29" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8" name="id29">[8]</a></td><td><a class="reference" href="http://www.prevayler.org/wiki.jsp?topic=PrevalentHypothesis">http://www.prevayler.org/wiki.jsp?topic=PrevalentHypothesis</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id30" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9" name="id30">[9]</a></td><td>O termo em português &quot;padrão de projeto&quot; ainda me soa inadequado.</td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id31" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10" name="id31">[10]</a></td><td><a class="reference" href="http://www.c2.com/cgi/wiki?CommandPattern">http://www.c2.com/cgi/wiki?CommandPattern</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id32" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id11" name="id32">[11]</a></td><td><a class="reference" href="http://www.prevayler.org/">http://www.prevayler.org/</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id33" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id12" name="id33">[12]</a></td><td><a class="reference" href="http://bbooprevalence.sourceforge.net/">http://bbooprevalence.sourceforge.net/</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id34" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13" name="id34">[13]</a></td><td><a class="reference" href="http://junit.sourceforge.net/doc/testinfected/testing.htm">http://junit.sourceforge.net/doc/testinfected/testing.htm</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id35" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id14" name="id35">[14]</a></td><td><a class="reference" href="http://www.nunit.org/">http://www.nunit.org/</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id36" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id15" name="id36">[15]</a></td><td>ms-help://MS.NETFrameworkSDKv1.1/cpref/html/frlrfsystemserializableattributeclasstopic.htm</td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id37" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id16" name="id37">[16]</a></td><td><a class="reference" href="http://java.sun.com/j2se/1.4.1/docs/api/java/io/Serializable.html">http://java.sun.com/j2se/1.4.1/docs/api/java/io/Serializable.html</a></td></tr>
+</tbody>
+</table>
+<table class="footnote" frame="void" id="id38" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id17" name="id38">[17]</a></td><td><a class="reference" href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/bbooprevalence/Bamboo.Prevalence/src/Bamboo.Prevalence/ICommand.cs?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/bbooprevalence/Bamboo.Prevalence/src/Bamboo.Prevalence/ICommand.cs?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>
