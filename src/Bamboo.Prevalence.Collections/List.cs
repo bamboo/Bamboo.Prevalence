@@ -84,6 +84,11 @@ namespace Bamboo.Prevalence.Collections
 			_list = new ArrayList(collection);
 		}		
 
+		public List(params object[] items)
+		{
+			_list = new ArrayList(items);
+		}
+
 		#region synchronization methods
 		public virtual void AcquireReaderLock()
 		{
