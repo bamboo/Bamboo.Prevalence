@@ -14,7 +14,7 @@
 
 <!-- Place Holder -->
 
-Just testing CVS....
+Just testing CVS.
 
 </body>
 </html>
