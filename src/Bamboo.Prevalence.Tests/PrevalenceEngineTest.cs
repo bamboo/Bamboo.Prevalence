@@ -40,33 +40,13 @@ namespace Bamboo.Prevalence.Tests
 	/// Test case for Bamboo.Prevalence.PrevalenceEngine
 	/// </summary>
 	[TestFixture]
-	public class PrevalenceEngineTest : PrevalenceTestBase
-	{	
-		private Bamboo.Prevalence.IQuery _queryTotal = new QueryTotal();
-
-		protected override System.Type PrevalentSystemType
-		{
-			get
-			{
-				return typeof(AddingSystem);
-			}
-		}
-		
-		protected int QueryTotal()
-		{
-			return (int)ExecuteQuery(_queryTotal);
-		}
-		
+	public class PrevalenceEngineTest : AbstractAddingSystemTest
+	{			
 		protected void Add(int amount, int expectedTotal)
 		{
 			int actualTotal = (int)ExecuteCommand(new AddCommand(amount));
 			AssertEquals("Add", expectedTotal, actualTotal);
-		}
-
-		protected void Verify(int expectedTotal)
-		{
-			AssertEquals("System.Total", expectedTotal, QueryTotal());
-		}
+		}		
 		
 		[SetUp]
 		public override void SetUp()
@@ -82,27 +62,27 @@ namespace Bamboo.Prevalence.Tests
 			Add(10, 10);
 			Add(30, 40);
 			CrashRecover();
-			Verify(40);
+			AssertTotal(40);
 
 			Add(60, 100);
 			CrashRecover();
-			Verify(100);
+			AssertTotal(100);
 
 			Add(50, 150);
 			Snapshot();
 			CrashRecover();
 			CrashRecover();
-			Verify(150);			
+			AssertTotal(150);			
 
 			CrashRecover();
 			ClearPrevalenceBase();
 			Snapshot();
 			CrashRecover();
-			Verify(150);
+			AssertTotal(150);
 			Add(50, 200);
 
 			CrashRecover();
-			Verify(200);
+			AssertTotal(200);
 		}
 
 		/// <summary>
@@ -120,7 +100,7 @@ namespace Bamboo.Prevalence.Tests
 			AssertEquals("AddCommand 20", 30, ExecuteCommand(command));
 
 			CrashRecover();
-			Verify(30);
+			AssertTotal(30);
 		}
 
 		[Test]
@@ -138,7 +118,7 @@ namespace Bamboo.Prevalence.Tests
 			}
 
 			CrashRecover();
-			Verify(20);
+			AssertTotal(20);
 		}
 
 		[Test]
@@ -146,7 +126,16 @@ namespace Bamboo.Prevalence.Tests
 		{
 			Snapshot();
 			CrashRecover();
-			Verify(0);
+			AssertTotal(0);
+		}
+
+		[Test]
+		public void TestPrevalenceEngineCurrent()
+		{
+			CrashRecover();
+
+			ExecuteCommand(new TestCurrentCommandAndQuery(Engine));
+			ExecuteQuery(new TestCurrentCommandAndQuery(Engine));
 		}
 	}
 }

@@ -87,6 +87,11 @@
         <Files>
             <Include>
                 <File
+                    RelPath = "AbstractAddingSystemTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "AddCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -102,6 +107,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MultiThreadedTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PrevalenceEngineTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -113,6 +123,11 @@
                 />
                 <File
                     RelPath = "QueryTotal.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestCurrentCommandAndQuery.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
