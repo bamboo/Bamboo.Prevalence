@@ -68,7 +68,7 @@ namespace MyFirstPrevalentSystem
 				}
 				catch (Exception x)
 				{
-					Console.WriteLine("Error: {0}", x);
+					WriteLine("Error: {0}", x);
 				}				
 			}
 		}
@@ -105,39 +105,36 @@ namespace MyFirstPrevalentSystem
 		
 		private char UserChoice()
 		{			
-			Console.WriteLine("(A)dd task\t(D)one with task\t(S)napshot\t(Q)uit");
-			string choice = Console.ReadLine();
+			string choice = Prompt("(A)dd task\t(D)one with task\t(S)napshot\t(Q)uit");			
 			return Char.ToLower(choice[0]);
 		}
 
 		private void AddTask()
 		{
-			Console.WriteLine("\n\tAdd Task");
-			Console.Write("Summary: ");
+			WriteLine("\n\tAdd Task");			
 
 			Task task = new Task();
-			task.Summary = Console.ReadLine();
+			task.Summary = Prompt("Summary: ");
 
 			_system.AddTask(task);
 		}
 
 		private void DoneWithTask()
 		{
-			Console.WriteLine("\n\tDone With Task");
-			Console.Write("TaskID: ");
-
-			int taskID = int.Parse(Console.ReadLine());
+			WriteLine("\n\tDone With Task");
+			
+			int taskID = int.Parse(Prompt("TaskID: "));
 			
 			_system.MarkTaskAsDone(taskID);
 		}
 
 		private void SystemSnapshot()
 		{
-			Console.Write("Wait... ");
+			WriteLine("Wait... ");
 
 			_engine.TakeSnapshot();
 
-			Console.WriteLine("Done!");
+			WriteLine("Done!");
 		}
 
 		private void ShowPendingTasks()
@@ -147,6 +144,22 @@ namespace MyFirstPrevalentSystem
 			{
 				Console.WriteLine("{0}\t{1}\t\t{2}", task.ID, task.DateCreated, task.Summary);
 			}
+		}
+		
+		private void WriteLine(string message)
+		{
+			Console.WriteLine(message);
+		}
+		
+		private void WriteLine(string format, params object[] args)
+		{
+			WriteLine(string.Format(format, args));
+		}
+		
+		private string Prompt(string prompt)
+		{
+			WriteLine(prompt);
+			return Console.ReadLine();
 		}
 	}
 }
