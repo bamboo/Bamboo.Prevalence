@@ -45,7 +45,12 @@ namespace Bamboo.Prevalence.Indexing.FullText
 	[Serializable]
 	public class FullTextSearchIndex : IIndex
 	{
-		public static ITokenFilter DefaultFilter = new SpecialCharactersFilter();
+		/// <summary>
+		/// A filter that considers only tokens with more than 2 characters
+		/// and replaces special characters (like 'ç', 'à') by their
+		/// simpler counterparts ('c', 'a').
+		/// </summary>
+		public static ITokenFilter DefaultFilter = new SpecialCharactersFilter(new TokenLengthFilter(3));
 
 		IndexedFieldCollection _fields;
 

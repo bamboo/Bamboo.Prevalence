@@ -41,7 +41,7 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 	/// Filter a token based on a regular expression.
 	/// </summary>
 	[Serializable]
-	public class RegexTokenFilter : AbstractFilter
+	public class RegexTokenFilter : ConditionalFilter
 	{
 		Regex _regex;
 
@@ -71,18 +71,9 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			_regex = regex;
 		}
 
-		public override Bamboo.Prevalence.Indexing.FullText.Token NextToken()
+		public override bool IsValidToken(Token token)
 		{
-			Token token = _previous.NextToken();
-			while (null != token)
-			{
-				if (!_regex.IsMatch(token.Value))
-				{
-					break;
-				}
-				token = _previous.NextToken();
-			}
-			return token;
+			return !_regex.IsMatch(token.Value);
 		}
 	}
 }

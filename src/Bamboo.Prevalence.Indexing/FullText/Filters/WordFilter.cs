@@ -41,7 +41,7 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 	/// Filter tokens with specified words.
 	/// </summary>
 	[Serializable]
-	public class WordFilter : AbstractFilter
+	public class WordFilter : ConditionalFilter
 	{
 		Hashtable _words;
 
@@ -62,21 +62,10 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 		public WordFilter(params string[] words) : this(null, words)
 		{
 		}
-
-		#region Implementation of ITokenFilter
-		public override Bamboo.Prevalence.Indexing.FullText.Token NextToken()
+		
+		public override bool IsValidToken(Token token)
 		{
-			Token token = _previous.NextToken();
-			while (null != token)
-			{
-				if (!_words.ContainsKey(token.Value))
-				{
-					break;
-				}
-				token = _previous.NextToken();
-			}
-			return token;
+			return !_words.ContainsKey(token.Value);
 		}
-		#endregion
 	}
 }

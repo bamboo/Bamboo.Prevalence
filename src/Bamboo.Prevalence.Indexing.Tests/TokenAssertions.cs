@@ -73,6 +73,13 @@ namespace Bamboo.Prevalence.Indexing.Tests
 			{
 				Assertion.AssertEquals(value, tokenizer.NextToken().Value);
 			}
+			Assertion.AssertNull(tokenizer.NextToken());
+		}
+
+		public static void AssertTokenValues(string text, ITokenFilter filter, params string[] expectedValues)
+		{
+			ITokenizer tokenizer = filter.Clone(new StringTokenizer(text));
+			AssertTokenValues(tokenizer, expectedValues);
 		}
 
 		public static object SerializeDeserialize(object graph)

@@ -157,6 +157,7 @@ namespace Bamboo.Prevalence.Indexing.Tests
 				);
 		}
 
+		[Test]
 		public void TestRemove()
 		{
 			_index.Remove(_record1);
@@ -171,6 +172,17 @@ namespace Bamboo.Prevalence.Indexing.Tests
 				_multipleFieldIndex.Search(new FullTextSearchExpression("açucar")), 
 				_record3
 				);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentException))]
+		public void TestInvalidSearchExpression()
+		{
+			// this search is invalid because
+			// the default filter should only let
+			// pass tokens longer
+			// than 2 characters
+			_index.Search(new FullTextSearchExpression("de"));
 		}
 
 		[Test]

@@ -172,12 +172,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "FullText\Filters\ConditionalFilter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "FullText\Filters\RegexTokenFilter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "FullText\Filters\SpecialCharactersFilter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "FullText\Filters\TokenLengthFilter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
