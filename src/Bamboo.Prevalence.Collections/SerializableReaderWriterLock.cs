@@ -42,7 +42,7 @@ namespace Bamboo.Prevalence.Collections
 	/// A serializable version of a <see cref="ReaderWriterLock"  />
 	/// </summary>
 	[Serializable]
-	public class SerializableReaderWriterLock : IDeserializationCallback
+	public class SerializableReaderWriterLock
 	{
 		#region public static fields
 		public static TimeSpan LockTimeout = TimeSpan.FromSeconds(3);
@@ -118,7 +118,6 @@ namespace Bamboo.Prevalence.Collections
 		
 		public SerializableReaderWriterLock()
 		{
-			_lock = new ReaderWriterLock();
 		}
 		
 		/// <summary>
@@ -136,7 +135,7 @@ namespace Bamboo.Prevalence.Collections
 		{
 			get
 			{
-				return new WriterLockDisposer(this._lock);
+				return new WriterLockDisposer(GetLock());
 			}
 		}
 
@@ -152,36 +151,41 @@ namespace Bamboo.Prevalence.Collections
 		{
 			get
 			{
-				return new ReaderLockDisposer(this._lock);
+				return new ReaderLockDisposer(GetLock());
 			}
 		}
 		
 		public void AcquireReaderLock()
 		{
-			_lock.AcquireReaderLock(LockTimeout);
+			GetLock().AcquireReaderLock(LockTimeout);
 		}
 
 		public void ReleaseReaderLock()
 		{
-			_lock.ReleaseReaderLock();
+			GetLock().ReleaseReaderLock();
 		}
 
 		public void AcquireWriterLock()
 		{
-			_lock.AcquireWriterLock(LockTimeout);
+			GetLock().AcquireWriterLock(LockTimeout);
 		}
 
 		public void ReleaseWriterLock()
 		{
-			_lock.ReleaseWriterLock();
+			GetLock().ReleaseWriterLock();
 		}		
 		
-		#region Implementation of IDeserializationCallback
-		void IDeserializationCallback.OnDeserialization(object sender)
+		ReaderWriterLock GetLock()
 		{
-			_lock = new ReaderWriterLock();
+			lock (this)
+			{
+				if (null == _lock)
+				{
+					_lock = new ReaderWriterLock();
+				}
+				return _lock;
+			}
 		}
-		#endregion
 
 	}
 }

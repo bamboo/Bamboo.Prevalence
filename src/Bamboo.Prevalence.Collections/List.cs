@@ -682,6 +682,29 @@ namespace Bamboo.Prevalence.Collections
 				ReleaseWriterLock();
 			}
 		}
+		
+		public void AddRange(IList range)
+		{
+			if (null == range)
+			{
+				throw new ArgumentNullException("range");
+			}
+			
+			if (0 == range.Count)
+			{
+				return;
+			}
+			
+			AcquireWriterLock();
+			try
+			{
+				_list.AddRange(range);
+			}
+			finally
+			{
+				ReleaseWriterLock();
+			}
+		}
 
 		public bool IsReadOnly
 		{
