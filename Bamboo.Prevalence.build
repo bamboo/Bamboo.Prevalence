@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name='Bamboo.Prevalence' default='debug'>
 		
-	<property name='version' value='1.4.3' />	
+	<property name='version' value='1.4.4.0' />	
 
 	<include buildfile="common.inc" />	
 
@@ -11,9 +11,54 @@
 
 	<target name='debug' depends='set-debug-properties, build, test' description='incremental debug build' />
 
-	<target name='release' depends='clean, set-release-properties, build, test' description='release build' />
+	<target name='release' depends='clean, set-release-properties, update-assembly-info, build, test' description='release build' />
 	
 	<target name='rebuild' depends='clean, debug' description='full debug build' />
+	
+	<target name="update-assembly-info">
+		<script language="c#">
+		<code><![CDATA[
+		public static void ScriptMain(Project project)
+		{
+			string baseDir = Path.Combine(project.BaseDirectory, "src");
+			string newVersion = (string)project.Properties["version"];
+			
+			Regex re = new Regex("AssemblyVersion\\(\"(.+?)\"\\)");
+			
+			foreach (string dir in Directory.GetDirectories(baseDir))
+			{			
+				string fname = Path.Combine(dir, "AssemblyInfo.cs");
+				if (File.Exists(fname))
+				{
+					string newContents = null;
+					
+					using (StreamReader reader = File.OpenText(fname))
+					{
+						string contents = reader.ReadToEnd();
+						Match m = re.Match(contents);
+						
+						string oldVersion = m.Groups[1].Value;
+						if (oldVersion != newVersion)
+						{
+							project.Log(Level.Info, "Updating AssemblyVersion attribute in file {0} from {1} to {2}...", fname, oldVersion, newVersion);												
+							newContents = re.Replace(contents, string.Format("AssemblyVersion(\"{0}\")", newVersion));
+						}											
+					}
+					
+					if (null != newContents)
+					{
+						using (StreamWriter writer = new StreamWriter(fname))
+						{
+							writer.Write(newContents);
+						}
+					}
+				}
+			}
+		}
+		]]>
+		</code>
+		</script>
+	</target>
 
 	<target name='set-debug-properties'>
 		<property name='debug' value='true' />
@@ -43,8 +88,8 @@
 
 		<zip zipfile="Bamboo.Prevalence.${version}.zip">
 			<fileset>
-				<includes name="Bamboo.Prevalence.build" />
-				<includes name="Bamboo.Prevalence.ndoc" />
+				<includes name="*.build" />
+				<includes name="common.inc" />
 				<includes name="History.txt" />
 				<includes name="bin/*.dll" />
 				<includes name="lib/*.dll" />
@@ -83,6 +128,7 @@
 				<includes name="docs/MSDN/*.chm" />
 
 				<includes name="Tools/VersionMigration/VersionMigration.build" />
+				<includes name="Tools/VersionMigration/migrationProject.xml" />
 				<includes name="Tools/VersionMigration/bin/*.dll" />
 				<includes name="Tools/VersionMigration/bin/*.exe" />
 				<includes name="Tools/VersionMigration/bin/*.xml" />
@@ -92,6 +138,8 @@
 				<includes name="Tools/VersionMigration/src/**/*.cs" />
 				<includes name="Tools/VersionMigration/src/**/*.xml" />
 				<includes name="Tools/VersionMigration/src/**/*.resx" />
+				<includes name="Tools/VerifyCommandLogs/**/*.cs" />
+				<includes name="Tools/VerifyCommandLogs/**/*.build" />
 			</fileset>
 		</zip>
 	</target>

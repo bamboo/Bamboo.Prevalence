@@ -85,7 +85,7 @@ namespace Bamboo.Prevalence
 	/// or <see cref="Bamboo.Prevalence.Attributes.TransparentPrevalenceAttribute"/>.
 	/// </p>
 	/// </remarks>
-	public class PrevalenceEngine
+	public class PrevalenceEngine : System.MarshalByRefObject
 	{
 		#region inner types
 
@@ -439,10 +439,13 @@ namespace Bamboo.Prevalence
 				Clock.Pause();
 				try
 				{
-					foreach (ICommand command in reader)
+					foreach (ContextRecoveryCommand contextRecoveryCommand in reader)
 					{
+						Clock.Recover(contextRecoveryCommand.DateTime);
+						
+						ICommand command = contextRecoveryCommand.Command;
 						try
-						{
+						{							
 							command.Execute(_system);
 						}
 						catch (System.Exception x)

@@ -38,7 +38,7 @@ using Bamboo.Prevalence.Serialization;
 namespace Bamboo.Prevalence
 {
 	/// <summary>
-	/// Class factory for prevalence engines.
+	/// Factory for <see cref="PrevalenceEngine" />s.
 	/// </summary>
 	public class PrevalenceActivator
 	{

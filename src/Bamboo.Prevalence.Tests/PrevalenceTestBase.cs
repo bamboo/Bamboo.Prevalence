@@ -127,25 +127,13 @@ namespace Bamboo.Prevalence.Tests
 		[SetUp]
 		public virtual void SetUp()
 		{			
-			Bamboo.Prevalence.Configuration.PrevalenceSettings.FlushAfterCommand = false; // let's speed things up a little
-			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
+			Bamboo.Prevalence.Configuration.PrevalenceSettings.FlushAfterCommand = false; // let's speed things up a little			
 		}
 
 		[TearDown]
 		public virtual void TearDown()
 		{	
-			HandsOffOutputLog();
-			AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
+			HandsOffOutputLog();	
 		}
-
-		System.Reflection.Assembly ResolveAssembly(object sender, ResolveEventArgs args)
-		{
-			if (args.Name.Equals(PrevalentSystemType.Assembly.FullName))
-			{
-				return PrevalentSystemType.Assembly;
-			}			
-			return null;
-		}
-
 	}
 }

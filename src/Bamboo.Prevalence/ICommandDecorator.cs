@@ -44,7 +44,7 @@ namespace Bamboo.Prevalence
 	/// log the PrevalenceEngine class allows it to
 	/// be decorated in order to preserve any context
 	/// information that its execution might be sensitive
-	/// to. An good example would be a command that is 
+	/// to. A good example would be a command that is 
 	/// dependent upon the principal associated to
 	/// the running thread. If this command is to be
 	/// successfully re-executed at system recovery time,

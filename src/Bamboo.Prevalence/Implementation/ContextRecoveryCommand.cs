@@ -49,6 +49,22 @@ namespace Bamboo.Prevalence.Implementation
 			_command = command;
 			_dateTime = dateTime;			
 		}
+		
+		internal DateTime DateTime
+		{
+			get
+			{
+				return _dateTime;
+			}
+		}
+		
+		internal ICommand Command
+		{
+			get
+			{
+				return _command;
+			}
+		}
 
 		object Bamboo.Prevalence.ICommand.Execute(object system)
 		{
