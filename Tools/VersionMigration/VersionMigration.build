@@ -8,7 +8,7 @@
 	<target name="test" depends="testVersionMigrationLibrary, testVersionMigrator" />
 
 	<target name="testVersionMigrationLibrary" depends="Bamboo.Prevalence.VersionMigration.Tests">
-		<exec program="nunit-console" commandline="/assembly:bin\Bamboo.Prevalence.VersionMigration.Tests.dll" />
+		<exec program="nunit-console" commandline="bin\Bamboo.Prevalence.VersionMigration.Tests.dll" />
 	</target>
 
 	<target name="testVersionMigrator" depends="VersionMigrator, SetUpData10, TestData20">
