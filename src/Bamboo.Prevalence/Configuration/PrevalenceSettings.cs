@@ -67,6 +67,9 @@ namespace Bamboo.Prevalence.Configuration
 		/// </summary>
 		public const string SectionName = "bamboo.prevalence";		
 
+		/// <summary>
+		/// Empty configuration set.
+		/// </summary>
 		public static readonly PrevalenceSettings Empty = new PrevalenceSettings();
 
 		/// <summary>
