@@ -67,6 +67,8 @@ namespace Bamboo.Prevalence.Configuration
 		/// </summary>
 		public const string SectionName = "bamboo.prevalence";		
 
+		public static readonly PrevalenceSettings Empty = new PrevalenceSettings();
+
 		/// <summary>
 		/// Returns the current ConfigurationSettings instance or
 		/// null if Bamboo.Prevalence was not configured for the
@@ -76,7 +78,15 @@ namespace Bamboo.Prevalence.Configuration
 		{
 			get
 			{
-				return (PrevalenceSettings)System.Configuration.ConfigurationSettings.GetConfig(SectionName);
+				PrevalenceSettings current = (PrevalenceSettings)System.Configuration.ConfigurationSettings.GetConfig(SectionName);
+				if (null == current)
+				{
+					return PrevalenceSettings.Empty;
+				}
+				else
+				{
+					return current;
+				}
 			}
 		}
 
