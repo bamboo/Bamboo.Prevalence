@@ -2,8 +2,7 @@
 <project name='Bamboo.Prevalence' default='debug'>
 
 	<property name='ndocconsole' value='\dotnet\ndoc\bin\.net-1.1\NDocConsole' />	
-	<property name='version' value='1.4.2' />
-	<property name='build.defines' value='JUST_A_PLACEHOLDER' />
+	<property name='version' value='1.4.3' />	
 
 	<include buildfile="common.inc" />	
 
@@ -17,25 +16,14 @@
 	
 	<target name='rebuild' depends='clean, debug' description='full debug build' />
 
-	<target name='set-debug-properties' depends='set-runtime-configuration'>
+	<target name='set-debug-properties'>
 		<property name='debug' value='true' />
 		<property name='optimize' value='false' />
 	</target>
 
-	<target name='set-release-properties' depends='set-runtime-configuration'>
+	<target name='set-release-properties'>
 		<property name='debug' value='false' />
 		<property name='optimize' value='true' />
-	</target>
-
-	<target name='set-runtime-configuration'>
-		<echo message='runtime configuration: ${nant.settings.currentframework}' />
-		<if targetexists='set-${nant.settings.currentframework}-runtime-configuration'>
-			<call target='set-${nant.settings.currentframework}-runtime-configuration' />
-		</if>
-	</target>
-
-	<target name='set-mono-1.0-runtime-configuration'>
-		<property name='build.defines' value='MONO' />
 	</target>
 	
 	<target name="build" depends="Bamboo.Prevalence.Tests, Bamboo.Prevalence.Indexing.Tests, Bamboo.Prevalence.XPath.Tests, Bamboo.Prevalence.Collections.Tests, Bamboo.Prevalence.Util.Tests" />
@@ -133,8 +121,7 @@
 			target='library'
 			output='bin/Bamboo.Prevalence.dll'
 			debug='${debug}'
-			optimize='${optimize}'
-			define='${build.defines}'>
+			optimize='${optimize}'>
 
 			<sources>
 				<includes name='src/Bamboo.Prevalence/**.cs' />
