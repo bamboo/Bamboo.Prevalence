@@ -76,7 +76,7 @@ namespace Bamboo.Prevalence
 		/// You should not call this method. It is used internally by the prevalence engine
 		/// to execute a command as if in a specific moment in time.
 		/// </remarks>
-		internal void Pause()
+		public void Pause()
 		{
 			if (_paused)
 			{
@@ -95,7 +95,7 @@ namespace Bamboo.Prevalence
 		/// You should not call this method. It is used internally by the prevalence engine
 		/// to execute a command as if in a specific moment in time.
 		/// </remarks>
-		internal void Resume()
+		public void Resume()
 		{
 			if (!_paused)
 			{
@@ -114,7 +114,7 @@ namespace Bamboo.Prevalence
 		/// </remarks>
 		/// <param name="date">the specific date/time value the clock should be set to,
 		/// this will be the value returned by <see cref="Now"/></param>		
-		internal void Recover(DateTime date)
+		public void Recover(DateTime date)
 		{
 			if (!_paused)
 			{
@@ -126,6 +126,21 @@ namespace Bamboo.Prevalence
 				throw new ArgumentOutOfRangeException("date", date, "Can't recover to a date in the future!");
 			}
 
+			_now = date;
+		}
+		
+		/// <summary>
+		/// This method can be used for testing date sensitive code.
+		/// </summary>
+		/// <remarks>
+		/// You should not call this method in production code. It's meant
+		/// to be used in test cases only.
+		/// </remarks>
+		/// <param name="date">the specific date/time value the clock should be set to,
+		/// this weill be the value returned by <see cref="Now" /></param>
+		public void PauseAt(DateTime date)
+		{
+			_paused = true;
 			_now = date;
 		}
 	}
