@@ -87,10 +87,10 @@ namespace Bamboo.Prevalence.Implementation
 		/// <param name="command">serializable command</param>
 		public void WriteCommand(ICommand command)
 		{
+			/*
 			CheckOutputLog();
-
+			
 			long current = _output.Position;
-
 			try
 			{
 				_formatter.Serialize(_output, command);
@@ -101,6 +101,16 @@ namespace Bamboo.Prevalence.Implementation
 				_output.SetLength(current);
 				throw;
 			}
+			*/
+			
+			MemoryStream stream = new MemoryStream();
+			_formatter.Serialize(stream, command);
+			byte[] bytes = stream.ToArray();
+			
+			CheckOutputLog();
+			_output.SetLength(_output.Position + bytes.Length);
+			_output.Write(bytes, 0, bytes.Length);
+			Flush(_output);			
 		}
 
 		public void TakeSnapshot(object system)
@@ -123,7 +133,14 @@ namespace Bamboo.Prevalence.Implementation
 			catch
 			{
 				// TODO: log errors...
-				try { tempFile.Delete(); } catch { }
+				try
+				{
+					tempFile.Delete();
+				}
+				catch
+				{
+				}
+				
 				throw;
 			}
 		}	
