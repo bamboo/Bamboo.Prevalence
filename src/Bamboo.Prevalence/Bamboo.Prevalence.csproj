@@ -132,6 +132,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\TransparentPrevalenceAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\PrevalenceSettings.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

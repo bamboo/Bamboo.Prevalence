@@ -38,6 +38,7 @@ namespace Bamboo.Prevalence.Attributes
 	/// should not be intercepted and treated as a command/query object.
 	/// </summary>
 	/// <example>
+	/// <code language="C#">
 	/// <![CDATA[
 	/// 
 	/// [Serializable]
@@ -54,6 +55,7 @@ namespace Bamboo.Prevalence.Attributes
 	///	}
 	///	
 	/// ]]>
+	/// </code>
 	/// </example>
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]

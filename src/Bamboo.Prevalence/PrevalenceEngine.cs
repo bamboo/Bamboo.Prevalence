@@ -77,6 +77,13 @@ namespace Bamboo.Prevalence
 	/// to a simple example of such a system please refer to the
 	/// Bamboo.Prevalence.Tests project.
 	/// </p>
+	/// <p>
+	/// Optionally, if you don't like the idea of designing your system around
+	/// command and query objects and would rather use simple method calls
+	/// onto your prevalent system class, take a look
+	/// at <see cref="PrevalenceActivator.CreateTransparentEngine" />
+	/// or <see cref="Bamboo.Prevalence.Attributes.TransparentPrevalenceAttribute"/>.
+	/// </p>
 	/// </remarks>
 	public class PrevalenceEngine
 	{

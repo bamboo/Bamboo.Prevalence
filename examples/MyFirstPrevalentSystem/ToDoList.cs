@@ -31,7 +31,6 @@
 
 using System;
 using System.Collections;
-using System.IO;
 using Bamboo.Prevalence;
 
 namespace MyFirstPrevalentSystem
@@ -47,6 +46,8 @@ namespace MyFirstPrevalentSystem
 		private string _summary;
 
 		private bool _done;
+
+		private DateTime _dateCreated;
 		
 		public Task()
 		{
@@ -96,6 +97,19 @@ namespace MyFirstPrevalentSystem
 			}
 		}
 
+		public DateTime DateCreated
+		{
+			get
+			{
+				return _dateCreated;
+			}
+
+			set
+			{
+				_dateCreated = value;
+			}
+		}
+
 		public void Validate()
 		{
 			if (null == _summary || 0 == _summary.Length)
@@ -125,6 +139,12 @@ namespace MyFirstPrevalentSystem
 			task.Validate();
 
 			task.ID = _nextTaskID++;
+
+			// we must use PrevalenceEngine.Now as our clock
+			// if we want our system to be deterministic
+			//
+			task.DateCreated = PrevalenceEngine.Now;
+
 			_tasks.Add(task.ID, task);
 		}
 

@@ -256,7 +256,7 @@ namespace Bamboo.Prevalence.Configuration
 		private void SetUpError(Exception inner, System.Xml.XmlNode section)
 		{
 			throw new System.Configuration.ConfigurationException(
-				"Error setting up prevalent engine!", section
+				"Error setting up prevalent engine! Source Error: " + inner, inner, section
 				);
 		}
 

@@ -38,6 +38,7 @@ namespace Bamboo.Prevalence.Attributes
 	/// only property accessors are treated as queries by the engine.
 	/// </summary>
 	/// <example>
+	/// <code language="C#">
 	/// <![CDATA[
 	/// [Serializable]
 	/// public class MySystem : System.MarshalByRefObject
@@ -51,6 +52,7 @@ namespace Bamboo.Prevalence.Attributes
 	///		...
 	///	}
 	/// ]]>
+	/// </code>
 	/// </example>
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple=false)]

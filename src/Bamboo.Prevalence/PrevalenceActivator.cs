@@ -86,7 +86,7 @@ namespace Bamboo.Prevalence
 				formatter = new BinaryFormatter();
 			}
 
-			return new PrevalenceEngine(systemType, prevalenceBase, formatter);
+			return CreateRequestedEngine(systemType, prevalenceBase, formatter);
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace Bamboo.Prevalence
 			CheckEngineParameters(systemType, prevalenceBase);
 			Assertion.AssertParameterNotNull("formatter", formatter);
 
-			return new PrevalenceEngine(systemType, prevalenceBase, formatter);
+			return CreateRequestedEngine(systemType, prevalenceBase, formatter);
 		}
 
 		/// <summary>
@@ -118,10 +118,67 @@ namespace Bamboo.Prevalence
 		/// System.MarshalByRefObject</param>
 		/// <param name="prevalenceBase">directory where to store log files</param>
 		/// <returns>a new prevalence engine</returns>
+		/// <example>
+		/// <code>
+		/// <![CDATA[
+		/// // A class that can receive transparent prevalence:
+		/// //		* Serializable
+		/// //		* Inherits from System.MarshalByRefObject		
+		/// [Serializable]
+		/// public AddingSystem : System.MarshalByRefObject
+		/// {
+		///		private int _total;
+		/// 
+		///		public int Total
+		///		{
+		///			get
+		///			{
+		///				return _total;
+		///			}
+		///		}
+		/// 
+		///		public void Add(int amount)
+		///		{
+		///			_total += amount;
+		///		}
+		/// }		
+		/// 
+		/// // Client Code
+		/// PrevalenceEngine engine = PrevalenceActivator.CreateTransparentEngine(typeof(AddingSystem), "data");
+		/// AddingSystem system = engine.PrevalentSystem as AddingSystem;
+		/// system.Add(10); // this call will be intercepted
+		/// Console.WriteLine(system.Total); // this call will be intercepted
+		/// ]]>
+		/// </code>
+		/// </example>
 		public static PrevalenceEngine CreateTransparentEngine(System.Type systemType, string prevalenceBase)
 		{
+			return CreateTransparentEngine(systemType, prevalenceBase, new BinaryFormatter());
+		}
+
+		/// <summary>
+		/// <see cref="CreateTransparentEngine(System.Type, string)"/>
+		/// </summary>
+		/// <param name="systemType"></param>
+		/// <param name="prevalenceBase"></param>
+		/// <param name="formatter"></param>
+		/// <returns></returns>
+		public static PrevalenceEngine CreateTransparentEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter)
+		{
 			CheckEngineParameters(systemType, prevalenceBase);
-			return new TransparentPrevalenceEngine(systemType, prevalenceBase, new BinaryFormatter());
+			return new TransparentPrevalenceEngine(systemType, prevalenceBase, formatter);
+		}
+
+		private static PrevalenceEngine CreateRequestedEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter)
+		{
+			if (Attribute.IsDefined(systemType, typeof(Bamboo.Prevalence.Attributes.TransparentPrevalenceAttribute), false))
+			{
+				return new TransparentPrevalenceEngine(systemType, prevalenceBase, formatter);
+			}
+			else
+			{
+				return new PrevalenceEngine(systemType, prevalenceBase, formatter);
+			}
 		}
 
 		private static void CheckEngineParameters(System.Type systemType, string prevalenceBase)

@@ -11,6 +11,7 @@ namespace Bamboo.Prevalence.Tests
 	/// by the system as needed).
 	/// </summary>
 	[Serializable]
+	[Bamboo.Prevalence.Attributes.TransparentPrevalence]
 	public class TransparentAddingSystem : System.MarshalByRefObject, IAddingSystem
 	{
 		private int _total;

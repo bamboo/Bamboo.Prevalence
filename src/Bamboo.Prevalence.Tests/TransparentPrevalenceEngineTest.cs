@@ -26,11 +26,6 @@ namespace Bamboo.Prevalence.Tests
 			}
 		}
 
-		protected override PrevalenceEngine CreateEngine()
-		{
-			return PrevalenceActivator.CreateTransparentEngine(PrevalentSystemType, PrevalenceBase);
-		}
-
 		protected override void Add(int amount, int expected)
 		{
 			AssertEquals("Add", expected, AddingSystem.Add(amount));

@@ -142,10 +142,10 @@ namespace MyFirstPrevalentSystem
 
 		private void ShowPendingTasks()
 		{
-			Console.WriteLine("ID\tSummary");
+			Console.WriteLine("ID\tDate Created\t\tSummary");
 			foreach (Task task in _system.PendingTasks)
 			{
-				Console.WriteLine("{0}\t{1}", task.ID, task.Summary);
+				Console.WriteLine("{0}\t{1}\t\t{2}", task.ID, task.DateCreated, task.Summary);
 			}
 		}
 	}
