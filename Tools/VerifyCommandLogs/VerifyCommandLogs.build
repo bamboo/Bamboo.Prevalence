@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<project name="VerifyCommandLogs" default="debug">
+    <target name="debug" depends="init">
+        <csc output="bin/VerifyCommandLogs.exe" target="exe" debug="True">
+            <sources basedir="src">
+                <includes name="*.cs" />
+            </sources>
+        </csc>
+    </target>
+    <target name="init">
+        <mkdir dir="bin" />
+    </target>
+</project>
