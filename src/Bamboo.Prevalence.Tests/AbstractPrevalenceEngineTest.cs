@@ -52,7 +52,7 @@ namespace Bamboo.Prevalence.Tests
 			base.SetUp();
 			ClearPrevalenceBase();
 			_engine = CreateEngine();			
-		}		
+		}	
 
 		[Test]
 		public void TestPrevalenceEngine()
@@ -149,6 +149,31 @@ namespace Bamboo.Prevalence.Tests
 
 			ExecuteCommand(new TestCurrentCommandAndQuery(Engine));
 			ExecuteQuery(new TestCurrentCommandAndQuery(Engine));
+		}
+
+		[Test]
+		public void TestNonSerializableCommand()
+		{
+			CrashRecover();
+
+			ExecuteCommand(new AddCommand(20));
+			AssertTotal(20);
+			
+			try
+			{
+				ExecuteCommand(new NonSerializableCommand());
+			}
+			catch (System.Runtime.Serialization.SerializationException)
+			{
+			}
+
+			ExecuteCommand(new AddCommand(5));
+			CrashRecover();
+			AssertTotal(25);
+			ExecuteCommand(new AddCommand(10));
+			AssertTotal(35);
+			CrashRecover();
+			AssertTotal(35);
 		}
 	}
 }

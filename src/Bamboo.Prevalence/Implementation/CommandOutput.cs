@@ -75,8 +75,18 @@ namespace Bamboo.Prevalence.Implementation
 		{
 			CheckOutputLog();
 
-			_formatter.Serialize(_output, command);
-			Flush(_output);
+			long current = _output.Position;
+
+			try
+			{
+				_formatter.Serialize(_output, command);
+				Flush(_output);
+			}
+			catch (Exception)
+			{
+				_output.SetLength(current);
+				throw;
+			}
 		}
 
 		public void TakeSnapshot(object system)

@@ -122,6 +122,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NonSerializableCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PrevalenceEngineTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
