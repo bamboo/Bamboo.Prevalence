@@ -196,10 +196,14 @@ namespace Bamboo.Prevalence.Collections
 			AcquireReaderLock();
 			try
 			{
-				lock (_random)
+				if (_list.Count > 0)
 				{
-					return _list[_random.Next(_list.Count)];
+					lock (_random)
+					{
+						return _list[_random.Next(_list.Count)];
+					}
 				}
+				return null;
 			}
 			finally
 			{
@@ -477,11 +481,11 @@ namespace Bamboo.Prevalence.Collections
 			}
 		}
 
-		public bool IsSynchronized
+		public virtual bool IsSynchronized
 		{
 			get
 			{
-				return true;
+				return false;
 			}
 		}
 

@@ -188,6 +188,16 @@ namespace Bamboo.Prevalence.Collections
 		}
 
 		#endregion
+
+		#region list overrides
+		public override bool IsSynchronized
+		{
+			get
+			{
+				return true;
+			}
+		}
+		#endregion
 		
 		#region Implementation of IDeserializationCallback
 		public void OnDeserialization(object sender)
