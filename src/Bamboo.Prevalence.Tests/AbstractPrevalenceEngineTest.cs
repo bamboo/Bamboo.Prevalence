@@ -57,30 +57,45 @@ namespace Bamboo.Prevalence.Tests
 		[Test]
 		public void TestPrevalenceEngine()
 		{
-			Add(10, 10);
-			Add(30, 40);
-			CrashRecover();
-			AssertTotal(40);
+			for (int mode=0; mode<2; ++mode)
+			{
+				SetUp();
+				
+				for (int pass=0; pass<10; ++pass)
+				{
+					int factor = 200*pass;
 
-			Add(60, 100);
-			CrashRecover();
-			AssertTotal(100);
+					Add(10, 10 + factor);
+					Add(30, 40 + factor);
+					CrashRecover();
+					AssertTotal(40 + factor);
 
-			Add(50, 150);
-			Snapshot();
-			CrashRecover();
-			CrashRecover();
-			AssertTotal(150);			
+					Add(60, 100 + factor);
+					CrashRecover();
+					AssertTotal(100 + factor);
 
-			CrashRecover();
-			ClearPrevalenceBase();
-			Snapshot();
-			CrashRecover();
-			AssertTotal(150);
-			Add(50, 200);
+					Add(50, 150 + factor);
+					if (mode == 1)
+					{
+						Snapshot();
+					}
+					CrashRecover();
+					CrashRecover();
+					AssertTotal(150 + factor);			
 
-			CrashRecover();
-			AssertTotal(200);
+					CrashRecover();					
+					if (mode == 1)
+					{
+						Snapshot();
+					}
+					CrashRecover();
+					AssertTotal(150 + factor);
+					Add(50, 200 + factor);
+
+					CrashRecover();
+					AssertTotal(200 + factor);
+				}
+			}
 		}		
 
 		[Test]

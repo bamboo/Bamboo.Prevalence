@@ -62,6 +62,8 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private Hashtable _serializableFieldsCache;		
 
+		public event ResolveEventHandler ResolveAssembly;
+
 		public MigrationContext(MigrationPlan plan)
 		{
 			if (null == plan)
@@ -302,14 +304,18 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private void InstallAssemblyResolver()
 		{
-			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);		
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(HandleResolveAssembly);		
 		}
 
-		private Assembly ResolveAssembly(object sender, ResolveEventArgs e)
+		private Assembly HandleResolveAssembly(object sender, ResolveEventArgs e)
 		{			
 			if (e.Name.StartsWith(_targetAssembly.GetName().Name ))
 			{
 				return _targetAssembly;
+			}
+			else if (null != ResolveAssembly)
+			{
+				return ResolveAssembly(sender, e);
 			}
 			return null;
 		}

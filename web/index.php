@@ -6,10 +6,49 @@
 <table width="100%">
 <tr>
 <td><A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=61693&amp;type=5" width="210" height="62" border="0" alt="SourceForge Logo"></A></td>
-<td><div align="right"><span align="right">09-05-2002</span></div></td>
+<td><div align="right"><span align="right">02-13-2003</span></div></td>
 </tr> 
 </table>
 <h1>Bamboo.Prevalence - a .NET object prevalence engine</h1>
+<h2>Latest News</h2>
+<p>
+Last week I've improved the VersionMigration tool that ships with
+Bamboo.Prevalence (now it's possible to rename types and even move them to
+different assemblies). Also added a not so nice GUI to the tool :-).
+</p>
+<p>
+I've also implemented a simple XPath navigator for object graphs that will
+probably ship in the next release (in about a week or so).
+</p>
+<p>
+Bamboo.Prevalence has been in production for
+about 4 months in a corporate intranet and for about 3 months in a big
+website. The thought of going back to SQL and relational databases gives me
+the creeps :-)
+</p>
+<p>
+The not so distant future:
+<ul>
+<li>
+I'm following the evolution of prevayler closely and I intend to add
+replication support to Bamboo.Prevalence so people can enjoy the full speed
+of objects in a clustered environment
+</li>
+<li>
+Make the code simpler (any tips?): something I want to do is to decouple
+the command logging from the snapshot taking from the engine: this will allow engines to use
+different storage mechanisms and different snapshot formats (well, today it
+is possible to do that by using different IFormatter implementations but
+that's just not documented).
+</li>
+<li>
+An Object Query Tool: something like a simple query analyzer for
+object graphs. The query language being XPath. People miss something like
+Query Analyzer when they migrate to an object only environment and It's
+something good to demo
+</li>
+</ul>
+
 <h2>Introduction</h2>
 <p>Bamboo.Prevalence is a .NET implementation of the object prevalence concept 
   brought to life by Klaus Wuestefeld in his <a href="http://www.prevayler.org/">Prevayler 
