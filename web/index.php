@@ -6,7 +6,10 @@
 <table width="100%">
 <tr>
 <td><A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=61693&amp;type=5" width="210" height="62" border="0" alt="SourceForge Logo"></A></td>
-<td align="right"><h2>Bamboo.Prevalence - a .NET object prevalence engine</h2></td>
+<td align="right">
+	<h2>Bamboo.Prevalence - a .NET object prevalence engine</h2>
+	<a href='http://go-mono.com/'><img border='0' src='images/mono-workswith.gif' /></a>
+</td>
 </tr> 
 </table>
 <h2>Introduction</h2>
