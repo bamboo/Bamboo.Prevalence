@@ -40,59 +40,75 @@ namespace VersionMigrator
 	/// </summary>
 	class App
 	{
-		private MigrationProject _project;
-
-		public App(string migrationProject)
+		[STAThread]
+		static int Main(string[] args)
+		{				
+			try
+			{
+				MigrationProject project = ParseCommandLine(args);
+				WriteLine("Bamboo.Prevalence Version Migrator 1.0");
+				MigrationContext context = new MigrationContext(project);			
+				context.Migrate();			
+			}
+			catch (Exception x)
+			{
+				WriteLine(x.Message);
+				return -1;
+			}
+			
+			return 0;
+		}
+		
+		static MigrationProject ParseCommandLine(string[] args)
 		{
-			_project = MigrationProject.Load(migrationProject);
+			if (args.Length < 1)
+			{
+				CommandLineError();
+			}
+			
+			MigrationProject project = MigrationProject.Load(args[0]);
+			for (int i=1; i<args.Length; ++i)
+			{
+				string arg = args[i];
+				string option = arg.Substring(0, 3);
+				switch (option)
+				{
+					case "-s:":
+					{
+						project.SourceFile = arg.Substring(3);
+						break;
+					}
+					
+					case "-t:":
+					{
+						project.TargetFile = arg.Substring(3);
+						break;
+					}
+					
+					default:
+					{
+						CommandLineError();
+						break;
+					}
+				}
+			}
+			return project;
 		}
-
-		public void Run()
+		
+		static void CommandLineError()
 		{
-			Info();					
-			Migrate();
+			throw new ApplicationException("VersionMigrator <MigrationProject.xml> [-s:<SourceFile>] [-t:<TargetFile>]");
 		}
-
-		private void Info()
-		{
-			WriteLine("Bamboo.Prevalence Version Migrator 1.0");
-		}
-
-		private void Migrate()
-		{			
-			Write("Migrating... ");
-
-			MigrationContext context = new MigrationContext(_project);			
-			context.Migrate();
-
-			WriteLine("done!");
-		}
-
-		private void Write(string text)
+		
+		static void Write(string text)
 		{
 			Console.Write(text);
 		}
 
-		private void WriteLine(string text)
+		static void WriteLine(string text)
 		{
 			Console.WriteLine(text);
 		}
-
-		[STAThread]
-		static int Main(string[] args)
-		{				
-			if (1 != args.Length)
-			{
-				ShowUsage();
-				return -1;
-			}
-			new App(args[0]).Run();
-			return 0;
-		}
-
-		static void ShowUsage()
-		{
-			Console.WriteLine("VersionMigrator <MigrationProject.xml>");
-		}
+		
 	}
 }

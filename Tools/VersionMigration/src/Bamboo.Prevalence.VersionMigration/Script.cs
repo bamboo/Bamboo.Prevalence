@@ -48,6 +48,8 @@ namespace Bamboo.Prevalence.VersionMigration
 		
 		string _language;
 		
+		string _references;
+		
 		ScriptImportCollection _imports;
 		
 		internal Script()
@@ -61,6 +63,7 @@ namespace Bamboo.Prevalence.VersionMigration
 			_targetEvent = GetRequiredAttribute(element, "event");
 			_code = GetRequiredNode(element, "code").InnerText;
 			_language = element.GetAttribute("language");
+			_references = element.GetAttribute("references");
 			if (0 == _language.Length)
 			{
 				_language = "c#";
@@ -165,7 +168,7 @@ namespace Bamboo.Prevalence.VersionMigration
 		{
 			CodeConstructor constructor = new CodeConstructor();			
 			constructor.Attributes = MemberAttributes.Public;
-			constructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(MigrationContext), "context"));
+			constructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(MigrationContext), "context"));			
 			
 			CodeDelegateCreateExpression createDelegate = new CodeDelegateCreateExpression( 
 				new CodeTypeReference("System.EventHandler"),
@@ -173,6 +176,7 @@ namespace Bamboo.Prevalence.VersionMigration
 				EventHandlerName
 				);
 				
+			// context.AfterDeserialization += new System.EventHandler(this.<EventHandlerName>);
 			constructor.Statements.Add(
 				new CodeAttachEventStatement(
 					new CodeArgumentReferenceExpression("context"),
@@ -232,6 +236,15 @@ namespace Bamboo.Prevalence.VersionMigration
 			parameters.GenerateInMemory = true;
 			parameters.ReferencedAssemblies.Add(GetType().Assembly.Location);
 			parameters.ReferencedAssemblies.Add(context.TargetAssembly.Location);
+			
+			if (_references.Length > 0)
+			{
+				foreach (string reference in _references.Split(';'))
+				{
+					string assemblyName = reference.Trim();
+					parameters.ReferencedAssemblies.Add(Assembly.Load(assemblyName).Location);
+				}
+			}
 			
 			CodeDomProvider provider = new Microsoft.CSharp.CSharpCodeProvider();
 			ICodeCompiler compiler = provider.CreateCompiler();
