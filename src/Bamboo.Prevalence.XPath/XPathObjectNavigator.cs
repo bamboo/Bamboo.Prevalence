@@ -122,17 +122,34 @@ namespace Bamboo.Prevalence.XPath
 		/// Selects a group of objects from the current node.
 		/// </summary>
 		/// <param name="xpath">selection expression</param>
+		/// <param name="returnItemType">array element type to be returned</param>
 		/// <returns>an array with all the objects returned
 		/// by the expression</returns>
-		public object[] SelectObjects(string xpath)
-		{
+		public System.Array SelectObjects(string xpath, Type returnItemType)
+		{			
+			if (null == returnItemType)
+			{
+				throw new ArgumentNullException("returnItemType");
+			}
+
 			System.Collections.ArrayList result = new System.Collections.ArrayList();
 			XPathNodeIterator i = Select(xpath);
 			while (i.MoveNext())
 			{
 				result.Add(((XPathObjectNavigator)i.Current).Node);
 			}
-			return (object[])result.ToArray(typeof(object));
+			return result.ToArray(returnItemType);
+		}
+
+		/// <summary>
+		/// Same as <see cref="SelectObjects(System.String, System.Type)"/> with
+		/// returnItemType iguals to typeof(object).
+		/// </summary>
+		/// <param name="xpath"></param>
+		/// <returns></returns>
+		public object[] SelectObjects(string xpath)
+		{
+			return (object[])SelectObjects(xpath, typeof(object));
 		}
 
 		/// <summary>

@@ -283,6 +283,18 @@ namespace Bamboo.Prevalence.Collections
 			}
 		}
 
+		public Array ToSortedArray(IComparer comparer, Type returnItemType)
+		{
+			Array array = ToArray(returnItemType);
+			Array.Sort(array, comparer);
+			return array;
+		}
+
+		public object[] ToSortedArray(IComparer comparer)
+		{
+			return (object[])ToSortedArray(comparer, typeof(object));
+		}
+
 		public ReaderWriterList Clone()
 		{
 			return new ReaderWriterList(_list);
