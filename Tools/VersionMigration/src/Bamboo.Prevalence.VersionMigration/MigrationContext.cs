@@ -39,6 +39,24 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Bamboo.Prevalence.VersionMigration
 {
+	public class AfterDeserializationEventArgs : System.EventArgs
+	{
+		protected object _object;
+
+		public AfterDeserializationEventArgs(object object_)
+		{
+			_object = object_;
+		}
+
+		public object Object
+		{
+			get
+			{
+				return _object;
+			}
+		}
+	}
+
 	/// <summary>
 	/// MigrationContext.
 	/// </summary>
@@ -222,7 +240,7 @@ namespace Bamboo.Prevalence.VersionMigration
 			object returnValue = _plan.Deserialize(this);
 			if (null != AfterDeserialization)
 			{
-				AfterDeserialization(this, EventArgs.Empty);
+				AfterDeserialization(this, new AfterDeserializationEventArgs(returnValue));
 			}
 			return returnValue;
 		}
