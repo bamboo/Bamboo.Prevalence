@@ -67,7 +67,7 @@ namespace Bamboo.Prevalence.Tests
 			}
 		}
 
-		object Bamboo.Prevalence.ICommand.Execute(Bamboo.Prevalence.IPrevalentSystem theSystem)
+		object Bamboo.Prevalence.ICommand.Execute(object theSystem)
 		{
 			AddingSystem system = theSystem as AddingSystem;
 			return system.Add(_amount);

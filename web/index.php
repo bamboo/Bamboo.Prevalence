@@ -67,7 +67,7 @@ I'll be adding a tutorial section to this web site soon.
 </ul>
 <h2>Other Resources</h2>
 <p><a href="http://sourceforge.net/projects/bbooprevalence">Project site at SourceForge</a></p>
-<p><a href="www.prevayler.org">www.prevayler.org</a></p>
+<p><a href="http://www.prevayler.org">www.prevayler.org</a></p>
 <hr width="90%" align="center" />
 <p align="center"><font size="-1"> Bamboo.Prevalence - a .NET object prevalence 
   engine<br />

@@ -49,13 +49,13 @@ namespace Bamboo.Prevalence.Tests
 			_engine = engine;
 		}
 
-		object ICommand.Execute(IPrevalentSystem system)
+		object ICommand.Execute(object system)
 		{
 			Assertion.AssertEquals("PrevalenceEngine.Current", _engine, PrevalenceEngine.Current);
 			return null;
 		}
 
-		object IQuery.Execute(IPrevalentSystem system)
+		object IQuery.Execute(object system)
 		{
 			Assertion.AssertEquals("PrevalenceEngine.Current", _engine, PrevalenceEngine.Current);
 			return null;

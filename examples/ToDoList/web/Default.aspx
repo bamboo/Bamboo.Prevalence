@@ -21,7 +21,7 @@
 </head>
 <body>
     <form runat="server">
-        <asp:DataGrid id="gridTasks" runat="server" BorderStyle="None" BorderWidth="1px" BorderColor="#CCCCCC" BackColor="White" CellPadding="3" HorizontalAlign="Center" AutoGenerateColumns="False">
+        <asp:DataGrid id="gridTasks" runat="server" BorderStyle="None" BorderWidth="1px" BorderColor="#CCCCCC" BackColor="White" CellPadding="3" HorizontalAlign="Center" AutoGenerateColumns="False" Width="90%">
             <FooterStyle forecolor="#000066" backcolor="White"></FooterStyle>
             <HeaderStyle font-bold="True" forecolor="White" backcolor="#006699"></HeaderStyle>
             <PagerStyle horizontalalign="Left" forecolor="#000066" backcolor="White" mode="NumericPages"></PagerStyle>

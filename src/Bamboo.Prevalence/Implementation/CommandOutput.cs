@@ -72,7 +72,7 @@ namespace Bamboo.Prevalence.Implementation
 			Flush(_output);
 		}
 
-		public void TakeSnapshot(Bamboo.Prevalence.IPrevalentSystem system)
+		public void TakeSnapshot(object system)
 		{
 			CloseOutputLog();
 

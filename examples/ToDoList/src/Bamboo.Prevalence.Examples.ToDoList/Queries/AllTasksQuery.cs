@@ -36,11 +36,12 @@ using Bamboo.Prevalence.Examples.ToDoList;
 namespace Bamboo.Prevalence.Examples.ToDoList.Queries
 {
 	/// <summary>
-	/// Summary description for AllTasksQuery.
+	/// Returns a list containing all the registered
+	/// tasks.
 	/// </summary>
 	public class AllTasksQuery : IQuery
 	{
-		object IQuery.Execute(IPrevalentSystem system)
+		object IQuery.Execute(object system)
 		{
 			TaskSystem ts = system as TaskSystem;
 			return ts.GetAllTasks();

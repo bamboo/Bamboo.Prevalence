@@ -46,14 +46,14 @@ namespace Bamboo.Prevalence.Implementation
 			_formatter = new BinaryFormatter();
 		}	
 
-		public Bamboo.Prevalence.IPrevalentSystem ReadLastSnapshot()
+		public object ReadLastSnapshot()
 		{
 			FileInfo snapshot = _fileFinder.LastSnapshot;
 			if (null != snapshot)
 			{
 				using (FileStream stream = snapshot.OpenRead())
 				{
-					return _formatter.Deserialize(stream) as Bamboo.Prevalence.IPrevalentSystem;
+					return _formatter.Deserialize(stream);
 				}
 			}
 			return null;

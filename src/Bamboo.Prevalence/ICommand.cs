@@ -66,7 +66,7 @@ namespace Bamboo.Prevalence
 	///		/// shown here is preferred since 
 	///		/// it prevents the user from calling
 	///		/// the Execute method directly.
-	///		object ICommand.Execute(PrevalentSystem system)
+	///		object ICommand.Execute(object system)
 	///		{
 	///			((AddingSystem)system).Add(amount);
 	///		}
@@ -87,6 +87,6 @@ namespace Bamboo.Prevalence
 		/// </remarks>
 		/// <param name="system">the prevalent system</param>
 		/// <returns>command defined return value</returns>
-		object Execute(IPrevalentSystem system);
+		object Execute(object system);
 	}
 }

@@ -36,6 +36,10 @@ namespace Bamboo.Prevalence
 	/// <summary>
 	/// A prevalent system. Implementing classes
 	/// can be transparently persisted by PrevalenceEngine.
+	/// <b>As of version 1.2 there's no need for the
+	/// prevalent system classes to implement this
+	/// interface
+	/// </b>
 	/// </summary>
 	/// <remarks>
 	/// In addition to implementing IPrevalentSystem the
@@ -47,14 +51,14 @@ namespace Bamboo.Prevalence
 	/// </remarks>	
 	public interface IPrevalentSystem
 	{	
-		/// <summary>
-		/// Returns the AlarmClock implementation
-		/// that the system, command and query objects
-		/// must use for all their date/time related functions.
-		/// </summary>
-		AlarmClock Clock
-		{
-			get;
-		}
+		// <summary>
+		// Returns the AlarmClock implementation
+		// that the system, command and query objects
+		// must use for all their date/time related functions.
+		// </summary>
+		//AlarmClock Clock
+		//{
+		//	get;
+		//}
 	}
 }

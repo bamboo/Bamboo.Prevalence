@@ -53,7 +53,7 @@ namespace Bamboo.Prevalence.Examples.ToDoList.Commands
 			_task = task;
 		}
 
-		object ICommand.Execute(IPrevalentSystem system)
+		object ICommand.Execute(object system)
 		{
 			TaskSystem ts = system as TaskSystem;
 			return ts.AddTask(_task);

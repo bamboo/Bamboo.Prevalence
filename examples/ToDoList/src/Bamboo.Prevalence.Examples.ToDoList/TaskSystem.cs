@@ -40,31 +40,20 @@ namespace Bamboo.Prevalence.Examples.ToDoList
 	/// objects.
 	/// </summary>
 	[Serializable]
-	public class TaskSystem : Bamboo.Prevalence.IPrevalentSystem
+	public class TaskSystem
 	{
-		private Bamboo.Prevalence.AlarmClock _clock;
-
 		private System.Collections.Hashtable _tasks;
 
 		private long _nextTaskID;
 
 		public TaskSystem()
 		{
-			_tasks = new System.Collections.Hashtable();
-			_clock = new Bamboo.Prevalence.AlarmClock();
-		}
-
-		public Bamboo.Prevalence.AlarmClock Clock
-		{
-			get
-			{
-				return _clock;
-			}
+			_tasks = new System.Collections.Hashtable();	
 		}
 
 		internal long AddTask(Task task)
 		{
-			task.Initialize(_nextTaskID++, _clock.Now);			
+			task.Initialize(_nextTaskID++, PrevalenceEngine.Now);			
 			_tasks[task.ID] = task;
 			return task.ID;
 		}
@@ -72,7 +61,7 @@ namespace Bamboo.Prevalence.Examples.ToDoList
 		internal System.Collections.IList GetAllTasks()
 		{
 			// if we wanted our task system to
-			// be more robust we could add
+			// be more robust we could return
 			// clones of the tasks objects instead of
 			// returning the original references.
 			// Right now I prefer

@@ -62,8 +62,16 @@ namespace Bamboo.Prevalence.Examples.ToDoList
 
 		private string _description;
 
-		private DateTime _createdTime;		
+		private int _estimatedHoursOfWork;
 
+		private int _actualHoursOfWork;
+
+		private DateTime _startDate;
+
+		private DateTime _endDate;
+
+		private DateTime _createdTime;		
+		
 		private TaskPriority _priority;
 
 		private TaskStatus _status;
@@ -122,6 +130,58 @@ namespace Bamboo.Prevalence.Examples.ToDoList
 			get
 			{
 				return _createdTime;
+			}
+		}
+
+		public DateTime StartDate
+		{
+			get
+			{
+				return _startDate;
+			}
+
+			set
+			{
+				_startDate = value;
+			}
+		}
+
+		public DateTime EndDate
+		{
+			get
+			{
+				return _endDate;
+			}
+
+			set
+			{
+				_endDate = value;
+			}
+		}
+
+		public int EstimatedHoursOfWork
+		{
+			get
+			{
+				return _estimatedHoursOfWork;
+			}
+
+			set
+			{
+				_estimatedHoursOfWork = value;
+			}
+		}
+
+		public int ActualHoursOfWork
+		{
+			get
+			{
+				return _actualHoursOfWork;
+			}
+
+			set
+			{
+				_actualHoursOfWork = value;
 			}
 		}
 

@@ -39,23 +39,12 @@ namespace Bamboo.Prevalence.Tests
 	/// access to the system.
 	/// </summary>
 	[Serializable]
-	public class AddingSystem : Bamboo.Prevalence.IPrevalentSystem
+	public class AddingSystem
 	{
-		private int _total;
-
-		private Bamboo.Prevalence.AlarmClock _clock;
+		private int _total;		
 
 		public AddingSystem()
-		{
-			_clock = new Bamboo.Prevalence.AlarmClock();
-		}
-
-		public Bamboo.Prevalence.AlarmClock Clock
-		{
-			get
-			{
-				return _clock;
-			}
+		{			
 		}
 
 		internal int Total

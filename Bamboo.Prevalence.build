@@ -16,6 +16,24 @@
 		<exec program='nunit-console' basedir='bin' commandline='/assembly:Bamboo.Prevalence.Tests.dll' />
 	</target>
 
+	<target name="distribution" depends="release">
+
+		<zip zipfile="Bamboo.Prevalence.1.1.0.0.zip">
+			<fileset>
+				<includes name="Bamboo.Prevalence.build" />
+				<includes name="Bamboo.Prevalence.ndoc" />
+				<includes name="History.txt" />
+				<includes name="bin/*.dll" />
+				<includes name="lib/*.dll" />
+				<includes name="src/Bamboo.Prevalence/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence/**/*.csproj" />
+				<includes name="src/Bamboo.Prevalence.Tests/**/*.cs" />
+				<includes name="src/Bamboo.Prevalence.Tests/**/*.csproj" />
+				<includes name="web/index.php" />
+			</fileset>
+		</zip>
+	</target>
+
 	<target name='Bamboo.Prevalence.Tests' depends='Bamboo.Prevalence'>
 
 		<csc target='library' output='bin\Bamboo.Prevalence.Tests.dll' debug='true'>

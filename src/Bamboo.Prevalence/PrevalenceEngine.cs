@@ -38,11 +38,22 @@ namespace Bamboo.Prevalence
 {
 	/// <summary>
 	/// Object prevalence engine. Provides transparent
-	/// object persistence to deterministic systems that
-	/// implement the <see cref="IPrevalentSystem" /> interface.
+	/// object persistence to deterministic systems.
 	/// </summary>
 	/// <remarks> 
-	/// <p>Any change to the prevalent system must be represented by a
+	/// <p>The prevalent system class must be serializable 
+	/// and deterministic: two instances of the same
+	/// class when exposed to the same set of commands and queries
+	/// must reach the same final state and yield the same query
+	/// results.
+	/// </p>
+	/// <p>In order to be deterministic, the prevalent system class
+	/// must use <see cref="PrevalenceEngine.Clock"/> or
+	/// <see cref="PrevalenceEngine.Now"/> for all its date/time
+	/// related functions.
+	/// </p>
+	/// <p>
+	/// Any change to the prevalent system must be represented by a
 	/// serializable command object (<see cref="ICommand"/>)
 	/// executed through <see cref="ExecuteCommand" />.
 	/// </p>
@@ -53,26 +64,27 @@ namespace Bamboo.Prevalence
 	/// <p>
 	/// The prevalence engine employs a reader/writer lock strategy
 	/// to coordenate the work of command and query objects - that
-	/// way multiple query objects are allowed to execute in paralel
+	/// way multiple query objects are allowed to execute in paralell
 	/// and command objects are only allowed to execute one by one.
 	/// </p>
 	/// <p>
 	/// The great news is that if you design your prevalent system
 	/// in such a way that its state
 	/// is only manipulated and queried through command and query 
-	/// objects then you don't have to worry about synchronization
-	/// anymore, to
-	/// a simple example of such a system please refer to the
+	/// objects you don't have to worry about synchronization,
+	/// to a simple example of such a system please refer to the
 	/// Bamboo.Prevalence.Tests project.
 	/// </p>
 	/// </remarks>
 	public class PrevalenceEngine
 	{
-		private IPrevalentSystem _system;		
+		private object _system;		
 
 		private CommandLogWriter _commandLog;
 
-		private ReaderWriterLock _lock;		
+		private ReaderWriterLock _lock;
+
+		private AlarmClock _clock;
 
 		private static readonly System.LocalDataStoreSlot _sharedObjectSlot = Thread.AllocateDataSlot();
 
@@ -88,11 +100,14 @@ namespace Bamboo.Prevalence
 		/// be used to restore the state of the system.<br />
 		/// </remarks>
 		/// <param name="systemType">prevalent system type, the type
-		/// must implement the IPrevalentSystem interface and be serializable</param>
+		/// must be serializable</param>
 		/// <param name="prevalenceBase">directory where to store log files</param>
 		public PrevalenceEngine(System.Type systemType, string prevalenceBase)
 		{	
-			AssertParameterNotNull("systemType", systemType);			
+			AssertParameterNotNull("systemType", systemType);
+			AssertParameter("systemType", "Prevalent system type must be serializable!", systemType.IsSerializable);
+
+			_clock = new AlarmClock();
 
 			CommandLogReader reader = new CommandLogReader(CheckPrevalenceBase(prevalenceBase));
 			RecoverSystem(systemType, reader);
@@ -112,10 +127,18 @@ namespace Bamboo.Prevalence
 			}
 		}
 
+		public static System.DateTime Now
+		{
+			get
+			{
+				return Current.Clock.Now;
+			}
+		}
+
 		/// <summary>
 		/// The prevalent system.
 		/// </summary>
-		public IPrevalentSystem PrevalentSystem
+		public object PrevalentSystem
 		{
 			get
 			{
@@ -124,14 +147,13 @@ namespace Bamboo.Prevalence
 		}
 
 		/// <summary>
-		/// The clock. See <see cref="IPrevalentSystem.Clock"/>
-		/// for details.
+		/// The clock.
 		/// </summary>
 		public AlarmClock Clock
 		{
 			get
 			{
-				return _system.Clock;
+				return _clock;
 			}
 		}
 
@@ -229,22 +251,14 @@ namespace Bamboo.Prevalence
 			}
 
 			return di;
-		}
-
-		private void AssertParameterNotNull(string paramName, object parameter)
-		{
-			if (null == parameter)
-			{
-				throw new ArgumentNullException(paramName);
-			}
-		}
+		}		
 
 		private void RecoverSystem(System.Type systemType, CommandLogReader reader)
 		{
 			_system = reader.ReadLastSnapshot();			
 			if (null == _system)
 			{
-				_system = (IPrevalentSystem)System.Activator.CreateInstance(systemType);
+				_system = System.Activator.CreateInstance(systemType);
 			}
 			RecoverCommands(reader);
 		}
@@ -323,6 +337,22 @@ namespace Bamboo.Prevalence
 		private void UnshareCurrentObject()
 		{
 			Thread.SetData(_sharedObjectSlot, null);
+		}
+
+		private void AssertParameterNotNull(string paramName, object parameter)
+		{
+			if (null == parameter)
+			{
+				throw new ArgumentNullException(paramName);
+			}
+		}
+
+		private void AssertParameter(string paramName, string description, bool condition)
+		{
+			if (!condition)
+			{
+				throw new ArgumentException(description, paramName);
+			}
 		}
 	}
 }

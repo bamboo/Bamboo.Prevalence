@@ -19,9 +19,9 @@ namespace Bamboo.Prevalence.Implementation
 			_dateTime = dateTime;
 		}
 
-		object Bamboo.Prevalence.ICommand.Execute(Bamboo.Prevalence.IPrevalentSystem system)
+		object Bamboo.Prevalence.ICommand.Execute(object system)
 		{
-			system.Clock.Recover(_dateTime);
+			PrevalenceEngine.Current.Clock.Recover(_dateTime);
 			return _command.Execute(system);
 		}
 	}

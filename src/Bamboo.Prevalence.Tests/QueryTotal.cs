@@ -38,7 +38,7 @@ namespace Bamboo.Prevalence.Tests
 	/// </summary>
 	public class QueryTotal : Bamboo.Prevalence.IQuery
 	{
-		object Bamboo.Prevalence.IQuery.Execute(Bamboo.Prevalence.IPrevalentSystem system)
+		object Bamboo.Prevalence.IQuery.Execute(object system)
 		{
 			return ((AddingSystem)system).Total;
 		}
