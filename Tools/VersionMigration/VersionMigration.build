@@ -1,28 +1,44 @@
 <project name="VersionMigrationTools" default="all">
 
-	<property name="Bamboo.Prevalence.dll" value="..\..\bin\Bamboo.Prevalence.dll" />
-	<property name="nunit.framework.dll" value="\dotnet\nunit\bin\nunit.framework.dll" />
-	<property name="nunit-console" value="\dotnet\nunit\bin\nunit-console.exe" />
+	<property name="Bamboo.Prevalence.dll" value="../../bin/Bamboo.Prevalence.dll" />
+	<property name='nunit.framework.dll' value='${nant.location}/nunit.framework.dll' />
+	
+	<!--
+		while nunit2 doesn't work in mono
+		this property can be used
+		to disable nunit based unit tests
+	-->
+	<property name="skip.nunit.test" value="false" /> 
 
 	<target name="all" depends="test,VersionMigratorGUI" />
 
 	<target name="test" depends="testVersionMigrationLibrary, testVersionMigrator" />
 
-	<target name="testVersionMigrationLibrary" depends="Bamboo.Prevalence.VersionMigration.Tests">
+	<target name="testVersionMigrationLibrary" depends="Bamboo.Prevalence.VersionMigration.Tests" unless="${skip.nunit.test}">
 
 		<copy todir="bin" file="${nunit.framework.dll}" />
 
-		<exec program="${nunit-console}" basedir="bin" commandline="Bamboo.Prevalence.VersionMigration.Tests.dll" />
+		<nunit2>
+			<test assemblyname="bin/Bamboo.Prevalence.VersionMigration.Tests.dll" />
+		</nunit2>
 	</target>
 
 	<target name="testVersionMigrator" depends="VersionMigrator, SetUpData10, TestData20">
 
-		<exec program="SetUpData10.exe" basedir="build\1.0" />
+		<exec
+			program="SetUpData10.exe"
+			basedir="build/1.0"
+			useruntimeengine="true" />
 
-		<exec program="bin/VersionMigrator" commandline="migrationProject.xml">
-		</exec>
+		<exec
+			program="bin/VersionMigrator.exe"
+			commandline="migrationProject.xml"
+			useruntimeengine="true" />
 			
-		<exec program="TestData20.exe" basedir="build\2.0" />
+		<exec
+			program="TestData20.exe"
+			basedir="build/2.0"
+			useruntimeengine="true" />
 		
 	</target>
 
