@@ -40,9 +40,7 @@ namespace Bamboo.Prevalence.XPath.Internal
 {
 	internal class ObjectNavigatorStateItem : ObjectNavigatorState
 	{
-		static object[] EmptyObjectArray = new Object[0];		
-
-		PropertyInfo[] _children;
+		IValueProvider[] _children;
 
 		internal ObjectNavigatorStateItem(ObjectNavigationContext context, ObjectNavigatorState parent, object node, string name) :
 			base(context, parent, node, name)
@@ -58,13 +56,8 @@ namespace Bamboo.Prevalence.XPath.Internal
 		}
 
 		internal override ObjectNavigatorState MoveToFirstChild()
-		{
-			CheckChildren();
-			if (_children.Length > 0)
-			{
-				return CreateElementState(_context, this, _children[0].GetValue(_node, EmptyObjectArray), _children[0].Name);
-			}
-			return null;
+		{			
+			return MoveToChild(0);
 		}
 
 		internal override ObjectNavigatorState MoveToNext()
@@ -74,11 +67,17 @@ namespace Bamboo.Prevalence.XPath.Internal
 
 		internal override ObjectNavigatorState MoveToChild(int index)
 		{
-			if (index < _children.Length)
+			CheckChildren();
+			while (index < _children.Length)
 			{
-				ObjectNavigatorState state = CreateElementState(_context, this, _children[index].GetValue(_node, EmptyObjectArray), _children[index].Name);
-				state.Index = index;
-				return state;
+				object child = _children[index].GetValue(_node);
+				if (null != child)
+				{
+					ObjectNavigatorState state = CreateElementState(_context, this, child, _children[index].Name);
+					state.Index = index;
+					return state;
+				}
+				++index;
 			}
 			return null;
 		}

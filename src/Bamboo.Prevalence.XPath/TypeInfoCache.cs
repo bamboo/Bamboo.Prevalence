@@ -37,6 +37,62 @@ using System.Reflection;
 
 namespace Bamboo.Prevalence.XPath
 {
+	public interface IValueProvider
+	{
+		string Name
+		{
+			get;
+		}
+
+		object GetValue(object instance);
+	}
+
+	public class PropertyInfoValueProvider : IValueProvider
+	{
+		PropertyInfo _pi;
+
+		public PropertyInfoValueProvider(PropertyInfo pi)
+		{
+			_pi = pi;
+		}
+
+		public string Name
+		{
+			get
+			{
+				return _pi.Name;
+			}
+		}
+
+		public object GetValue(object instance)
+		{
+			return _pi.GetValue(instance, (object[])null);
+		}
+	}
+
+	public class FieldInfoValueProvider : IValueProvider
+	{
+		FieldInfo _fi;
+
+		public FieldInfoValueProvider(FieldInfo fi)
+		{
+			_fi = fi;
+		}
+
+		public string Name
+		{
+			get
+			{
+				return _fi.Name;
+			}
+		}
+
+		public object GetValue(object instance)
+		{
+			return _fi.GetValue(instance);
+		}
+	}
+
 	/// <summary>
 	/// A cache for the navigable properties of a type.
 	/// </summary>
@@ -45,7 +101,7 @@ namespace Bamboo.Prevalence.XPath
 		/// <summary>
 		/// For types with no navigable properties (like primitives).
 		/// </summary>
-		public static PropertyInfo[] EmptyPropertyInfoArray = new PropertyInfo[0];
+		public static IValueProvider[] EmptyValueProviderArray = new IValueProvider[0];
 
 		System.Collections.Hashtable _cache;
 
@@ -64,9 +120,9 @@ namespace Bamboo.Prevalence.XPath
 		/// </summary>
 		/// <param name="o">object</param>
 		/// <returns>array of navigable properties</returns>
-		public PropertyInfo[] GetNavigableProperties(object o)
+		public IValueProvider[] GetNavigableProperties(object o)
 		{
-			PropertyInfo[] properties = (PropertyInfo[])_cache[o];
+			IValueProvider[] properties = (IValueProvider[])_cache[o];
 			if (null == properties)
 			{
 				properties = FindNavigableProperties(o);
@@ -75,26 +131,33 @@ namespace Bamboo.Prevalence.XPath
 			return properties;
 		}
 
-		private PropertyInfo[] FindNavigableProperties(object o)
+		private IValueProvider[] FindNavigableProperties(object o)
 		{
 			if (o.GetType().IsPrimitive)
 			{
-				return EmptyPropertyInfoArray;
+				return EmptyValueProviderArray;
 			}
 
 			ArrayList children = new ArrayList();
 
 			BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
-			foreach (MemberInfo mi in o.GetType().FindMembers(MemberTypes.Property, flags, null, null))
+			foreach (MemberInfo mi in o.GetType().FindMembers(MemberTypes.Property | MemberTypes.Field, flags, null, null))
 			{
 				PropertyInfo pi = mi as PropertyInfo;
-				if (pi.CanRead && 0 == pi.GetGetMethod().GetParameters().Length)
-				{					
-					children.Add(pi);
+				if (null != pi)
+				{
+					if (pi.CanRead && 0 == pi.GetGetMethod().GetParameters().Length)
+					{					
+						children.Add(new PropertyInfoValueProvider(pi));
+					}
+				}
+				else
+				{
+					children.Add(new FieldInfoValueProvider((FieldInfo)mi));
 				}
 			}
 
-			return (PropertyInfo[])children.ToArray(typeof(PropertyInfo));
+			return (IValueProvider[])children.ToArray(typeof(IValueProvider));
 		}
 	}
 }

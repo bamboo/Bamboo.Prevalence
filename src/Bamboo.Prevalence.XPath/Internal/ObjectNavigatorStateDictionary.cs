@@ -62,11 +62,7 @@ namespace Bamboo.Prevalence.XPath.Internal
 
 		internal override ObjectNavigatorState MoveToFirstChild()
 		{		
-			if (_children.Count > 0)
-			{
-				return CreateElementState(_context, this, _dictionary[_children[0]], _children[0].ToString());
-			}
-			return null;
+			return MoveToChild(0);
 		}
 
 		internal override ObjectNavigatorState MoveToNext()
@@ -76,12 +72,17 @@ namespace Bamboo.Prevalence.XPath.Internal
 
 		internal override ObjectNavigatorState MoveToChild(int index)
 		{
-			if (index < _children.Count)
+			while (index < _children.Count)
 			{
-				object child = _children[index];
-				ObjectNavigatorState state = CreateElementState(_context, this, _dictionary[child], child.ToString());
-				state.Index = index;
-				return state;
+				object key = _children[index];
+				object child = _dictionary[key];
+				if (null != child)
+				{
+					ObjectNavigatorState state = CreateElementState(_context, this, child, key.ToString());
+					state.Index = index;
+					return state;
+				}
+				++index;
 			}
 			return null;
 		}

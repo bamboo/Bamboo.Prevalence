@@ -172,6 +172,8 @@ namespace Bamboo.Prevalence.XPath.Tests
 
 		IDictionary _properties;
 
+		public string Email;
+
 		public Customer(string fname, string lname, Address address)
 		{
 			_fname = fname;
@@ -302,6 +304,18 @@ namespace Bamboo.Prevalence.XPath.Tests
 			AssertEquals(2, actual.Length);
 			AssertEquals(customer1, actual[0]);
 			AssertEquals(customer2, actual[1]);
+		}
+
+		[Test]
+		public void TestSelectByField()
+		{
+			Customer customer1 = new Customer("Rodrigo", "Oliveira", new Address("al. Calderão Branco", 45));
+			customer1.Email = "rbo@acm.org";
+
+			XPathObjectNavigator navigator = new XPathObjectNavigator(customer1);
+			AssertSame(customer1.Email, navigator.SelectObject("Email"));
+
+			AssertSame(customer1, navigator.SelectObject("/Customer[Email='rbo@acm.org']"));
 		}
 	}
 }
