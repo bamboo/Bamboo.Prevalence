@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections;
+using Bamboo.Prevalence.Attributes;
 
 namespace RemotingPrevalence
 {
@@ -163,6 +164,7 @@ namespace RemotingPrevalence
 		// about delegates...
 		public event AddressBookChangedEventHandler Changed
 		{
+			[PassThrough]
 			add
 			{
 				lock (this)
@@ -171,6 +173,7 @@ namespace RemotingPrevalence
 				}
 			}
 
+			[PassThrough]
 			remove
 			{
 				lock (this)
