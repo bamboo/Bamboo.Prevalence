@@ -191,6 +191,17 @@ namespace Bamboo.Prevalence.Collections
 			}
 		}
 
+		public object[] ToShuffledArray()
+		{			
+			List copy = new List(ToArray());
+			object[] target = new object[copy.Count];
+			for (int i=0; i<target.Length; ++i)
+			{
+				target[i] = copy.PopAny();
+			}
+			return target;
+		}
+
 		/// <summary>
 		/// Selects an random item from the
 		/// list.

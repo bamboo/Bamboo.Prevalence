@@ -87,7 +87,7 @@
                 <Reference
                     Name = "nunit.framework"
                     AssemblyName = "nunit.framework"
-                    HintPath = "C:\Program Files\NUnit Addin\nunit.framework.dll"
+                    HintPath = "..\..\..\..\..\dotnet\nunit\bin\nunit.framework.dll"
                 />
             </References>
         </Build>
@@ -170,6 +170,11 @@
                 />
                 <File
                     RelPath = "TransparentPrevalenceEngineTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Serialization\LeanMeanFormatterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

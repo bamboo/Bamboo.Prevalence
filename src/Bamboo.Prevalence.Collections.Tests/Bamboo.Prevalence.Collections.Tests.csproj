@@ -84,6 +84,11 @@
                     AssemblyName = "nunit.framework"
                     HintPath = "C:\Program Files\NUnit Addin\nunit.framework.dll"
                 />
+                <Reference
+                    Name = "Bamboo.Prevalence.Collections"
+                    Project = "{415DEA3C-8AF4-4447-9A48-F54EC50C5780}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>

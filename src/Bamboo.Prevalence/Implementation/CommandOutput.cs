@@ -36,6 +36,21 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Configuration;
 
+#if MONO
+namespace System.IO
+{
+	using System.Runtime.CompilerServices;
+
+	internal enum MonoIOError: int { ERROR_SUCCESS = 0, ERROR_ERROR = -1 };
+
+	internal sealed class MonoIO
+	{
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		public static extern bool Flush(IntPtr handle, out MonoIOError error);
+	}
+}
+#endif
+
 namespace Bamboo.Prevalence.Implementation
 {
 	/// <summary>
@@ -138,9 +153,8 @@ namespace Bamboo.Prevalence.Implementation
 		private static void Flush(System.IO.FileStream stream)
 		{
 			if (Bamboo.Prevalence.Configuration.PrevalenceSettings.FlushAfterCommand)
-			{
-				//stream.Flush();
-				FlushFileBuffers(stream);
+			{				
+				HardFlush(stream);
 			}
 		}
 
@@ -154,12 +168,20 @@ namespace Bamboo.Prevalence.Implementation
 		}
 
 #if MONO
-		private static void FlushFileBuffers(System.IO.FileStream stream)
+		[System.Security.SuppressUnmanagedCodeSecurity]
+		private static void HardFlush(System.IO.FileStream stream)
 		{
+			System.IO.MonoIOError result = System.IO.MonoIOError.ERROR_SUCCESS;
+			System.IO.MonoIO.Flush(stream.Handle, out result);
+			if (result != System.IO.MonoIOError.ERROR_SUCCESS)
+			{				
+				throw new System.IO.IOException(string.Format("Flush call failed with error {0}.", result));
+			}			
 		}
+
 #else
 		[System.Security.SuppressUnmanagedCodeSecurity] // optimization...
-		private static void FlushFileBuffers(System.IO.FileStream stream)
+		private static void HardFlush(System.IO.FileStream stream)
 		{
 			if (0 == FlushFileBuffers(stream.Handle))
 			{
