@@ -1,6 +1,7 @@
 <project name='Bamboo.Prevalence' default='debug'>
 
-	<property name='nunit-console' value='\dotnet\nunit\bin\nunit-console' />
+	<property name='nunit-console' value='d:\dotnet\nunit\bin\nunit-console' />
+	<property name='nunit.framework.dll' value='d:\dotnet\nunit\bin\nunit.framework.dll' />
 
 	<target name='debug' depends='setDebugProperties,test' />
 
@@ -65,7 +66,7 @@
 			</sources>
 
 			<references>
-				<includes name='lib\*.dll' />
+				<includes name='${nunit.framework.dll}' />
 				<includes name='bin\Bamboo.Prevalence.dll' />
 			</references>
 
@@ -103,7 +104,7 @@
 			</sources>
 
 			<references>
-				<includes name='lib\*.dll' />
+				<includes name='${nunit.framework.dll}' />
 				<includes name='bin\Bamboo.Prevalence.Indexing.dll' />
 			</references>
 
@@ -139,15 +140,4 @@
 	<target name='clean'>
 		<delete dir='bin' />
 	</target>
-
-	<target name='updateLib'>
-
-		<copy todir='lib'>
-			<fileset basedir='\dotnet\nunit\bin'>
-				<includes name='nunit.framework.dll' />
-			</fileset>
-		</copy>
-
-	</target>
-
 </project>
