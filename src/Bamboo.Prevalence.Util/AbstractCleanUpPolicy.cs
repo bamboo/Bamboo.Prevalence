@@ -41,90 +41,13 @@ namespace Bamboo.Prevalence.Util
 	/// Base class to make it easier to implement
 	/// ICleanUpPolicy.
 	/// </summary>
-	public abstract class AbstractCleanUpPolicy : ICleanUpPolicy
+	public abstract class AbstractCleanUpPolicy : PrevalenceBaseUtil, ICleanUpPolicy
 	{
 		/// <summary>
 		/// Empty constructor.
 		/// </summary>
 		protected AbstractCleanUpPolicy()
 		{
-		}
-
-		/// <summary>
-		/// Returns a list with all the files in the PrevalenceBase
-		/// folder sorted by name.
-		/// </summary>
-		/// <param name="engine">the prevalence engine</param>
-		/// <returns>list of files sorted by name</returns>
-		protected FileInfo[] GetPrevalenceFilesSortedByName(PrevalenceEngine engine)
-		{
-			DirectoryInfo prevalenceBase = engine.PrevalenceBase;			
-			FileInfo[] files = prevalenceBase.GetFiles("*.*");
-			SortFilesByName(files);
-			return files;
-		}
-
-		/// <summary>
-		/// Returns a list with all the files that are no
-		/// longer necessary to restore the state of
-		/// the prevalence system.
-		/// </summary>
-		/// <param name="engine">the prevalence engine</param>
-		/// <returns>list with files sorted by name</returns>
-		protected FileInfo[] GetUnnecessaryPrevalenceFiles(PrevalenceEngine engine)
-		{
-			FileInfo[] all = GetPrevalenceFilesSortedByName(engine);			
-			int lastSnapshotIndex = FindLastSnapshot(all);
-			if (lastSnapshotIndex > 0)
-			{	
-				return GetFileInfoRange(all, 0, lastSnapshotIndex);				
-			}
-			else
-			{
-				return NullCleanUpPolicy.EmptyFileInfoArray;
-			}
-		}
-
-		/// <summary>
-		/// Creates a new array of count objects from
-		/// files starting at index.
-		/// </summary>
-		/// <param name="files">source array</param>
-		/// <param name="index">first index to copy</param>
-		/// <param name="count">items to be copied</param>
-		/// <returns>a new array with the specified elements</returns>
-		protected FileInfo[] GetFileInfoRange(FileInfo[] files, int index, int count)
-		{			
-			FileInfo[] range = new FileInfo[count];
-			Array.Copy(files, index, range, 0, count);
-			return range;
-		}
-
-		/// <summary>
-		/// Sorts the array by FileInfo.Name.
-		/// </summary>
-		/// <param name="files">array to be sorted in place</param>
-		protected void SortFilesByName(FileInfo[] files)
-		{			
-			Array.Sort(files, Bamboo.Prevalence.Implementation.FileNameComparer.Default);
-		}
-
-		/// <summary>
-		/// Returns the index of the last snapshot file in
-		/// files.
-		/// </summary>
-		/// <param name="files"></param>
-		/// <returns></returns>
-		protected int FindLastSnapshot(FileInfo[] files)
-		{
-			for (int i=files.Length-1; i>-1; --i)
-			{
-				if (0 == String.Compare(files[i].Extension, ".snapshot", true))
-				{
-					return i;
-				}
-			}
-			return -1;
 		}
 
 		/// <summary>
