@@ -38,6 +38,9 @@ void Page_Load(object sender, EventArgs e)
 	<div id="_message" runat="server" style="color: red; font-weight: bolder; text-align:center"></div>
 	</center>
 
+	<div align="center">If this is your first time here, try logging on with user: administrator,
+	password: <empty>.
+	</div>
     <form method="post" runat="server">
         <table width="60%" align="center">
             <tbody>

@@ -4,8 +4,18 @@
 	</target>
 	
 	<target name="cassini" depends="all">
-		<exec program="cassiniwebserver">
+		<exec program="cassiniwebserver" useruntimeengine="true">
 			<arg file="output" />
+			<arg value="8081" />
+		</exec>
+	</target>
+
+	<target name="xsp" depends="all">
+		<exec program="${nant.settings.defaultframework.frameworkdirectory}/xsp.exe" useruntimeengine="true">
+			<arg value="--root" />
+			<arg file="output" />
+			<arg value="--port" />
+			<arg value="8081" />
 		</exec>
 	</target>
 	
