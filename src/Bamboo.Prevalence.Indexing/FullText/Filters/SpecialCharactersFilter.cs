@@ -1,4 +1,4 @@
-#region License
+ï»¿#region License
 // Bamboo.Prevalence - a .NET object prevalence engine
 // Copyright (C) 2002 Rodrigo B. de Oliveira
 //
@@ -76,65 +76,63 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			return token;
 		}
 
-		string Filter(string value)
+		public static string Filter(string value)
 		{			
 			char[] mapped = new char[value.Length];
 			for (int i=0; i<value.Length; ++i)
 			{
-				char c = value[i];
-
-				if (Char.IsUpper(c))
-				{
-					c = Char.ToLower(c);
-				}
-
+				char c = Char.ToLower(value[i]);
 				switch (c)
 				{
-					case 'á':
+					case 'Ã¡':
 						c = 'a';
 						break;
 
-					case 'ã':
+					case 'Ã£':
 						c = 'a';
 						break;
 
-					case 'â':
+					case 'Ã¢':
 						c = 'a';
 						break;
 
-					case 'à':
+					case 'Ã ':
 						c = 'a';
 						break;
 
-					case 'é':
+					case 'Ã©':
 						c = 'e';
 						break;
 
-					case 'ê':
+					case 'Ãª':
 						c = 'e';
 						break;
 
-					case 'í':
+					case 'Ã­':
 						c = 'i';
 						break;
 
-					case 'ó':
+					case 'Ã³':
 						c = 'o';
 						break;
 
-					case 'õ':
+					case 'Ãµ':
 						c = 'o';
 						break;							
 
-					case 'ô':
+					case 'Ã´':
 						c = 'o';
 						break;					
 
-					case 'ú':
+					case 'Ãº':
+						c = 'u';
+						break;
+
+					case 'Ã¼':
 						c = 'u';
 						break;									
 
-					case 'ç':
+					case 'Ã§':
 						c = 'c';
 						break;
 				}
