@@ -1,8 +1,8 @@
 // Bamboo.Prevalence - a .NET object prevalence engine
-// Copyright (C) 2002 Rodrigo B. de Oliveira (rodrigobamboo@hotmail.com)
+// Copyright (C) 2002 Rodrigo B. de Oliveira
 //
-// Based upon the original concept and implementation
-// by Klaus Wuestefeld.
+// Based on the original concept and implementation of Prevayler (TM)
+// by Klaus Wuestefeld. Visit http://www.prevayler.org for details.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,9 +23,15 @@
 // resulting executable to be covered by the GNU General Public License.
 // This exception does not however invalidate any other reasons why the
 // executable file might be covered by the GNU General Public License.
+//
+// Contact Information
+//
+// http://bbooprevalence.sourceforge.net
+// mailto:rodrigobamboo@users.sourceforge.net
 
 using System;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Bamboo.Prevalence;
 
@@ -35,7 +41,7 @@ namespace Bamboo.Prevalence.Implementation
 	/// Enumerates through all the commands in the pending logs
 	/// returned by <see cref="NumberedFileFinder.NextPendingLog" />.
 	/// </summary>
-	internal class PendingCommandsEnumerator : System.Collections.IEnumerator
+	internal sealed class PendingCommandsEnumerator : System.Collections.IEnumerator
 	{
 		private BinaryFormatter _formatter;
 

@@ -73,6 +73,7 @@ namespace Bamboo.Prevalence.Tests
 
 		protected void CrashRecover()
 		{
+			
 			// The new engine automatically
 			// recovers from crash by loading
 			// its previous state		
@@ -93,9 +94,9 @@ namespace Bamboo.Prevalence.Tests
 			}
 		}		
 
-		protected PrevalenceEngine CreateEngine()
-		{
-			return new PrevalenceEngine(PrevalentSystemType, PrevalenceBase);
+		protected virtual PrevalenceEngine CreateEngine()
+		{			
+			return PrevalenceActivator.CreateEngine(PrevalentSystemType, PrevalenceBase);
 		}
 
 		protected void HandsOffOutputLog()
@@ -107,7 +108,7 @@ namespace Bamboo.Prevalence.Tests
 		}
 
 		protected object ExecuteCommand(Bamboo.Prevalence.ICommand command)
-		{
+		{			
 			return _engine.ExecuteCommand(command);
 		}
 

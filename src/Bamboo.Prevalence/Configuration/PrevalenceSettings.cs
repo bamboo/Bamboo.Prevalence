@@ -1,3 +1,34 @@
+// Bamboo.Prevalence - a .NET object prevalence engine
+// Copyright (C) 2002 Rodrigo B. de Oliveira
+//
+// Based on the original concept and implementation of Prevayler (TM)
+// by Klaus Wuestefeld. Visit http://www.prevayler.org for details.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+// As a special exception, if you link this library with other files to
+// produce an executable, this library does not by itself cause the
+// resulting executable to be covered by the GNU General Public License.
+// This exception does not however invalidate any other reasons why the
+// executable file might be covered by the GNU General Public License.
+//
+// Contact Information
+//
+// http://bbooprevalence.sourceforge.net
+// mailto:rodrigobamboo@users.sourceforge.net
+
 using System;
 using System.IO;
 
@@ -75,9 +106,7 @@ namespace Bamboo.Prevalence.Configuration
 		public const string SectionName = "bamboo.prevalence";		
 
 		/// <summary>
-		/// Returns the current ConfigurationSettings instance or
-		/// null if Bamboo.Prevalence was not configured for the
-		/// running application.
+		/// Returns the current ConfigurationSettings instance.
 		/// </summary>
 		/// <exception cref="System.Configuration.ConfigurationException">in the case Bamboo.Prevalence
 		/// was not correctly configured</exception>		
@@ -159,6 +188,7 @@ namespace Bamboo.Prevalence.Configuration
 			string id = GetRequiredAttribute(item, "id");
 			string type = GetRequiredAttribute(item, "type");
 			string prevalenceBase = GetOptionalPrevalenceBase(item, id);
+			bool autoVersionMigration = bool.Parse(GetOptionalAttribute(item, "autoVersionMigration", "false"));
 
 			System.Type systemType = System.Type.GetType(type);
 			if (null == systemType)
@@ -168,7 +198,7 @@ namespace Bamboo.Prevalence.Configuration
 
 			try
 			{
-				engines[id] = new PrevalenceEngine(systemType, prevalenceBase);
+				engines[id] = PrevalenceActivator.CreateEngine(systemType, prevalenceBase, autoVersionMigration);
 			}
 			catch (System.Exception x)
 			{
@@ -176,14 +206,22 @@ namespace Bamboo.Prevalence.Configuration
 			}			
 		}
 
+		private string GetOptionalAttribute(System.Xml.XmlElement element, string name, string defaultValue)
+		{
+			if (element.HasAttribute(name))
+			{
+				return element.GetAttribute(name);
+			}
+			return defaultValue;
+		}
+
 		private string GetOptionalPrevalenceBase(System.Xml.XmlElement element, string id)
 		{
-			string prevalenceBase = element.GetAttribute("base");
-			if (null == prevalenceBase)
+			if (element.HasAttribute("base"))
 			{
-				prevalenceBase = Path.Combine(GetPersonalPrevalenceFolder(), id);					
+				return element.GetAttribute("base");
 			}
-			return prevalenceBase;
+			return Path.Combine(GetPersonalPrevalenceFolder(), id);
 		}
 
 		private string GetPersonalPrevalenceFolder()

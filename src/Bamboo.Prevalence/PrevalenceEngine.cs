@@ -32,6 +32,8 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Bamboo.Prevalence.Implementation;
 
 namespace Bamboo.Prevalence
@@ -76,7 +78,7 @@ namespace Bamboo.Prevalence
 	/// Bamboo.Prevalence.Tests project.
 	/// </p>
 	/// </remarks>
-	public class PrevalenceEngine
+	public sealed class PrevalenceEngine
 	{
 		private object _system;		
 
@@ -87,29 +89,18 @@ namespace Bamboo.Prevalence
 		private AlarmClock _clock;
 
 		private static readonly System.LocalDataStoreSlot _sharedObjectSlot = Thread.AllocateDataSlot();
-
+		
 		/// <summary>
-		/// Creates a new prevalence engine for the prevalent system
-		/// type specified by the systemType argument.
+		/// See <see cref="PrevalenceActivator.CreateEngine(System.Type, string)"/>
 		/// </summary>
-		/// <remarks>
-		/// The prevalence log files will be read from/written to the
-		/// prevalenceBase directory.<br />
-		/// If the directory does not exist it will be created.<br />
-		/// If there are any log files already in the directory they will
-		/// be used to restore the state of the system.<br />
-		/// </remarks>
-		/// <param name="systemType">prevalent system type, the type
-		/// must be serializable</param>
-		/// <param name="prevalenceBase">directory where to store log files</param>
-		public PrevalenceEngine(System.Type systemType, string prevalenceBase)
-		{	
-			AssertParameterNotNull("systemType", systemType);
-			AssertParameter("systemType", "Prevalent system type must be serializable!", systemType.IsSerializable);
-
+		/// <param name="systemType"></param>
+		/// <param name="prevalenceBase"></param>
+		/// <param name="formatter"></param>
+		internal PrevalenceEngine(System.Type systemType, string prevalenceBase, BinaryFormatter formatter)
+		{				
 			_clock = new AlarmClock();
 
-			CommandLogReader reader = new CommandLogReader(CheckPrevalenceBase(prevalenceBase));
+			CommandLogReader reader = new CommandLogReader(CheckPrevalenceBase(prevalenceBase), formatter);
 			RecoverSystem(systemType, reader);
 			_commandLog = reader.ToWriter();
 			_lock = new ReaderWriterLock();			
@@ -171,7 +162,7 @@ namespace Bamboo.Prevalence
 		/// <returns>the ICommand.Execute return value</returns>
 		public object ExecuteCommand(ICommand command)
 		{				
-			AssertParameterNotNull("command", command);		
+			Assertion.AssertParameterNotNull("command", command);		
 
 			AcquireWriterLock();
 			try
@@ -191,7 +182,7 @@ namespace Bamboo.Prevalence
 		/// <returns>query object return value</returns>
 		public object ExecuteQuery(Bamboo.Prevalence.IQuery query)
 		{
-			AssertParameterNotNull("query", query);
+			Assertion.AssertParameterNotNull("query", query);
 
 			AcquireReaderLock();
 			try
@@ -245,7 +236,6 @@ namespace Bamboo.Prevalence
 
 		private DirectoryInfo CheckPrevalenceBase(string prevalenceBase)
 		{
-			AssertParameterNotNull("prevalenceBase", prevalenceBase);
 
 			DirectoryInfo di = new DirectoryInfo(prevalenceBase);
 			if (!di.Exists)
@@ -340,22 +330,6 @@ namespace Bamboo.Prevalence
 		private void UnshareCurrentObject()
 		{
 			Thread.SetData(_sharedObjectSlot, null);
-		}
-
-		private void AssertParameterNotNull(string paramName, object parameter)
-		{
-			if (null == parameter)
-			{
-				throw new ArgumentNullException(paramName);
-			}
-		}
-
-		private void AssertParameter(string paramName, string description, bool condition)
-		{
-			if (!condition)
-			{
-				throw new ArgumentException(description, paramName);
-			}
 		}
 	}
 }

@@ -1,8 +1,8 @@
 // Bamboo.Prevalence - a .NET object prevalence engine
-// Copyright (C) 2002 Rodrigo B. de Oliveira (rodrigobamboo@hotmail.com)
+// Copyright (C) 2002 Rodrigo B. de Oliveira
 //
-// Based upon the original concept and implementation
-// by Klaus Wuestefeld.
+// Based on the original concept and implementation of Prevayler (TM)
+// by Klaus Wuestefeld. Visit http://www.prevayler.org for details.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,11 @@
 // resulting executable to be covered by the GNU General Public License.
 // This exception does not however invalidate any other reasons why the
 // executable file might be covered by the GNU General Public License.
+//
+// Contact Information
+//
+// http://bbooprevalence.sourceforge.net
+// mailto:rodrigobamboo@users.sourceforge.net
 
 using System;
 using System.IO;
@@ -34,16 +39,16 @@ namespace Bamboo.Prevalence.Implementation
 	/// <summary>
 	/// Command log reader.
 	/// </summary>
-	internal class CommandLogReader : System.Collections.IEnumerable
+	internal sealed class CommandLogReader : System.Collections.IEnumerable
 	{
 		private NumberedFileFinder _fileFinder;	
 
 		private BinaryFormatter _formatter;
 
-		public CommandLogReader(DirectoryInfo prevalenceBase)
+		public CommandLogReader(DirectoryInfo prevalenceBase, BinaryFormatter formatter)
 		{
 			_fileFinder = new NumberedFileFinder(prevalenceBase);
-			_formatter = new BinaryFormatter();
+			_formatter = formatter;
 		}	
 
 		public object ReadLastSnapshot()

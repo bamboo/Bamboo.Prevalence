@@ -102,6 +102,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "PrevalenceActivator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PrevalenceEngine.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -113,6 +118,11 @@
                 />
                 <File
                     RelPath = "Configuration\PrevalenceSettings.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Implementation\Assertion.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -148,6 +158,11 @@
                 />
                 <File
                     RelPath = "Implementation\PendingCommandsEnumerator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Serialization\AutoVersionMigrationSurrogate.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

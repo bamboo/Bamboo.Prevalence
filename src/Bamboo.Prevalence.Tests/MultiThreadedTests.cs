@@ -42,6 +42,11 @@ namespace Bamboo.Prevalence.Tests
 	[TestFixture]
 	public class MultiThreadedTests : AbstractAddingSystemTest
 	{		
+		protected override PrevalenceEngine CreateEngine()
+		{
+			return PrevalenceActivator.CreateEngine(PrevalentSystemType, PrevalenceBase, true);
+		}
+
 		[Test]
 		public void TestMultiThreadedWrites()
 		{
@@ -58,6 +63,8 @@ namespace Bamboo.Prevalence.Tests
 
 			Start(threads);
 			Join(threads);			
+
+			CrashRecover();
 
 			// 20 threads adding the value 10, 10 times
 			AssertTotal(20*10*20);
