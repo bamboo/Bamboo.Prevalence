@@ -65,6 +65,12 @@ namespace Bamboo.Prevalence.XPath
 
 		string _lang;
 
+		/// <summary>
+		/// Create a new navigator for the object graph
+		/// starting at node. The node's name is nodeName.
+		/// </summary>
+		/// <param name="node">root</param>
+		/// <param name="nodeName">root's name</param>
 		public XPathObjectNavigator(object node, string nodeName)
 		{
 			_context = new ObjectNavigationContext();
@@ -74,10 +80,20 @@ namespace Bamboo.Prevalence.XPath
 			_lang = _context.NameTable.Add("en-US");
 		}
 
+		/// <summary>
+		/// Create a new navigator for the object graph
+		/// starting at node. The node name will be
+		/// node.GetType().Name.
+		/// </summary>
+		/// <param name="node">root</param>
 		public XPathObjectNavigator(object node) : this(node, null)
 		{
 		}
 
+		/// <summary>
+		/// copy constructor.
+		/// </summary>
+		/// <param name="other">navigator to be copied</param>
 		public XPathObjectNavigator(XPathObjectNavigator other)
 		{
 			_context = other._context;
@@ -86,6 +102,12 @@ namespace Bamboo.Prevalence.XPath
 			_lang = other._lang;
 		}
 
+		/// <summary>
+		/// Selects a single object from the current node.
+		/// </summary>
+		/// <param name="xpath">selection expression</param>
+		/// <returns>the first object returned by the
+		/// expression or null</returns>
 		public object SelectObject(string xpath)
 		{
 			XPathNodeIterator i = Select(xpath);
@@ -96,6 +118,26 @@ namespace Bamboo.Prevalence.XPath
 			return null;
 		}
 
+		/// <summary>
+		/// Selects a group of objects from the current node.
+		/// </summary>
+		/// <param name="xpath">selection expression</param>
+		/// <returns>an array with all the objects returned
+		/// by the expression</returns>
+		public object[] SelectObjects(string xpath)
+		{
+			System.Collections.ArrayList result = new System.Collections.ArrayList();
+			XPathNodeIterator i = Select(xpath);
+			while (i.MoveNext())
+			{
+				result.Add(((XPathObjectNavigator)i.Current).Node);
+			}
+			return (object[])result.ToArray(typeof(object));
+		}
+
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.BaseURI" /> for details.
+		/// </summary>
 		public override string BaseURI
 		{
 			get
@@ -105,24 +147,39 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.Clone" /> for details.
+		/// </summary>
 		public override System.Xml.XPath.XPathNavigator Clone()
 		{
 			Trace("Clone");
 			return new XPathObjectNavigator(this);
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.GetAttribute(string, string)" /> for details.
+		/// </summary>
+		/// <remarks>No attributes are returned.</remarks>
 		public override string GetAttribute(string localName, string namespaceURI)
 		{
 			Trace("GetAttribute");
 			return string.Empty;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.GetNamespace(string)" /> for details.
+		/// </summary>
+		/// <remarks>Namespace is always empty</remarks>
 		public override string GetNamespace(string name)
 		{
 			Trace("GetNamespace");
 			return _context.NameTable.Get(string.Empty);
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.HasAttributes" /> for details.
+		/// </summary>
+		/// <remarks>false</remarks>
 		public override bool HasAttributes
 		{
 			get
@@ -132,6 +189,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.HasChildren" /> for details.
+		/// </summary>
 		public override bool HasChildren
 		{
 			get
@@ -141,6 +201,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.IsEmptyElement" /> for details.
+		/// </summary>
 		public override bool IsEmptyElement
 		{
 			get
@@ -150,6 +213,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.IsSamePosition" /> for details.
+		/// </summary>
 		public override bool IsSamePosition(System.Xml.XPath.XPathNavigator other)
 		{
 			Trace("IsSamePosition");
@@ -161,6 +227,9 @@ namespace Bamboo.Prevalence.XPath
 			return _state.IsSamePosition(x._state);
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.LocalName" /> for details.
+		/// </summary>
 		public override string LocalName
 		{
 			get
@@ -170,6 +239,10 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.Name" /> for details.
+		/// </summary>
+		/// <remarks>Same as LocalName</remarks>
 		public override string Name
 		{
 			get
@@ -179,6 +252,10 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.NamespaceURI" /> for details.
+		/// </summary>
+		/// <remarks>Always empty</remarks>
 		public override string NamespaceURI
 		{
 			get
@@ -188,6 +265,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.NameTable" /> for details.
+		/// </summary>
 		public override System.Xml.XmlNameTable NameTable
 		{
 			get
@@ -197,6 +277,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveTo" /> for details.
+		/// </summary>
 		public override bool MoveTo(System.Xml.XPath.XPathNavigator other)
 		{
 			Trace("MoveTo");
@@ -211,24 +294,37 @@ namespace Bamboo.Prevalence.XPath
 			return true;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToAttribute" /> for details.
+		/// </summary>
 		public override bool MoveToAttribute(string localName, string namespaceURI)
 		{
 			Trace("MoveToAttribute");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToFirst" /> for details.
+		/// </summary>
+		/// <remarks>Not supported.</remarks>
 		public override bool MoveToFirst()
 		{
 			Trace("MoveToFirst");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToFirstAttribute" /> for details.
+		/// </summary>
 		public override bool MoveToFirstAttribute()
 		{
 			Trace("MoveToFirstAttribute");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToFirstChild" /> for details.
+		/// </summary>
 		public override bool MoveToFirstChild()
 		{
 			Trace("MoveToFirstChild");
@@ -241,24 +337,37 @@ namespace Bamboo.Prevalence.XPath
 			return true;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToFirstNamespace" /> for details.
+		/// </summary>
 		public override bool MoveToFirstNamespace(System.Xml.XPath.XPathNamespaceScope namespaceScope)
 		{
 			Trace("MoveToFirstNamespace");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToId" /> for details.
+		/// </summary>
+		/// <remarks>Not supported.</remarks>
 		public override bool MoveToId(string id)
 		{
 			Trace("MoveToId");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToNamespace(string)" /> for details.
+		/// </summary>
 		public override bool MoveToNamespace(string name)
 		{
 			Trace("MoveToNamespace");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToNext" /> for details.
+		/// </summary>
 		public override bool MoveToNext()
 		{
 			Trace("MoveToNext");
@@ -271,18 +380,27 @@ namespace Bamboo.Prevalence.XPath
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToNextAttribute" /> for details.
+		/// </summary>
 		public override bool MoveToNextAttribute()
 		{
 			Trace("MoveToNextAttribute");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToNextNamespace" /> for details.
+		/// </summary>
 		public override bool MoveToNextNamespace(System.Xml.XPath.XPathNamespaceScope namespaceScope)
 		{
 			Trace("MoveToNextNamespace");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToParent" /> for details.
+		/// </summary>
 		public override bool MoveToParent()
 		{
 			Trace("MoveToParent");
@@ -294,18 +412,28 @@ namespace Bamboo.Prevalence.XPath
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToPrevious" /> for details.
+		/// </summary>
+		/// <remarks>Not supported.</remarks>
 		public override bool MoveToPrevious()
 		{
 			Trace("MoveToPrevious");
 			return false;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.MoveToRoot" /> for details.
+		/// </summary>
 		public override void MoveToRoot()
 		{
 			Trace("MoveToRoot");
 			_state = _root;
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.NodeType" /> for details.
+		/// </summary>
 		public override System.Xml.XPath.XPathNodeType NodeType
 		{
 			get
@@ -315,6 +443,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.Value" /> for details.
+		/// </summary>
 		public override string Value
 		{
 			get
@@ -324,6 +455,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// The current object.
+		/// </summary>
 		public object Node
 		{
 			get
@@ -332,6 +466,9 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.XmlLang" /> for details.
+		/// </summary>
 		public override string XmlLang
 		{
 			get
@@ -340,6 +477,10 @@ namespace Bamboo.Prevalence.XPath
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="System.Xml.XPath.XPathNavigator.Prefix" /> for details.
+		/// </summary>
+		/// <remarks>Always empty.</remarks>
 		public override string Prefix
 		{
 			get

@@ -36,7 +36,7 @@ using System;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// Summary description for Token.
+	/// A token.
 	/// </summary>
 	[Serializable]
 	public class Token
@@ -45,6 +45,12 @@ namespace Bamboo.Prevalence.Indexing.FullText
 
 		string _value;
 
+		/// <summary>
+		/// Creates a new token.
+		/// </summary>
+		/// <param name="value">token image</param>
+		/// <param name="position">absolute position of the
+		/// image in the original text</param>
 		public Token(string value, int position)
 		{
 			if (null == value)
@@ -61,6 +67,9 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			_position = position;
 		}
 
+		/// <summary>
+		/// Token image
+		/// </summary>
 		public string Value
 		{
 			get
@@ -78,6 +87,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// Absolute position in the original text from
+		/// which this token was extracted.
+		/// </summary>
 		public int Position
 		{
 			get
@@ -86,6 +99,13 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// Tokens are equal if both properties, 
+		/// Value and Position, are considered
+		/// equal.
+		/// </summary>
+		/// <param name="other">object to test equality for</param>
+		/// <returns>true if the objects are considered equal</returns>
 		public override bool Equals(object other)
 		{
 			Token token = other as Token;
@@ -96,11 +116,20 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			return _position == token._position && _value == token._value;
 		}
 
+		/// <summary>
+		/// Calculates a hashcode based on the properties
+		/// Value and Position.
+		/// </summary>
+		/// <returns>the combined hashcode of both properties</returns>
 		public override int GetHashCode()
 		{
 			return _position.GetHashCode() ^ _value.GetHashCode();
 		}
 
+		/// <summary>
+		/// Builds a more human friendly representation of the token.
+		/// </summary>
+		/// <returns>a readable representation of the token</returns>
 		public override string ToString()
 		{
 			return "<\"" + _value + "\" at " + _position + ">";

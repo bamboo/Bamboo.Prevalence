@@ -37,7 +37,7 @@ using Bamboo.Prevalence.Indexing;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// An search expression that searches over
+	/// Search expression class for searches over
 	/// a <see cref="FullTextSearchIndex"/>.
 	/// </summary>
 	[Serializable]
@@ -47,12 +47,27 @@ namespace Bamboo.Prevalence.Indexing.FullText
 
 		FullTextSearchMode _mode;
 
+		/// <summary>
+		/// Creates a new search expression that will
+		/// return all the records that include any of
+		/// the words (<see cref="FullTextSearchMode.IncludeAny"/>)
+		/// in the expression passed as argument.
+		/// </summary>
+		/// <param name="expression">words to search for</param>
 		public FullTextSearchExpression(string expression)
 		{
 			_expression = expression;
 			_mode = FullTextSearchMode.IncludeAny;
 		}
 
+		/// <summary>
+		/// Creates a new search expression for
+		/// the words in the expression argument
+		/// with the specific behavior indicated by the mode
+		/// argument.
+		/// </summary>
+		/// <param name="expression">words to search for</param>
+		/// <param name="mode">search mode</param>
 		public FullTextSearchExpression(string expression, FullTextSearchMode mode)
 		{
 			_expression = expression;
@@ -60,7 +75,7 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		}
 
 		/// <summary>
-		/// search expression
+		/// Search expression
 		/// </summary>
 		public string Expression
 		{
@@ -70,6 +85,9 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// Search mode
+		/// </summary>
 		public FullTextSearchMode SearchMode
 		{
 			get
@@ -79,6 +97,13 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		}
 
 		#region Implementation of ISearchExpression
+		/// <summary>
+		/// Delegates to <see cref="Bamboo.Prevalence.Indexing.FullText.FullTextSearchIndex.Search"/>.
+		/// </summary>
+		/// <param name="index">index</param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentException">if the
+		/// index argument is not of the correct type</exception>
 		public Bamboo.Prevalence.Indexing.SearchResult Evaluate(Bamboo.Prevalence.Indexing.IIndex index)
 		{
 			FullTextSearchIndex ftindex = index as FullTextSearchIndex;

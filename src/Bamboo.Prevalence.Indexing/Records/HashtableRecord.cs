@@ -42,13 +42,22 @@ namespace Bamboo.Prevalence.Indexing.Records
 	[Serializable]
 	public class HashtableRecord : Bamboo.Prevalence.Indexing.IRecord
 	{
+		/// <summary>
+		/// The hashtable.
+		/// </summary>
 		protected Hashtable _hashtable;
 
+		/// <summary>
+		/// Creates an empty record.
+		/// </summary>
 		public HashtableRecord()
 		{			
 			_hashtable = new Hashtable();
 		}
 
+		/// <summary>
+		/// Sets/Gets a hashtable field.
+		/// </summary>
 		public object this[string name]
 		{
 			get
@@ -62,11 +71,20 @@ namespace Bamboo.Prevalence.Indexing.Records
 			}
 		}
 
+		/// <summary>
+		/// Delegates to the internal hashtable.
+		/// </summary>
+		/// <returns></returns>
 		public override int GetHashCode()
 		{
 			return _hashtable.GetHashCode();
 		}
 
+		/// <summary>
+		/// Delegates to the internal hashtable.
+		/// </summary>
+		/// <param name="rhs"></param>
+		/// <returns></returns>
 		public override bool Equals(object rhs)
 		{
 			HashtableRecord other = rhs as HashtableRecord;

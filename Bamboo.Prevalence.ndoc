@@ -105,12 +105,12 @@
             <property name="GetExternalSummaries" value="True" />
         </documenter>
         <documenter name="MSDN">
-            <property name="OutputDirectory" value=".\docs\MSDN\" />
+            <property name="OutputDirectory" value="D:\dev\dotnet\Bamboo.Prevalence\docs\MSDN\" />
             <property name="HtmlHelpName" value="Bamboo.Prevalence" />
             <property name="IncludeFavorites" value="False" />
             <property name="Title" value="Bamboo.Prevalence - an object prevalence engine" />
             <property name="SplitTOCs" value="False" />
-            <property name="DefaulTOC" value="" />
+            <property name="DefaulTOC" value="Bamboo.Prevalence" />
             <property name="IncludeHierarchy" value="True" />
             <property name="ShowVisualBasic" value="True" />
             <property name="RootPageContainsNamespaces" value="True" />
@@ -137,7 +137,7 @@
             <property name="UseNamespaceDocSummaries" value="False" />
             <property name="AutoPropertyBackerSummaries" value="False" />
             <property name="AutoDocumentConstructors" value="True" />
-            <property name="DocumentAttributes" value="False" />
+            <property name="DocumentAttributes" value="True" />
             <property name="DocumentedAttributes" value="" />
             <property name="GetExternalSummaries" value="True" />
         </documenter>

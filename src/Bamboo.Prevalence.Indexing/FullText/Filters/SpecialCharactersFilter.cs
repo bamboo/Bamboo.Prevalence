@@ -40,19 +40,32 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 {
 	/// <summary>
 	/// A filter that replaces special characters by
-	/// their ASCII counterparts.
+	/// their simpler ASCII counterparts.
 	/// </summary>
 	[Serializable]
 	public class SpecialCharactersFilter : AbstractFilter 
 	{
+		/// <summary>
+		/// Creates a new filter.
+		/// </summary>
 		public SpecialCharactersFilter()
 		{
 		}
 
+		/// <summary>
+		/// Creates a new filter in a tokenizer chain.
+		/// </summary>
+		/// <param name="previous">previous tokenizer in the chain</param>
 		public SpecialCharactersFilter(ITokenizer previous) : base(previous)
 		{
 		}
 
+		/// <summary>
+		/// Gets the token from the previous tokenizer in the
+		/// chain and replaces every "complex" character
+		/// in the token by its simpler counterpart.
+		/// </summary>
+		/// <returns>the new token or null</returns>
 		public override Token NextToken()
 		{
 			Token token = _previous.NextToken();
@@ -81,7 +94,23 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 						c = 'a';
 						break;
 
+					case 'ã':
+						c = 'a';
+						break;
+
+					case 'â':
+						c = 'a';
+						break;
+
+					case 'à':
+						c = 'a';
+						break;
+
 					case 'é':
+						c = 'e';
+						break;
+
+					case 'ê':
 						c = 'e';
 						break;
 
@@ -93,33 +122,17 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 						c = 'o';
 						break;
 
-					case 'ú':
-						c = 'u';
-						break;
-
-					case 'ã':
-						c = 'a';
-						break;
-
 					case 'õ':
 						c = 'o';
-						break;
-
-					case 'â':
-						c = 'a';
-						break;
-
-					case 'ê':
-						c = 'e';
-						break;
+						break;							
 
 					case 'ô':
 						c = 'o';
-						break;
+						break;					
 
-					case 'à':
-						c = 'a';
-						break;
+					case 'ú':
+						c = 'u';
+						break;									
 
 					case 'ç':
 						c = 'c';

@@ -37,7 +37,15 @@ using System.Text;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// 
+	/// Answers the questions:
+	/// <list type="bullet">
+	/// <item>in which field does the term occur?</item>
+	/// <item>how many times does the term occur in that specific field?</item>
+	/// <item>in which positions?</item>
+	/// </list>
+	/// This information can be used for ranking the search and 
+	/// for specific search types such as proximity search, 
+	/// searching for terms only in specific fields, etc.
 	/// </summary>
 	[Serializable]
 	public class TermOccurrence
@@ -46,12 +54,21 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		
 		int[] _positions;
 		
+		/// <summary>
+		/// Creates a new TermOccurrence for the
+		/// field and position passed as arguments.
+		/// </summary>
+		/// <param name="field">the field where the term was found</param>
+		/// <param name="position">the position where the term was found</param>
 		public TermOccurrence(IndexedField field, int position)
 		{
 			_field = field;
 			_positions = new int[] { position };
 		}
 
+		/// <summary>
+		/// Field where the term was found
+		/// </summary>
 		public IndexedField Field
 		{
 			get
@@ -60,6 +77,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 	
+		/// <summary>
+		/// Positions in the field where
+		/// the term was found.
+		/// </summary>
 		public int[] Positions
 		{
 			get
@@ -75,6 +96,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			newPositions[_positions.Length] = position;
 		}
 
+		/// <summary>
+		/// More readable representation of the object.
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();

@@ -37,13 +37,34 @@ using System.Text;
 
 namespace Bamboo.Prevalence.Indexing.FullText
 {
+	/// <summary>
+	/// A collection of TermOccurrence objects.
+	/// </summary>
 	[Serializable]
 	public class TermOccurrenceCollection : CollectionBase
 	{
+		/// <summary>
+		/// Creates an empty collection.
+		/// </summary>
 		public TermOccurrenceCollection()
 		{
 		}
 
+		/// <summary>
+		/// Adds the information related to the new
+		/// occurrence of the term in the field and
+		/// position passed as argument. If a TermOccurrence
+		/// object for the specified field
+		/// is already in the collection, the new position
+		/// information is simply added to the existing
+		/// TermOccurrence object. Otherwise a new TermOccurrence
+		/// object will be created and added to the
+		/// collection.
+		/// </summary>
+		/// <param name="field">field where the term
+		/// was found</param>
+		/// <param name="position">
+		/// position in the field where the term was found</param>
 		public void Add(IndexedField field, int position)
 		{
 			foreach (TermOccurrence to in InnerList)
@@ -57,6 +78,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			InnerList.Add(new TermOccurrence(field, position));
 		}
 
+		/// <summary>
+		/// Builds a readable representation of this object.
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();

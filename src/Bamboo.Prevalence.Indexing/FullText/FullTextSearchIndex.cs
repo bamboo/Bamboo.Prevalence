@@ -40,8 +40,48 @@ using Bamboo.Prevalence.Indexing.FullText.Tokenizers;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// An index for full text searches over an record.
+	/// An index for full text searches over record objects.
 	/// </summary>
+	/// <remarks>
+	/// <b>The mutating methods of this class (such as
+	/// <see cref="Add" />, <see cref="Remove" /> and
+	/// <see cref="Update" />)
+	/// are not thread-safe, all the
+	/// synchronization work must be done by the
+	/// application.</b><br /><br />
+	/// Non mutating methods such as the various <see cref="Search" />
+	/// implementations <b>can be safely called from multiple threads</b>
+	/// simultaneously.
+	/// </remarks>
+	/// <example>
+	/// <code>
+	/// FullTextSearchIndex index = new FullTextSearchIndex();
+	/// index.Fields.Add("title");
+	/// index.Fields.Add("author");
+	/// 
+	/// HashtableRecord book1 = new HashtableRecord();
+	/// book1["title"] = "A Midsummer Night's Dream";
+	/// book1["author"] = "Shakespeare, William"
+	/// 
+	/// HashtableRecord book2 = new HashtableRecord();
+	/// book2["title"] = "Much Ado About Nothing";
+	/// book2["author"] = "Shakespeare, William";
+	/// 
+	/// index.Add(book1);
+	/// index.Add(book2);
+	/// 
+	/// SearchResult result1 = index.Search("midsummer dream");
+	/// AssertEquals(1, result1.Count);
+	/// Assert(result1.Contains(book1));
+	/// 
+	/// SearchResult result2 = index.Search("shakespeare");
+	/// result2.SortByField("title");
+	/// 
+	/// AssertEquals(2, result2.Count);
+	/// AssertEquals(book1, result2[0].Record);
+	/// AssertEquals(book2, result2[1].Record);
+	/// </code>
+	/// </example>
 	[Serializable]
 	public class FullTextSearchIndex : IIndex
 	{
@@ -58,17 +98,31 @@ namespace Bamboo.Prevalence.Indexing.FullText
 
 		ITokenFilter _filter = FullTextSearchIndex.DefaultFilter;
 
+		/// <summary>
+		/// Creates an empty index.
+		/// </summary>
 		public FullTextSearchIndex()
 		{
 			_fields = new IndexedFieldCollection();
 			_postings = new Hashtable();
 		}
 
+		/// <summary>
+		/// Creates an empty index with a specific filter
+		/// chain for token filtering.
+		/// </summary>
+		/// <param name="filter">the filter chain that
+		/// should be used by the index to filter
+		/// tokens</param>
 		public FullTextSearchIndex(ITokenFilter filter) : this()
 		{
 			Filter = filter;
 		}
 
+		/// <summary>
+		/// Gets/sets the filter chain that will be used
+		/// for all text preprocessing
+		/// </summary>
 		public ITokenFilter Filter
 		{
 			get
@@ -86,6 +140,11 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// Returns a snapshot of all the Postings held
+		/// by this index. Each Postings instance represents
+		/// a currently indexed term and all its occurrences.
+		/// </summary>
 		public Postings[] Postings
 		{
 			get
@@ -96,6 +155,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// Returns a snapshot of all the records currently
+		/// held by this index.
+		/// </summary>
 		public IRecord[] Records
 		{
 			get
@@ -116,7 +179,7 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		}
 
 		/// <summary>
-		/// Fields that compose the index.
+		/// Collection of fields that compose the index.
 		/// </summary>
 		public IndexedFieldCollection Fields
 		{
@@ -127,6 +190,20 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		}
 
 		#region Implementation of IIndex
+		/// <summary>
+		/// See <see cref="Bamboo.Prevalence.Indexing.IIndex.Add"/> for details.
+		/// </summary>
+		/// <param name="record">record that should be indexed</param>
+		/// <remarks>
+		/// Indexes all the fields included in the
+		/// <see cref="Fields"/> collection. Notice
+		/// however that the record is never automatically
+		/// reindexed should its fields change or should
+		/// the collection of indexed fields (<see cref="Fields"/>)
+		/// change.<br />
+		/// The application is always responsible for calling
+		/// <see cref="Update"/> in such cases.
+		/// </remarks>
 		public void Add(Bamboo.Prevalence.Indexing.IRecord record)
 		{					
 			foreach (IndexedField field in _fields)
@@ -135,6 +212,11 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="Bamboo.Prevalence.Indexing.IIndex.Remove"/> for details.
+		/// </summary>
+		/// <param name="record">record that should be removed from the index</param>
+		/// <remarks>reference comparison is always used</remarks>
 		public void Remove(Bamboo.Prevalence.Indexing.IRecord record)
 		{
 			foreach (Postings postings in _postings.Values)
@@ -143,12 +225,25 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="Bamboo.Prevalence.Indexing.IIndex.Update"/> for details.
+		/// </summary>
+		/// <param name="record">existing record that should have its index information updated</param>
+		/// <remarks>reference comparison is always used</remarks>
 		public void Update(Bamboo.Prevalence.Indexing.IRecord record)
 		{
 			Remove(record);
 			Add(record);
 		}
 
+		/// <summary>
+		/// When the expression passed as argument is an instance
+		/// of FullTextSearchExpression this method behaves exactly
+		/// as <see cref="Search(FullTextSearchExpression)" />, otherwise
+		/// it behaves as expression.Evaluate(this).
+		/// </summary>		
+		/// <param name="expression">search expression</param>
+		/// <returns>the result of applying the search against this index</returns>
 		public Bamboo.Prevalence.Indexing.SearchResult Search(Bamboo.Prevalence.Indexing.ISearchExpression expression)
 		{
 			FullTextSearchExpression ftexpression = expression as FullTextSearchExpression;
@@ -160,6 +255,35 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		}
 		#endregion
 
+		/// <summary>
+		/// Convenience method that creates a new <see cref="FullTextSearchExpression"/>
+		/// for the expression passed as argument and calls
+		/// <see cref="Search(FullTextSearchExpression)"/>.
+		/// </summary>
+		/// <param name="expression">search expression</param>
+		/// <returns><see cref="Search(FullTextSearchExpression)"/></returns>
+		public Bamboo.Prevalence.Indexing.SearchResult Search(string expression)
+		{
+			return Search(new FullTextSearchExpression(expression));
+		}
+
+		/// <summary>
+		/// Searches the index for the words included in
+		/// the expression passed as argument. <br />
+		/// All the fields are searched for every word
+		/// in the expression.<br />		
+		/// </summary>
+		/// <param name="expression">search expression</param>
+		/// <returns>
+		/// When expression.SearchMode is
+		/// <see cref="FullTextSearchMode.IncludeAny"/> every
+		/// record for which at least one word in the expression
+		/// implies a match will be returned.<br />
+		/// When expression.SearchMode is 
+		/// <see cref="FullTextSearchMode.IncludeAll" /> only
+		/// those records for which all of the words in the expression
+		/// imply a match will be returned.
+		/// </returns>
 		public Bamboo.Prevalence.Indexing.SearchResult Search(FullTextSearchExpression expression)
 		{
 			ITokenizer tokenizer = CreateTokenizer(expression.Expression);

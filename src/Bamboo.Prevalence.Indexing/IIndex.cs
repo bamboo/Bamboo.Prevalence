@@ -40,10 +40,33 @@ namespace Bamboo.Prevalence.Indexing
 	/// </summary>
 	public interface IIndex
 	{
+		/// <summary>
+		/// Adds a new record to the index.
+		/// </summary>
+		/// <param name="record">the record</param>
 		void Add(IRecord record);
 
+		/// <summary>
+		/// Removes a record from the index.
+		/// </summary>
+		/// <param name="record">existing record that
+		/// must be removed</param>
+		/// <remarks>for the sake of efficiency,
+		/// reference comparison should always be preferred
+		/// over object.Equals</remarks>
 		void Remove(IRecord record);
 
+		/// <summary>
+		/// Reindexes a existing record. Reindexing
+		/// must always be explicitly started by
+		/// the application.
+		/// </summary>
+		/// <param name="record">an existing record that
+		/// was externally changed and thus should
+		/// have its index updated</param>
+		/// <remarks>for the sake of efficiency,
+		/// reference comparison should always be preferred
+		/// over object.Equals</remarks>
 		void Update(IRecord record);
 
 		/// <summary>

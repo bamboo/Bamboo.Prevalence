@@ -38,17 +38,33 @@ using Bamboo.Prevalence.Indexing.FullText;
 namespace Bamboo.Prevalence.Indexing.FullText.Filters
 {
 	/// <summary>
-	/// Filter a token based on a regular expression.
+	/// Filters off tokens based on a regular expression.
 	/// </summary>
+	/// <remarks>This filter will filter off
+	/// any tokens that <b>match</b> the regular
+	/// expression (and not the ones that don't)</remarks>
 	[Serializable]
 	public class RegexTokenFilter : ConditionalFilter
 	{
 		Regex _regex;
 
+		/// <summary>
+		/// Creates a new filter that will filter off any 
+		/// tokens that match the regular expression passed
+		/// as argument.
+		/// </summary>
+		/// <param name="regex">the regular expression</param>
 		public RegexTokenFilter(string regex) : this(null, regex)
 		{		
 		}		
 
+		/// <summary>
+		/// Creates a new filter that will filter off any
+		/// tokens that match the regular expression passed
+		/// as argument.
+		/// </summary>
+		/// <param name="previous">the previous tokenizer in the chain</param>
+		/// <param name="regex">the regular expression</param>
 		public RegexTokenFilter(ITokenizer previous, string regex) : base(previous)
 		{
 			if (null == regex)
@@ -58,10 +74,23 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			_regex = new Regex(regex);
 		}
 
+		/// <summary>
+		/// Creates a new filter that will filter off any 
+		/// tokens that match the regular expression passed
+		/// as argument.
+		/// </summary>
+		/// <param name="regex">the regular expression</param>
 		public RegexTokenFilter(Regex regex) : this(null, regex)
 		{				
 		}
 
+		/// <summary>
+		/// Creates a new filter that will filter off any
+		/// tokens that match the regular expression passed
+		/// as argument.
+		/// </summary>
+		/// <param name="previous">the previous tokenizer in the chain</param>
+		/// <param name="regex">the regular expression</param>
 		public RegexTokenFilter(ITokenizer previous, Regex regex) : base(previous)
 		{
 			if (null == regex)
@@ -71,7 +100,12 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			_regex = regex;
 		}
 
-		public override bool IsValidToken(Token token)
+		/// <summary>
+		/// See <see cref="ConditionalFilter.IsValidToken"/> for details.
+		/// </summary>
+		/// <param name="token"></param>
+		/// <returns></returns>
+		protected override bool IsValidToken(Token token)
 		{
 			return !_regex.IsMatch(token.Value);
 		}

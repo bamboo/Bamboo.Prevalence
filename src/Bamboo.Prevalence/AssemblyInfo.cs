@@ -38,7 +38,7 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle("Bamboo.Prevalence")]
-[assembly: AssemblyDescription("An .NET object prevalence engine")]
+[assembly: AssemblyDescription("A .NET object prevalence engine")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Bamboo.Prevalence")]

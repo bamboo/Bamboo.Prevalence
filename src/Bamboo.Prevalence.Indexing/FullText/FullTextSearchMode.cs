@@ -43,14 +43,14 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		/// <summary>
 		/// Include a record in the result if 
 		/// any of the words in the search expression
-		/// matches the record
+		/// occurs in the record
 		/// </summary>
 		IncludeAny,
 
 		/// <summary>
 		/// Include a record in the result only
 		/// if all of the words in the search expression
-		/// match the record
+		/// occurs in the record
 		/// </summary>
 		IncludeAll
 	}

@@ -37,16 +37,25 @@ using System.Collections;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// Definition for the fields that will be used
+	/// Definition of the fields that will be used
 	/// to compose a <see cref="FullTextSearchIndex"/>.
 	/// </summary>
 	[Serializable]
 	public class IndexedFieldCollection : CollectionBase
 	{
+		/// <summary>
+		/// Creates an empty collection.
+		/// </summary>
 		public IndexedFieldCollection()
 		{
 		}
 
+		/// <summary>
+		/// Adds a new IndexedField to the collection
+		/// for the field with name passed as argument.
+		/// </summary>
+		/// <param name="field">name of the
+		/// record field to be indexed</param>
 		public void Add(string field)
 		{
 			InnerList.Add(new IndexedField(field));

@@ -38,13 +38,19 @@ using Bamboo.Prevalence.Indexing.FullText;
 namespace Bamboo.Prevalence.Indexing.FullText.Filters
 {
 	/// <summary>
-	/// Filter tokens with specified words.
+	/// Filters off tokens by word.
 	/// </summary>
 	[Serializable]
 	public class WordFilter : ConditionalFilter
 	{
 		Hashtable _words;
 
+		/// <summary>
+		/// See <see cref="WordFilter(string[])"/>.
+		/// </summary>
+		/// <param name="previous">the previous tokenizer in the chain</param>
+		/// <param name="words">list of words that should be filtered
+		/// off the chain</param>
 		public WordFilter(ITokenizer previous, params string[] words) : base(previous)
 		{
 			if (null == words)
@@ -59,11 +65,23 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			}
 		}
 
+		/// <summary>
+		/// Creates a new filter that will not allow
+		/// any words in the list represented by the words
+		/// argument to pass through the chain.
+		/// </summary>
+		/// <param name="words">list of words that should be filtered
+		/// off the chain</param>
 		public WordFilter(params string[] words) : this(null, words)
 		{
 		}
 		
-		public override bool IsValidToken(Token token)
+		/// <summary>
+		/// See <see cref="ConditionalFilter.IsValidToken"/> for details.
+		/// </summary>
+		/// <param name="token"></param>
+		/// <returns></returns>
+		protected override bool IsValidToken(Token token)
 		{
 			return !_words.ContainsKey(token.Value);
 		}

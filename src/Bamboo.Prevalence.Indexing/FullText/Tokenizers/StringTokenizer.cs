@@ -38,8 +38,12 @@ namespace Bamboo.Prevalence.Indexing.FullText.Tokenizers
 {
 	/// <summary>
 	/// Splits a string into tokens by considering any 
-	/// whitespace and punctuation as separators.
+	/// whitespace and punctuation characters as separators.
 	/// </summary>
+	/// <remarks>
+	/// This tokenizer must always be the last in a 
+	/// tokenizer chain.
+	/// </remarks>
 	[Serializable]
 	public class StringTokenizer : ITokenizer
 	{	
@@ -47,12 +51,25 @@ namespace Bamboo.Prevalence.Indexing.FullText.Tokenizers
 
 		int _current;
 
+		/// <summary>
+		/// Creates a new tokenizer for the string
+		/// in the text argument.
+		/// </summary>
+		/// <param name="text">token source</param>
 		public StringTokenizer(string text)
 		{
 			_text = text;
 			_current = 0;
 		}
 
+		/// <summary>
+		/// Creates a new tokenizer for the string
+		/// in the text argument starting from
+		/// the position indicated by the current
+		/// argument.
+		/// </summary>
+		/// <param name="text">token source</param>
+		/// <param name="current">starting position</param>
 		protected StringTokenizer(string text, int current)
 		{
 			_text = text;
@@ -60,6 +77,10 @@ namespace Bamboo.Prevalence.Indexing.FullText.Tokenizers
 		}
 
 		#region Implementation of ITokenizer
+		/// <summary>
+		/// Always returns null since this tokenizer
+		/// must be the last in the chain.
+		/// </summary>
 		public ITokenizer Previous
 		{
 			get
@@ -73,6 +94,11 @@ namespace Bamboo.Prevalence.Indexing.FullText.Tokenizers
 			}
 		}
 
+		/// <summary>
+		/// See <see cref="Bamboo.Prevalence.Indexing.FullText.ITokenizer.NextToken"/> for
+		/// details.
+		/// </summary>
+		/// <returns></returns>
 		public Bamboo.Prevalence.Indexing.FullText.Token NextToken()
 		{			
 			SkipSeparators();
@@ -91,6 +117,11 @@ namespace Bamboo.Prevalence.Indexing.FullText.Tokenizers
 			return null;
 		}
 
+		/// <summary>
+		/// Returns a clone.
+		/// </summary>
+		/// <param name="tail">must always be null</param>
+		/// <returns>a clone</returns>
 		public ITokenizer Clone(ITokenizer tail)
 		{
 			if (null != tail)

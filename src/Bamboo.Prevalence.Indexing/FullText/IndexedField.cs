@@ -36,18 +36,27 @@ using System;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// Summary description for IndexedField.
+	/// Metadata for a field that should be indexed
+	/// for full text searching.
 	/// </summary>
 	[Serializable]
 	public class IndexedField
 	{
 		string _name;
 
+		/// <summary>
+		/// Creates a new IndexedField.
+		/// </summary>
+		/// <param name="name">name of the record field
+		/// to be indexed</param>
 		public IndexedField(string name)
 		{
 			_name = name;
 		}
 
+		/// <summary>
+		/// Record's field name
+		/// </summary>
 		public string Name
 		{
 			get
@@ -56,6 +65,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// Builds a more friendly representation of this object.
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return "<IndexedField \"" + _name + "\">";

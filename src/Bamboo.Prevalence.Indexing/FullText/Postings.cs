@@ -38,7 +38,10 @@ using System.Text;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// A collection of Posting objects.
+	/// A collection of Posting objects for a 
+	/// specific term.<br />
+	/// Posting objects are indexed by record for
+	/// fast Add and Remove	operations.
 	/// </summary>
 	[Serializable]
 	public class Postings : System.Collections.IEnumerable
@@ -47,12 +50,20 @@ namespace Bamboo.Prevalence.Indexing.FullText
 
 		string _term;
 
+		/// <summary>
+		/// Creates a new Postings object for 
+		/// a term.
+		/// </summary>
+		/// <param name="term">the term</param>
 		public Postings(string term)
 		{
 			_term = term;
 			_postings = new Hashtable();
 		}
 
+		/// <summary>
+		/// the term
+		/// </summary>
 		public string Term
 		{
 			get
@@ -61,6 +72,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
+		/// <summary>
+		/// Returns a snapshot of all the 
+		/// records currently indexed by the term
+		/// </summary>
 		public IRecord[] Records
 		{
 			get
@@ -71,7 +86,15 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 
-		public void Add(IRecord record, IndexedField field, int termIndex)
+		/// <summary>
+		/// Adds a new occurrence of the term. The occurrence
+		/// information (field and position) will be added
+		/// to an existing Posting object whenever possible.
+		/// </summary>
+		/// <param name="record">the record where the term was found</param>
+		/// <param name="field">the field where the term was found</param>
+		/// <param name="position">the position in the field where the term was found</param>
+		public void Add(IRecord record, IndexedField field, int position)
 		{
 			Posting posting = _postings[record] as Posting;
 			if (null == posting)
@@ -79,19 +102,32 @@ namespace Bamboo.Prevalence.Indexing.FullText
 				posting = new Posting(record);
 				_postings[record] = posting;
 			}
-			posting.Occurrences.Add(field, termIndex);
+			posting.Occurrences.Add(field, position);
 		}
 
+		/// <summary>
+		/// Removes all information related to a
+		/// specific record from this object.
+		/// </summary>
+		/// <param name="record">the record to be removed</param>
 		public void Remove(IRecord record)
 		{
 			_postings.Remove(record);
 		}
 
+		/// <summary>
+		/// Enumerates through all the Posting objects.
+		/// </summary>
+		/// <returns></returns>
 		public System.Collections.IEnumerator GetEnumerator()
 		{
 			return _postings.Values.GetEnumerator();
 		}
 
+		/// <summary>
+		/// Builds a readable representation of this object.
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();

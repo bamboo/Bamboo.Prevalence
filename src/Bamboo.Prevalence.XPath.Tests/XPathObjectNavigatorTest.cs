@@ -288,5 +288,20 @@ namespace Bamboo.Prevalence.XPath.Tests
 			XPathObjectNavigator navigator = new XPathObjectNavigator(customer);
 			AssertEquals(customer.Properties["email"], navigator.SelectObject("Properties/email"));
 		}
+
+		[Test]
+		public void TestSelectObjects()
+		{
+			Address address = new Address("Strawberry Street", 45);
+			Customer customer1 = new Customer("Rodrigo", "Oliveira", address);
+			Customer customer2 = new Customer("Marcia", "Longo", address);
+
+			Customer[] customers = { customer1, customer2 };
+			XPathObjectNavigator navigator = new XPathObjectNavigator(customers);
+			object[] actual = navigator.SelectObjects("Customer[Address/Number = 45]");
+			AssertEquals(2, actual.Length);
+			AssertEquals(customer1, actual[0]);
+			AssertEquals(customer2, actual[1]);
+		}
 	}
 }

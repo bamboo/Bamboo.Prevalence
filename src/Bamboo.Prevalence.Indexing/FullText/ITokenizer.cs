@@ -36,7 +36,7 @@ using System;
 namespace Bamboo.Prevalence.Indexing.FullText
 {
 	/// <summary>
-	/// 
+	/// A tokenizer is a source of or a filter for <see cref="Token"/> objects.
 	/// </summary>
 	public interface ITokenizer
 	{
@@ -58,7 +58,7 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		/// parameter should be used instead (but without cloning
 		/// the tail).
 		/// </summary>
-		/// <param name="tail">last tokenizer in the chain</param>
+		/// <param name="tail">the last tokenizer in the chain</param>
 		/// <example>
 		/// <code>
 		///	public ITokenizer Clone(ITokenizer tail)
@@ -78,6 +78,13 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		/// </example>
 		ITokenizer Clone(ITokenizer tail);
 
+		/// <summary>
+		/// Retrieves the next token.
+		/// </summary>
+		/// <returns>
+		/// next token or null if no more tokens
+		/// are available.
+		/// </returns>
 		Token NextToken();		
 	}
 }

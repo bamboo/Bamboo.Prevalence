@@ -37,7 +37,14 @@ using System.Collections;
 namespace Bamboo.Prevalence.Indexing.FullText
 {	
 	/// <summary>
-	/// 
+	/// A Posting object represents the occurrence
+	/// of a term in a record and stores all
+	/// the information associated to this occurrence
+	/// (in which fields does the term occur? how many
+	/// times?).<br />
+	/// The term itself is not stored in the posting but
+	/// should be used to index the posting in a 
+	/// dictionary.
 	/// </summary>
 	[Serializable]
 	public class Posting
@@ -46,12 +53,19 @@ namespace Bamboo.Prevalence.Indexing.FullText
 		
 		TermOccurrenceCollection _occurrences;
 
+		/// <summary>
+		/// Creates a new posting for a record.
+		/// </summary>
+		/// <param name="record">the record</param>
 		public Posting(IRecord record)
 		{				
 			_record = record;
 			_occurrences = new TermOccurrenceCollection();
 		}
 
+		/// <summary>
+		/// Occurrences of the term in the record.
+		/// </summary>
 		internal TermOccurrenceCollection Occurrences
 		{
 			get
@@ -60,6 +74,9 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}
 		
+		/// <summary>
+		/// The record.
+		/// </summary>
 		public IRecord Record
 		{
 			get
@@ -68,6 +85,10 @@ namespace Bamboo.Prevalence.Indexing.FullText
 			}
 		}		
 
+		/// <summary>
+		/// Builds a more friendly representation of this object.
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString()
 		{
 			return "<" + _record + " => " + _occurrences + ">";

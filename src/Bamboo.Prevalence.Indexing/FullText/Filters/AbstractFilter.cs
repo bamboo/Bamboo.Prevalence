@@ -37,23 +37,41 @@ using Bamboo.Prevalence.Indexing.FullText;
 namespace Bamboo.Prevalence.Indexing.FullText.Filters
 {
 	/// <summary>
-	/// Basic implementation for ITokenFilter.
+	/// Basic implementation for ITokenFilter with
+	/// support for tokenizer chaining. 
 	/// </summary>
 	[Serializable]
 	public abstract class AbstractFilter : ITokenFilter
 	{
+		/// <summary>
+		/// the previous tokenizer in the chain
+		/// </summary>
 		protected ITokenizer _previous;
 
+		/// <summary>
+		/// Creates a new filter with no previous
+		/// tokenizer.
+		/// </summary>
 		protected AbstractFilter()
 		{
 			_previous = null;
 		}
 
+		/// <summary>
+		/// Creates a new filter with a previous
+		/// tokenizer in a tokenizer chain.
+		/// </summary>
+		/// <param name="previous">the previous tokenizer
+		/// in the chain</param>
 		protected AbstractFilter(ITokenizer previous)
 		{
 			_previous = previous;
 		}
 
+		/// <summary>
+		/// Gets/sets the previous tokenizer
+		/// in the chain.
+		/// </summary>
 		public ITokenizer Previous
 		{
 			get
@@ -67,6 +85,16 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			}
 		}
 
+		/// <summary>
+		/// Returns a MemberwiseClone of this object
+		/// with the guarantee that the tail argument
+		/// will be the last tokenizer in the new
+		/// tokenizer chain.
+		/// </summary>
+		/// <param name="tail">the last tokenizer for the
+		/// new chain</param>
+		/// <returns>cloned chain with tail as the
+		/// last tokenizer in the chain</returns>
 		public ITokenizer Clone(ITokenizer tail)
 		{
 			AbstractFilter clone = MemberwiseClone() as AbstractFilter;
@@ -81,6 +109,10 @@ namespace Bamboo.Prevalence.Indexing.FullText.Filters
 			return clone;
 		}
 
+		/// <summary>
+		/// Must be supplied by derived classes.
+		/// </summary>
+		/// <returns></returns>
 		public abstract Token NextToken();
 	}
 }
