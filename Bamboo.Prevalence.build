@@ -86,7 +86,7 @@
 
 	<target name="distribution" depends="release" description='creates a zip file with a release version for distribution'>
 
-		<zip zipfile="Bamboo.Prevalence.${version}.zip">
+		<zip zipfile="Bamboo.Prevalence-${version}.zip">
 			<fileset>
 				<includes name="*.build" />
 				<includes name="license.txt" />
