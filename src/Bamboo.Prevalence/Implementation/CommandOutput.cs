@@ -178,6 +178,7 @@ namespace Bamboo.Prevalence.Implementation
 
 		private static void Flush(System.IO.FileStream stream)
 		{
+			stream.Flush();
 			if (Bamboo.Prevalence.Configuration.PrevalenceSettings.FlushAfterCommand)
 			{				
 				HardFlush(stream);
