@@ -102,17 +102,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Internal\ObjectNavigatorStateDictionary.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Internal\ObjectNavigatorStateItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Internal\ObjectNavigatorStateList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Internal\ObjectNavigatorStateRoot.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Internal\ObjectStateNavigatorItem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

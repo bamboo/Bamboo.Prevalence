@@ -134,7 +134,11 @@ namespace Bamboo.Prevalence.XPath.Internal
 
 		internal static ObjectNavigatorState CreateElementState(ObjectNavigationContext context, ObjectNavigatorState parent, object node, string name)
 		{
-			if (node is IList)
+			if (node is IDictionary)
+			{
+				return new ObjectNavigatorStateDictionary(context, parent, node, name);
+			}
+			else if (node is IList)
 			{
 				return new ObjectNavigatorStateList(context, parent, node, name);
 			}

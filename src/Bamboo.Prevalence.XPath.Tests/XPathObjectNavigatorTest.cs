@@ -170,11 +170,22 @@ namespace Bamboo.Prevalence.XPath.Tests
 
 		Address _address;
 
+		IDictionary _properties;
+
 		public Customer(string fname, string lname, Address address)
 		{
 			_fname = fname;
 			_lname = lname;
 			_address = address;
+			_properties = new Hashtable();
+		}
+
+		public IDictionary Properties
+		{
+			get
+			{
+				return _properties;
+			}
 		}
 
 		public Address Address
@@ -209,7 +220,7 @@ namespace Bamboo.Prevalence.XPath.Tests
 	public class XPathObjectNavigatorTest : Assertion
 	{
 		[Test]
-		public void Test1()
+		public void TestSimpleProperties()
 		{
 			Address address = new Address("Al. Calderão Branco", 784);
 			Customer customer = new Customer("Rodrigo", "Oliveira", address);
@@ -232,7 +243,7 @@ namespace Bamboo.Prevalence.XPath.Tests
 		}
 
 		[Test]
-		public void Test2()
+		public void TestIListProperties()
 		{
 			Product p1 = new Product("egg");
 			Product p2 = new Product("Monty Python Flying Circus Box");
@@ -266,6 +277,16 @@ namespace Bamboo.Prevalence.XPath.Tests
 
 			AssertEquals(o2.Items[0], navigator.SelectObject("//OrderItem[Quantity>10]"));
 			AssertEquals(p2, navigator.SelectObject("//Product[Categories/String='Silly Stuff']"));
+		}
+
+		[Test]
+		public void TestIDictionaryProperties()
+		{
+			Customer customer = new Customer("Rodrigo", "Oliveira", new Address("Penny Lane", 64));
+			customer.Properties["email"] = "rodrigobamboo@users.sourceforge.net";
+
+			XPathObjectNavigator navigator = new XPathObjectNavigator(customer);
+			AssertEquals(customer.Properties["email"], navigator.SelectObject("Properties/email"));
 		}
 	}
 }
