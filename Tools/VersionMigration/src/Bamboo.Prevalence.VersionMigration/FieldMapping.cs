@@ -56,13 +56,12 @@ namespace Bamboo.Prevalence.VersionMigration
 			{
 				throw new ApplicationException("Field initializer not registered: " + initializerElement.Name);
 			}
+			return LoadInitializer(type, initializerElement);
+		}
 
-			ConstructorInfo constructor = type.GetConstructor(new Type[] { typeof(XmlElement) });
-			if (null == constructor)
-			{
-				throw new ApplicationException(type + " must provide a public constructor taking a System.Xml.XmlElement!");
-			}
-			return (IFieldInitializer)constructor.Invoke(new object[] { initializerElement });
+		public static IFieldInitializer LoadInitializer(Type type, XmlElement initializerElement)
+		{
+			return (IFieldInitializer)InitializerHelper.LoadInitializer(type, initializerElement);
 		}
 
 		private static Hashtable _initializers;
@@ -80,6 +79,7 @@ namespace Bamboo.Prevalence.VersionMigration
 			_initializers["new"] = typeof(NewObjectInitializer);
 			_initializers["guid"] = typeof(GuidInitializer);
 			_initializers["null"] = typeof(NullInitializer);
+			_initializers["custom"] = typeof(CustomInitializer);
 		}
 
 		internal FieldMapping(XmlElement fieldElement)

@@ -30,43 +30,14 @@
 // mailto:rodrigobamboo@users.sourceforge.net
 
 using System;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Xml;
-using Bamboo.Prevalence.VersionMigration;
 
-namespace Bamboo.Prevalence.VersionMigration.Initializers
+namespace Bamboo.Prevalence.VersionMigration
 {
 	/// <summary>
-	/// Initializes a field with a new object.
+	/// Models a strategy for field initialization.
 	/// </summary>
-	public class NewObjectInitializer : IFieldInitializer
+	public interface IObjectInitializer
 	{
-		object[] _args;
-
-		public NewObjectInitializer(XmlElement element)
-		{
-			_args = LoadArgs(element);
-		}
-
-		public void InitializeField(MigrationContext context)
-		{
-			object current = context.CurrentObject;
-			FieldInfo field = context.CurrentField;			
-
-			field.SetValue(current, Activator.CreateInstance(field.FieldType, _args));
-		}
-
-		object[] LoadArgs(XmlElement element)
-		{
-			XmlNodeList nodes = element.SelectNodes("arg");
-
-			object[] args = new object[nodes.Count];
-			for (int i=0; i<nodes.Count; ++i)
-			{
-				args[i] = nodes[i].InnerText;
-			}	
-			return args;
-		}
+		void InitializeObject(MigrationContext context);
 	}
 }

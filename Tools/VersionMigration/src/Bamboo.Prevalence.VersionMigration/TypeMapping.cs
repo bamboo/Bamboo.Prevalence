@@ -48,6 +48,8 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private string _assemblyName;
 
+		private IObjectInitializer _initializer;
+
 		internal TypeMapping()
 		{
 			_fieldMappings = new FieldMappingCollection();
@@ -57,6 +59,14 @@ namespace Bamboo.Prevalence.VersionMigration
 		internal TypeMapping(XmlElement element) : this()
 		{
 			Load(element);
+		}
+
+		public IObjectInitializer Initializer
+		{
+			get
+			{
+				return _initializer;
+			}
 		}
 
 		public string TypeName
@@ -105,8 +115,18 @@ namespace Bamboo.Prevalence.VersionMigration
 		{
 			_typeName = element.GetAttribute("type");
 			_assemblyName = element.GetAttribute("assembly");
+			LoadInitializer(element);
 			LoadFieldMappings(element);
 			LoadAliases(element);
+		}
+
+		void LoadInitializer(XmlElement element)
+		{
+			XmlElement initializerElement = element.SelectSingleNode("initializer") as XmlElement;
+			if (null != initializerElement)
+			{
+				_initializer = (IObjectInitializer)InitializerHelper.LoadInitializer(initializerElement);
+			}
 		}
 
 		private void LoadFieldMappings(XmlElement element)

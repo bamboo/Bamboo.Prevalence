@@ -36,6 +36,28 @@ using Bamboo.Prevalence.Attributes;
 
 namespace SamplePrevalentSystem
 {
+	/// <summary>
+	/// Base class introduced...
+	/// </summary>
+	[Serializable]
+	public class NamedObject
+	{
+		protected string _name;
+
+		public string Name
+		{
+			get
+			{
+				return _name;
+			}
+
+			set
+			{
+				_name = value;
+			}
+		}
+	}
+
 	//
 	// This version includes the following
 	// modifications:
@@ -45,11 +67,9 @@ namespace SamplePrevalentSystem
 	//	* reviews field that must be initialized with
 	// a new instance
 	[Serializable]
-	public class Title
+	public class Title : NamedObject
 	{
-		private Guid _id;
-
-		private string _name;
+		private Guid _id;		
 
 		private string _description;
 		
@@ -69,20 +89,7 @@ namespace SamplePrevalentSystem
 			{
 				return _id;
 			}
-		}
-
-		public string Name
-		{
-			get
-			{
-				return _name;
-			}
-
-			set
-			{
-				_name = value;
-			}
-		}
+		}		
 
 		public string Description
 		{

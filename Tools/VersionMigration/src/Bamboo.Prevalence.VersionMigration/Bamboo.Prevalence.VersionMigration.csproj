@@ -97,6 +97,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "InitializerHelper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IObjectInitializer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "MigrationBinder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -133,6 +143,11 @@
                 />
                 <File
                     RelPath = "Initializers\ConstInitializer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Initializers\CustomInitializer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

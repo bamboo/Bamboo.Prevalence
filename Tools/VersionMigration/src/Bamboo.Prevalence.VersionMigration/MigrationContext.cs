@@ -60,6 +60,8 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		public event ResolveEventHandler ResolveAssembly;
 
+		public event EventHandler AfterDeserialization;
+
 		public MigrationContext(MigrationProject project)
 		{
 			if (null == project)
@@ -130,9 +132,14 @@ namespace Bamboo.Prevalence.VersionMigration
 			}
 		}
 
-		public bool IsTypeMappingAvailable(Type type)
+		public bool HasInitializers(Type type)
 		{
-			return _plan.IsTypeMappingAvailable(type);
+			TypeMapping mapping = GetTypeMapping(type);
+			if (null != mapping)
+			{
+				return mapping.Initializer != null || mapping.FieldMappings.Count > 0;
+			}
+			return false;
 		}
 
 		public TypeMapping GetTypeMapping(Type type)
@@ -177,6 +184,8 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		internal void EnterObject(object obj, SerializationInfo info)
 		{
+			Trace("Migrating {0}...", obj.GetType().Name);
+
 			_objects.Push(obj);
 			_serializationInfo.Push(info);
 		}
@@ -184,11 +193,12 @@ namespace Bamboo.Prevalence.VersionMigration
 		internal void LeaveObject()
 		{
 			_objects.Pop();
-			_serializationInfo.Pop();
+			_serializationInfo.Pop();			
 		}
 
 		internal void EnterField(FieldInfo field)
 		{
+			Trace("Migrating field {0}...", field.Name);
 			_fields.Push(field);
 		}
 
@@ -199,7 +209,12 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private object ReadObject()
 		{
-			return _plan.Deserialize(this);
+			object returnValue = _plan.Deserialize(this);
+			if (null != AfterDeserialization)
+			{
+				AfterDeserialization(this, EventArgs.Empty);
+			}
+			return returnValue;
 		}
 
 		private void WriteObject(object graph)
@@ -252,18 +267,31 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		private Assembly HandleResolveAssembly(object sender, ResolveEventArgs e)
 		{			
-			if (e.Name.StartsWith(_targetAssembly.GetName().Name))
+			Assembly resolved = null;
+
+			if (_targetAssembly != null)
 			{
-				return _targetAssembly;
+				if (e.Name.StartsWith(_targetAssembly.GetName().Name))
+				{
+					resolved = _targetAssembly;
+				}
 			}
-			else
+
+			if (resolved == null)
 			{
-				if (null != ResolveAssembly)
+				string assemblyFile = _project.ResolveAssembly(e.Name.Split(',')[0]);
+				if (null != assemblyFile)
+				{
+					resolved = Assembly.LoadFrom(assemblyFile);
+				}
+				
+				if (resolved == null && null != ResolveAssembly)
 				{
 					return ResolveAssembly(sender, e);
 				}
 			}
-			return null;
+
+			return resolved;
 		}
 
 		private void LoadMigrationPlan()
@@ -279,6 +307,11 @@ namespace Bamboo.Prevalence.VersionMigration
 		private void UninstallAssemblyResolver()
 		{
 			AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(HandleResolveAssembly);
+		}
+
+		public void Trace(string format, params object[] args)
+		{
+			Console.WriteLine(format, args);
 		}
 	}
 }

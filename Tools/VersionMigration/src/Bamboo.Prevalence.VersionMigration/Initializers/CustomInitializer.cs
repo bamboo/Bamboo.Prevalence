@@ -38,35 +38,25 @@ using Bamboo.Prevalence.VersionMigration;
 namespace Bamboo.Prevalence.VersionMigration.Initializers
 {
 	/// <summary>
-	/// Initializes a field with a new object.
+	/// Delegates the field initialization task to an external initializer.
 	/// </summary>
-	public class NewObjectInitializer : IFieldInitializer
+	/// <example>
+	/// <code>
+	/// &lt;custom type="MyInitializer, MyInitializerAssembly" /&gt;
+	/// </code>
+	/// </example>
+	public class CustomInitializer : IFieldInitializer
 	{
-		object[] _args;
+		private IFieldInitializer _custom;
 
-		public NewObjectInitializer(XmlElement element)
+		public CustomInitializer(XmlElement element)
 		{
-			_args = LoadArgs(element);
+			_custom = (IFieldInitializer)InitializerHelper.LoadInitializer(element);
 		}
 
 		public void InitializeField(MigrationContext context)
-		{
-			object current = context.CurrentObject;
-			FieldInfo field = context.CurrentField;			
-
-			field.SetValue(current, Activator.CreateInstance(field.FieldType, _args));
-		}
-
-		object[] LoadArgs(XmlElement element)
-		{
-			XmlNodeList nodes = element.SelectNodes("arg");
-
-			object[] args = new object[nodes.Count];
-			for (int i=0; i<nodes.Count; ++i)
-			{
-				args[i] = nodes[i].InnerText;
-			}	
-			return args;
+		{			
+			_custom.InitializeField(context);
 		}
 	}
 }

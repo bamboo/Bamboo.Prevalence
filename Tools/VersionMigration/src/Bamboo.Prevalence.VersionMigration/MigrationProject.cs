@@ -32,6 +32,7 @@
 #endregion
 
 using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -61,6 +62,8 @@ namespace Bamboo.Prevalence.VersionMigration
 		
 		string _fileName;
 
+		StringCollection _searchPath;
+
 		/// <summary>
 		/// Create an empty MigrationProject.
 		/// </summary>
@@ -68,6 +71,18 @@ namespace Bamboo.Prevalence.VersionMigration
 		{
 			_fileName = string.Empty;
 			_isDirty = false;
+			_searchPath = new StringCollection();
+		}
+
+		/// <summary>
+		/// Assembly search path.
+		/// </summary>
+		public StringCollection SearchPath
+		{
+			get
+			{
+				return _searchPath;
+			}
 		}
 
 		/// <summary>
@@ -256,8 +271,33 @@ namespace Bamboo.Prevalence.VersionMigration
 				MigrationProject project = (MigrationProject)CreateSerializer().Deserialize(stream);
 				project._fileName = filename;
 				project._isDirty = false;
+				if (null != project._mainAssembly || 0 != project._mainAssembly.Length)
+				{
+					project.SearchPath.Add(Path.GetDirectoryName(project._mainAssembly));
+				}
 				return project;
 			}
+		}
+
+		public string ResolveAssembly(string name)
+		{			
+			foreach (string path in SearchPath)
+			{
+				string folder = ResolvePath(path);
+
+				string fname = Path.Combine(folder, name + ".dll");
+				if (File.Exists(fname))
+				{
+					return fname;
+				}
+
+				fname = Path.Combine(folder, name + ".exe");
+				if (File.Exists(fname))
+				{
+					return fname;
+				}
+			}
+			return null;
 		}
 
 		string ResolvePath(string fname)

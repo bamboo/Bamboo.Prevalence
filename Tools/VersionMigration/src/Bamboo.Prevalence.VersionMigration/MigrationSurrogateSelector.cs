@@ -57,8 +57,8 @@ namespace Bamboo.Prevalence.VersionMigration
 		{
 			selector = this;
 
-			if (_context.IsTypeMappingAvailable(type))
-			{
+			if (_context.HasInitializers(type))
+			{				
 				return this;
 			}			
 
@@ -83,15 +83,23 @@ namespace Bamboo.Prevalence.VersionMigration
 
 			Type type = obj.GetType();
 			TypeMapping mapping = _context.GetTypeMapping(type);
-			FieldInfo[] fields = _context.GetSerializableFields(type);
-			foreach (FieldInfo field in fields)
-			{								
-				_context.EnterField(field);
 
-				IFieldInitializer initializer = mapping.GetFieldInitializer(field.Name);
-				initializer.InitializeField(_context);
+			if (null != mapping.Initializer)
+			{
+				mapping.Initializer.InitializeObject(_context);
+			}
+			else
+			{
+				FieldInfo[] fields = _context.GetSerializableFields(type);
+				foreach (FieldInfo field in fields)
+				{								
+					_context.EnterField(field);
 
-				_context.LeaveField();
+					IFieldInitializer initializer = mapping.GetFieldInitializer(field.Name);
+					initializer.InitializeField(_context);
+
+					_context.LeaveField();
+				}
 			}
 
 			_context.LeaveObject();

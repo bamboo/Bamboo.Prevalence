@@ -18,7 +18,7 @@ namespace Bamboo.Prevalence.VersionMigration
 
 		public override System.Type BindToType(string assemblyName, string typeName)
 		{
-			//Console.WriteLine("\nBindToType(\"{0}\", \"{1}\")", assemblyName, typeName);
+			_context.Trace("\nBindToType(\"{0}\", \"{1}\")", assemblyName, typeName);
 
 			string actualAssemblyName = assemblyName;
 			string actualTypeName = typeName;
@@ -28,6 +28,7 @@ namespace Bamboo.Prevalence.VersionMigration
 			{				
 				if (string.Empty == mapping.AssemblyName)
 				{	
+					_context.Trace("{0} bound to {1}, {2}", typeName, mapping.TypeName, _context.TargetAssembly.FullName);
 					return _context.TargetAssembly.GetType(mapping.TypeName);
 				}
 				else
@@ -36,7 +37,12 @@ namespace Bamboo.Prevalence.VersionMigration
 					actualTypeName = mapping.TypeName;
 				}
 			}
-			return Type.GetType(actualTypeName + ", " + actualAssemblyName);
+
+			string boundTypeName = actualTypeName + ", " + actualAssemblyName;
+
+			_context.Trace("{0} bound to {1}", typeName, boundTypeName);
+
+			return Type.GetType(boundTypeName);
 		}
 	}
 }
