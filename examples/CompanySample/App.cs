@@ -72,6 +72,14 @@ namespace ObjectModel
 			}
 		}
 
+		internal void Remove(BusinessObject bo)
+		{
+			lock (InnerList.SyncRoot)
+			{
+				InnerList.Remove(bo);
+			}
+		}
+
 		public object SyncRoot
 		{
 			get
@@ -220,6 +228,11 @@ namespace ObjectModel
 			employee.Department = this;
 			_employees.Add(employee);
 		}
+
+		internal void RemoveEmployee(Employee employee)
+		{
+			_employees.Remove(employee);
+		}
 	}
 
 	[Serializable]
@@ -319,20 +332,38 @@ namespace ObjectModel
 			_departments[department.ID].AddEmployee(employee);
 			RegisterObject(employee);
 		}
-
-		public void UpdateEmployee(Employee employee)
+		
+		[Query]
+		public Employee GetEmployee(Guid employeeID)
 		{
-			Employee existing = (Employee)_objects[employee.ID];
+			Employee existing = (Employee)_objects[employeeID];
 			if (null == existing)
 			{
-				throw new BusinessObjectNotFoundException(string.Format("Employee {0} not found!", employee.ID));
+				throw new BusinessObjectNotFoundException(string.Format("Employee {0} not found!", employeeID));
 			}
-			existing.Update(employee);
+			return existing;
+		}
+
+		public void UpdateEmployee(Employee employee)
+		{			
+			GetEmployee(employee.ID).Update(employee);
+		}
+
+		public void RemoveEmployee(Guid employeeID)
+		{
+			Employee existing = GetEmployee(employeeID);
+			existing.Department.RemoveEmployee(existing);
+			UnregisterObject(employeeID);
 		}
 
 		void RegisterObject(BusinessObject bo)
 		{
 			_objects[bo.ID] = bo;
+		}
+
+		void UnregisterObject(Guid objectID)
+		{
+			_objects.Remove(objectID);
 		}
 	}
 }
@@ -364,6 +395,10 @@ namespace CompanySample
 			ObjectModel.Employee updEmployee = new ObjectModel.Employee(employee.ID);
 			updEmployee.Name = "Rodrigo B. de Oliveira";
 			company.UpdateEmployee(updEmployee);
+
+			DisplayObjects(company);
+
+			company.RemoveEmployee(employee.ID);
 
 			DisplayObjects(company);
 		}
