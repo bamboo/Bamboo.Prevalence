@@ -1,3 +1,21 @@
+.syntax1 { color: #808080; }
+.syntax2 { color: #808080; }
+.syntax3 { color: #6600cc; }
+.syntax4 { color: #cc6600; }
+.syntax5 { color: #0000ff; }
+.syntax6 { color: #000000; }
+.syntax7 { color: #ff0000; font-weight: bold; }
+.syntax8 { color: #000080; font-weight: bold; }
+.syntax9 { color: #660e7a; font-weight: bold; }
+.syntax10 { color: #006666; font-weight: bold; }
+.syntax11 { color: #66ccff; font-weight: bold; }
+.syntax12 { color: #990033; font-weight: bold; }
+.syntax13 { color: #008000; font-weight: bold; }
+.syntax14 { color: #008000; }
+.syntax15 { color: #9900cc; }
+.syntax16 { color: #6600cc; }
+.syntax17 { color: #000080; font-weight: bold; }
+.syntax18 { color: #000000; font-weight: bold; }
 body
 {
 	font-size: 10pt;
@@ -14,6 +32,5 @@ pre
 a
 {
 	font-family: verdana, tahoma;
-	color: blue;
 	font-weight: bold;
 }
