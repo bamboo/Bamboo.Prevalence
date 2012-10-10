@@ -2,6 +2,8 @@
 // Bamboo.Prevalence - a .NET object prevalence engine
 // Copyright (C) 2004 Rodrigo B. de Oliveira
 //
+//trying out an inline edit trough github to see what the interface is for that, please ignore this pull request.
+
 // Based on the original concept and implementation of Prevayler (TM)
 // by Klaus Wuestefeld. Visit http://www.prevayler.org for details.
 //
